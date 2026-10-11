@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>لوحة الإدارة | دفتر الدروس</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      fontFamily: { sans: ['Tajawal', 'system-ui', 'sans-serif'], display: ['Cairo', 'Tajawal', 'system-ui', 'sans-serif'] },
+      colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' } } } };
+  </script>
+  <style>
+    .swal2-popup { font-family: 'Tajawal', sans-serif; }
+    .field { width: 100%; border: 1px solid #CBD5DC; border-radius: .5rem; background: #fff; padding: .65rem .75rem; }
+    .field:focus { outline: none; border-color: #0F766E; box-shadow: 0 0 0 2px rgba(15,118,110,.3); }
+    .tool { height: 2.5rem; padding: 0 .75rem; border: 1px solid #CBD5DC; border-radius: .5rem; background: #fff; font-weight: 500; }
+    .tool:hover { background: #F2F5F7; }
+    .tool:focus-visible { outline: 2px solid #0F766E; outline-offset: 2px; }
+  </style>
+</head>
+
+<body class="bg-paper text-ink font-sans antialiased">
+  <header class="bg-ink text-white">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+      <span class="font-display font-extrabold text-xl">لوحة الإدارة</span>
+      <button id="logout" type="button" class="text-sm text-white/80 underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-white rounded">تسجيل الخروج</button>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 py-6">
+    <section aria-labelledby="list-h">
+      <h1 id="list-h" class="font-display font-extrabold text-2xl">الدروس المنشورة</h1>
+      <div id="list" class="mt-4 space-y-2"></div>
+    </section>
+
+    <div id="editor" class="mt-10 flex items-center justify-between gap-3 scroll-mt-4">
+      <h2 id="editor-h" class="font-display font-extrabold text-2xl">درس جديد</h2>
+      <button id="cancel-edit" type="button" hidden class="text-sm text-brand underline">إلغاء التعديل</button>
+    </div>
+
+    <form id="post-form" class="mt-5 space-y-4" novalidate>
+      <div>
+        <label for="title" class="block font-medium mb-1.5">عنوان الدرس</label>
+        <input id="title" class="field" maxlength="150" required>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label for="slug" class="block font-medium mb-1.5">الرابط المختصر</label>
+          <input id="slug" class="field" dir="ltr" maxlength="60" placeholder="lesson-4" required>
+          <p class="mt-1 text-sm text-ink/60">أحرف إنجليزية صغيرة وأرقام وشرطات.</p>
+        </div>
+        <div>
+          <label for="category" class="block font-medium mb-1.5">التصنيف</label>
+          <input id="category" class="field" maxlength="40" placeholder="JavaScript">
+        </div>
+      </div>
+
+      <div>
+        <label for="tags" class="block font-medium mb-1.5">الوسوم</label>
+        <input id="tags" class="field" placeholder="افصل بينها بفاصلة: jQuery، أحداث، مبتدئ">
+      </div>
+
+      <div>
+        <label for="excerpt" class="block font-medium mb-1.5">ملخص قصير</label>
+        <textarea id="excerpt" class="field" rows="2" maxlength="300" required></textarea>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-1.5">
+          <label for="content" class="font-medium">محتوى الدرس (HTML)</label>
+          <button id="toggle-preview" type="button" class="text-sm text-brand underline">معاينة</button>
+        </div>
+
+        <div id="toolbar" class="flex flex-wrap gap-2 mb-2" role="toolbar" aria-label="أدوات التنسيق">
+          <button type="button" class="tool" data-tool="h2">عنوان</button>
+          <button type="button" class="tool" data-tool="h3">عنوان فرعي</button>
+          <button type="button" class="tool" data-tool="p">فقرة</button>
+          <button type="button" class="tool" data-tool="ul">قائمة</button>
+          <button type="button" class="tool" data-tool="a">رابط</button>
+          <button type="button" class="tool" data-tool="ic">كود مضمّن</button>
+          <span class="flex gap-1">
+            <select id="lang" class="tool" aria-label="لغة الكود">
+              <option value="javascript">JavaScript</option>
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="python">Python</option>
+              <option value="php">PHP</option>
+              <option value="sql">SQL</option>
+              <option value="bash">Bash</option>
+              <option value="json">JSON</option>
+            </select>
+            <button type="button" class="tool bg-brand text-white hover:bg-brand/90" data-tool="code">إدراج كتلة كود</button>
+          </span>
+        </div>
+
+        <!-- RTL editor; code blocks are escaped automatically by the code buttons -->
+        <textarea id="content" class="field" dir="rtl" rows="16" required
+          placeholder="اكتب الدرس هنا. حدّد النص ثم اضغط زرًّا من الأعلى لتنسيقه."></textarea>
+        <iframe id="preview" sandbox title="معاينة الدرس" hidden class="w-full h-96 bg-white border border-rule rounded-lg"></iframe>
+      </div>
+
+      <button id="publish" type="submit"
+        class="w-full sm:w-auto h-12 px-8 rounded-lg bg-brand text-white font-bold hover:bg-brand/90 disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
+        نشر الدرس
+      </button>
+    </form>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+  <script>
+  $(function () {
+    var API = '/.netlify/functions/save-post';
+    var token = sessionStorage.getItem('adminToken');
+    if (!token) { location.replace('login.html'); return; }
+
+    var $content = $('#content');
+    var swalBase = { confirmButtonText: 'حسنًا', confirmButtonColor: '#0F766E' };
+
+    function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    function insert(before, after, fallback, escape) {
+      var el = $content[0], s = el.selectionStart, e = el.selectionEnd;
+      var sel = el.value.slice(s, e) || fallback;
+      el.setRangeText(before + (escape ? esc(sel) : sel) + after, s, e, 'end');
+      el.focus();
+    }
+
+    var tools = {
+      h2: function () { insert('<h2>', '</h2>\n\n', 'عنوان القسم'); },
+      h3: function () { insert('<h3>', '</h3>\n\n', 'عنوان فرعي'); },
+      p:  function () { insert('<p>', '</p>\n\n', 'نص الفقرة'); },
+      ul: function () { insert('<ul>\n  <li>', '</li>\n</ul>\n\n', 'عنصر'); },
+      a:  function () { insert('<a href="https://">', '</a>', 'نص الرابط'); },
+      ic: function () { insert('<code>', '</code>', 'code', true); },
+      code: function () { insert('<pre><code class="language-' + $('#lang').val() + '">', '</code></pre>\n\n', '// الصق الكود هنا', true); }
+    };
+    $('#toolbar').on('click', '[data-tool]', function () { tools[$(this).data('tool')](); });
+
+    // Preview in a sandboxed iframe (scripts cannot run)
+    $('#toggle-preview').on('click', function () {
+      var showing = !$('#preview').prop('hidden');
+      if (!showing) {
+        $('#preview').attr('srcdoc', '<html dir="rtl"><body style="font-family:sans-serif;line-height:1.9;padding:1rem">' + $content.val() + '</body></html>');
+      }
+      $('#preview').prop('hidden', showing);
+      $content.prop('hidden', !showing);
+      $('#toolbar').toggleClass('hidden', !showing);
+      $(this).text(showing ? 'معاينة' : 'تحرير');
+    });
+
+    // ---- State and helpers ----
+    var posts = [], editing = null;
+
+    function call(payload) {
+      return $.ajax({
+        url: API, method: 'POST', contentType: 'application/json',
+        headers: { Authorization: 'Bearer ' + token }, data: JSON.stringify(payload)
+      }).fail(function (xhr) {
+        if (xhr.status === 401) { sessionStorage.removeItem('adminToken'); location.replace('login.html?expired=1'); }
+      });
+    }
+    function errMsg(xhr) { return (xhr.responseJSON && xhr.responseJSON.error) || 'تعذّر الاتصال بالخادم. أعد المحاولة.'; }
+    function findPost(slug) { return $.grep(posts, function (p) { return p.id === slug; })[0]; }
+    function fmt(iso) {
+      var d = new Date(iso);
+      return isNaN(d) ? '' : d.toLocaleDateString('ar', { year: 'numeric', month: 'long', day: 'numeric', numberingSystem: 'latn' });
+    }
+
+    function suggestSlug() {
+      var max = 0;
+      $.each(posts, function (_, p) { var m = /^lesson-(\d+)$/.exec(p.id); if (m) max = Math.max(max, +m[1]); });
+      $('#slug').val('lesson-' + (max + 1));
+    }
+
+    function setMode(slug) {
+      editing = slug;
+      $('#slug').prop('readonly', !!slug).css('background', slug ? '#E3EAEE' : '');
+      $('#editor-h').text(slug ? 'تعديل الدرس' : 'درس جديد');
+      $('#cancel-edit').prop('hidden', !slug);
+      $('#publish').text(slug ? 'حفظ التعديلات' : 'نشر الدرس');
+    }
+
+    function resetForm() { $('#post-form')[0].reset(); $('#slug').val(''); setMode(null); }
+
+    function confirmReplace() {
+      if (!$content.val().trim()) return Promise.resolve(true);
+      return Swal.fire({
+        icon: 'question', title: 'استبدال المحتوى الحالي؟', text: 'ما كتبته في المحرر ولم تحفظه سيُفقد.',
+        showCancelButton: true, confirmButtonText: 'متابعة', cancelButtonText: 'إلغاء', confirmButtonColor: '#0F766E'
+      }).then(function (r) { return r.isConfirmed; });
+    }
+
+    // ---- Posts list (read live from GitHub, so it is current even before Netlify finishes deploying) ----
+    function renderList() {
+      var $l = $('#list').empty();
+      if (!posts.length) { $l.append($('<p>', { 'class': 'text-ink/70', text: 'لا توجد دروس منشورة بعد.' })); return; }
+      $.each(posts, function (_, p) {
+        var $row = $('<div>', { 'class': 'bg-white border border-rule rounded-lg p-3 flex flex-wrap items-center justify-between gap-3' });
+        var $info = $('<div>', { 'class': 'min-w-0 flex-1' }).appendTo($row);
+        $('<div>', { 'class': 'font-bold', text: p.title }).appendTo($info);
+        var $meta = $('<div>', { 'class': 'mt-0.5 flex flex-wrap gap-x-3 text-sm text-ink/60' }).appendTo($info);
+        if (p.category) $('<span>', { text: p.category }).appendTo($meta);
+        $('<span>', { text: fmt(p.date) }).appendTo($meta);
+
+        var $btns = $('<div>', { 'class': 'flex gap-2' }).appendTo($row);
+        $('<button>', { type: 'button', 'class': 'tool', text: 'تعديل', 'aria-label': 'تعديل: ' + p.title }).attr('data-edit', p.id).appendTo($btns);
+        $('<button>', { type: 'button', 'class': 'tool text-red-700 border-red-200 hover:bg-red-50', text: 'حذف', 'aria-label': 'حذف: ' + p.title }).attr('data-del', p.id).appendTo($btns);
+        $l.append($row);
+      });
+    }
+
+    function loadList() {
+      $('#list').empty().append($('<p>', { 'class': 'text-ink/70', text: 'جارٍ تحميل الدروس…' }));
+      return call({ action: 'list' }).done(function (res) {
+        posts = res.posts || [];
+        renderList();
+        if (!editing && !$('#slug').val()) suggestSlug();
+      }).fail(function (xhr) {
+        $('#list').empty().append($('<p>', { 'class': 'text-red-700', text: errMsg(xhr) }));
+      });
+    }
+
+    // ---- Edit ----
+    $('#list').on('click', '[data-edit]', function () {
+      var slug = $(this).attr('data-edit'), p = findPost(slug);
+      if (!p) return;
+      confirmReplace().then(function (ok) {
+        if (!ok) return;
+        Swal.fire({ title: 'جارٍ فتح الدرس…', allowOutsideClick: false, allowEscapeKey: false, didOpen: function () { Swal.showLoading(); } });
+        call({ action: 'get', slug: slug }).done(function (res) {
+          if (!$('#preview').prop('hidden')) $('#toggle-preview').trigger('click'); // leave preview mode
+          $('#title').val(p.title);
+          $('#slug').val(p.id);
+          $('#category').val(p.category || '');
+          $('#tags').val((p.tags || []).join('، '));
+          $('#excerpt').val(p.excerpt || '');
+          $content.val(res.content);
+          setMode(slug);
+          Swal.close();
+          $('#editor')[0].scrollIntoView({ behavior: 'smooth' });
+          $('#title').trigger('focus');
+        }).fail(function (xhr) {
+          if (xhr.status === 401) return;
+          Swal.fire($.extend({ icon: 'error', title: 'تعذّر فتح الدرس', text: errMsg(xhr) }, swalBase));
+        });
+      });
+    });
+
+    $('#cancel-edit').on('click', function () {
+      confirmReplace().then(function (ok) { if (ok) { resetForm(); suggestSlug(); } });
+    });
+
+    // ---- Delete (SweetAlert2 confirmation; the request runs inside the dialog) ----
+    $('#list').on('click', '[data-del]', function () {
+      var slug = $(this).attr('data-del'), p = findPost(slug);
+      if (!p) return;
+      Swal.fire({
+        icon: 'warning',
+        title: 'حذف الدرس؟',
+        text: '«' + p.title + '» سيُحذف من الموقع ومن المستودع. يمكن استرجاعه من سجل GitHub فقط.',
+        showCancelButton: true, focusCancel: true,
+        confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#B42318',
+        showLoaderOnConfirm: true,
+        allowOutsideClick: function () { return !Swal.isLoading(); },
+        preConfirm: function () {
+          return call({ action: 'delete', slug: slug }).then(null, function (xhr) {
+            if (xhr.status !== 401) Swal.showValidationMessage(errMsg(xhr));
+            return false; // keep the dialog open
+          });
+        }
+      }).then(function (r) {
+        if (!r.isConfirmed) return;
+        if (editing === slug) resetForm();
+        loadList();
+        Swal.fire($.extend({ icon: 'success', title: 'تم الحذف', text: 'سيختفي الدرس من الموقع بعد اكتمال النشر على Netlify.' }, swalBase));
+      });
+    });
+
+    $('#logout').on('click', function () { sessionStorage.removeItem('adminToken'); location.replace('login.html'); });
+
+    // ---- Publish / save edits ----
+    $('#post-form').on('submit', function (e) {
+      e.preventDefault();
+      var isEdit = !!editing;
+      var data = {
+        action: isEdit ? 'update' : 'publish',
+        title: $('#title').val().trim(),
+        slug: $('#slug').val().trim().toLowerCase(),
+        category: $('#category').val().trim(),
+        tags: $('#tags').val().split(/[,،]/).map(function (t) { return t.trim(); }).filter(Boolean),
+        excerpt: $('#excerpt').val().trim(),
+        content: $content.val().trim()
+      };
+      if (!data.title || !data.slug || !data.excerpt || !data.content) {
+        Swal.fire($.extend({ icon: 'warning', title: 'بيانات ناقصة', text: 'العنوان والرابط والملخص والمحتوى حقول مطلوبة.' }, swalBase));
+        return;
+      }
+
+      Swal.fire({ title: isEdit ? 'جارٍ الحفظ…' : 'جارٍ النشر…', allowOutsideClick: false, allowEscapeKey: false, didOpen: function () { Swal.showLoading(); } });
+      $('#publish').prop('disabled', true);
+
+      call(data).done(function (res) {
+        Swal.fire($.extend({
+          icon: 'success',
+          title: isEdit ? 'تم حفظ التعديلات' : 'تم النشر',
+          html: 'حُفظ الدرس في GitHub. ستظهر النسخة الجديدة بعد اكتمال النشر على Netlify (عادةً أقل من دقيقتين).<br><a href="' + res.url + '" target="_blank" rel="noopener" style="color:#0F766E;text-decoration:underline">فتح الدرس</a>'
+        }, swalBase));
+        resetForm();
+        loadList();
+      }).fail(function (xhr) {
+        if (xhr.status === 401) return;
+        Swal.fire($.extend({ icon: 'error', title: isEdit ? 'لم تُحفظ التعديلات' : 'لم يتم النشر', text: errMsg(xhr) }, swalBase));
+      }).always(function () {
+        $('#publish').prop('disabled', false);
+      });
+    });
+
+    setMode(null);
+    loadList();
+  });
+  </script>
+</body>
+</html>

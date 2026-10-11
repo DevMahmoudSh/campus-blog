@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>تسجيل الدخول | دفتر الدروس</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      fontFamily: { sans: ['Tajawal', 'system-ui', 'sans-serif'], display: ['Cairo', 'Tajawal', 'system-ui', 'sans-serif'] },
+      colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' } } } };
+  </script>
+  <style>.swal2-popup { font-family: 'Tajawal', sans-serif; }</style>
+</head>
+
+<body class="bg-paper text-ink font-sans antialiased min-h-screen grid place-items-center px-4">
+  <main class="w-full max-w-sm">
+    <h1 class="font-display font-extrabold text-3xl">دخول الإدارة</h1>
+    <p class="mt-2 text-ink/70">أدخل كلمة المرور لإضافة درس جديد.</p>
+
+    <form id="login-form" class="mt-6 bg-white border border-rule rounded-xl p-5 space-y-4" novalidate>
+      <div>
+        <label for="password" class="block font-medium mb-1.5">كلمة المرور</label>
+        <input id="password" type="password" autocomplete="current-password" required
+          class="w-full h-12 rounded-lg border border-rule bg-white px-3 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/30">
+      </div>
+      <button id="submit" type="submit"
+        class="w-full h-12 rounded-lg bg-brand text-white font-bold hover:bg-brand/90 disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
+        دخول
+      </button>
+    </form>
+    <a href="/" class="inline-block mt-5 text-sm text-brand underline">العودة إلى الموقع</a>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+  <script>
+  $(function () {
+    if (sessionStorage.getItem('adminToken')) { location.replace('admin.html'); return; }
+    if (new URLSearchParams(location.search).get('expired')) {
+      Swal.fire({ icon: 'info', title: 'انتهت الجلسة', text: 'سجّل الدخول من جديد للمتابعة.', confirmButtonText: 'حسنًا', confirmButtonColor: '#0F766E' });
+    }
+
+    $('#login-form').on('submit', function (e) {
+      e.preventDefault();
+      var pw = $('#password').val();
+      if (!pw) { $('#password').trigger('focus'); return; }
+
+      var $btn = $('#submit').prop('disabled', true).text('جارٍ التحقق…');
+      $.ajax({
+        url: '/.netlify/functions/save-post',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ action: 'login', password: pw })
+      }).done(function (res) {
+        sessionStorage.setItem('adminToken', res.token);
+        location.replace('admin.html');
+      }).fail(function (xhr) {
+        var msg = (xhr.responseJSON && xhr.responseJSON.error) || 'تعذّر الاتصال بالخادم. أعد المحاولة.';
+        Swal.fire({ icon: 'error', title: 'فشل الدخول', text: msg, confirmButtonText: 'حسنًا', confirmButtonColor: '#0F766E' });
+        $('#password').val('').trigger('focus');
+      }).always(function () {
+        $btn.prop('disabled', false).text('دخول');
+      });
+    });
+  });
+  </script>
+</body>
+</html>

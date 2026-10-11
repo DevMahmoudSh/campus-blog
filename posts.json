@@ -1,0 +1,32 @@
+[
+  {
+    "id": "lesson-3",
+    "title": "التعامل مع الأحداث في jQuery",
+    "url": "/posts/lesson-3.html",
+    "excerpt": "تعلّم ربط النقر والإدخال والتمرير بالعناصر، مع أمثلة عملية على delegation.",
+    "category": "jQuery",
+    "tags": ["jQuery", "أحداث", "JavaScript"],
+    "date": "2026-10-08",
+    "readMinutes": 6
+  },
+  {
+    "id": "lesson-2",
+    "title": "تخطيط الصفحات بـ Flexbox خطوة بخطوة",
+    "url": "/posts/lesson-2.html",
+    "excerpt": "كيف تبني صفحة متجاوبة بالمحاذاة والتوزيع دون أي إطار عمل.",
+    "category": "CSS",
+    "tags": ["CSS", "Flexbox", "تصميم متجاوب"],
+    "date": "2026-10-03",
+    "readMinutes": 8
+  },
+  {
+    "id": "lesson-1",
+    "title": "مقدمة في JavaScript: المتغيرات والدوال",
+    "url": "/posts/lesson-1.html",
+    "excerpt": "أول درس في اللغة: كيف تعرّف المتغيرات وتكتب دالة وتستدعيها.",
+    "category": "JavaScript",
+    "tags": ["JavaScript", "مبتدئ", "دوال"],
+    "date": "2026-09-27",
+    "readMinutes": 5
+  }
+]

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12263A">
+  <meta name="description" content="دروس برمجة عملية مكتوبة بالعربية، مع أمثلة جاهزة للنسخ.">
+  <title>دفتر الدروس | تعلّم البرمجة بالعربية</title>
+
+  <!-- Arabic fonts: Cairo (headings) + Tajawal (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind (CDN, pinned). Logical utilities (ms-, ps-, border-s-, start-/end-) mirror automatically in RTL -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Tajawal', 'system-ui', 'sans-serif'],
+            display: ['Cairo', 'Tajawal', 'system-ui', 'sans-serif']
+          },
+          colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' }
+        }
+      }
+    };
+  </script>
+  <style>
+    html { scroll-padding-top: 1rem; }
+    body { font-family: 'Tajawal', system-ui, sans-serif; }
+    .post-title { transition: color .15s; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+
+<body class="bg-paper text-ink antialiased min-h-screen flex flex-col">
+
+  <header class="bg-ink text-white">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="font-display font-extrabold text-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white rounded">دفتر الدروس</a>
+      <span class="text-sm text-white/70">برمجة بالعربية</span>
+    </div>
+  </header>
+
+  <main class="flex-1 w-full max-w-3xl mx-auto px-4">
+
+    <!-- Hero: the search field is the main action -->
+    <section class="pt-10 pb-8 sm:pt-14">
+      <h1 class="font-display font-extrabold text-3xl sm:text-4xl leading-snug">تعلّم البرمجة خطوة بخطوة</h1>
+      <p class="mt-3 text-base sm:text-lg text-ink/75 leading-relaxed max-w-xl">دروس قصيرة بأمثلة كاملة. انسخ الكود بضغطة واحدة وجرّبه مباشرة.</p>
+
+      <form id="search-form" role="search" class="relative mt-6" onsubmit="return false;">
+        <label for="search" class="sr-only">ابحث في الدروس</label>
+        <svg class="pointer-events-none absolute start-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" type="search" autocomplete="off" placeholder="ابحث بعنوان الدرس أو الوسم…"
+          class="w-full h-14 rounded-xl border border-rule bg-white ps-12 pe-12 text-base shadow-sm placeholder:text-ink/45 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/30">
+        <button id="clear" type="button" hidden aria-label="مسح البحث"
+          class="absolute end-2 top-1/2 -translate-y-1/2 w-10 h-10 grid place-items-center rounded-lg text-ink/60 hover:text-ink hover:bg-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </form>
+    </section>
+
+    <!-- Posts -->
+    <section aria-labelledby="list-title" class="pb-12">
+      <div class="flex items-baseline justify-between gap-3 border-b border-rule pb-3">
+        <h2 id="list-title" class="font-display font-extrabold text-xl">أحدث الدروس</h2>
+        <p id="count" class="text-sm text-ink/60" aria-live="polite"></p>
+      </div>
+
+      <div id="posts" class="mt-4 space-y-3"></div>
+
+      <div id="status" class="py-10 text-center text-ink/70"></div>
+
+      <div class="text-center">
+        <button id="more" type="button" hidden
+          class="mt-4 h-12 px-6 rounded-xl border border-brand text-brand font-bold hover:bg-brand hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand transition-colors">
+          عرض المزيد
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-rule">
+    <div class="max-w-3xl mx-auto px-4 py-6 text-sm text-ink/60">
+      © <span id="year"></span> دفتر الدروس. جميع الحقوق محفوظة.
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+  $(function () {
+    var PAGE_SIZE = 6;
+    var allPosts = [], results = [], shown = 0;
+
+    var $posts = $('#posts'), $status = $('#status'), $count = $('#count'),
+        $more = $('#more'), $search = $('#search'), $clear = $('#clear'), $title = $('#list-title');
+
+    $('#year').text(new Date().getFullYear());
+
+    // Arabic-friendly normalisation: ignore diacritics/tatweel, unify alef, ya, ta marbuta, case
+    function norm(s) {
+      return String(s == null ? '' : s).toLowerCase()
+        .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
+        .replace(/[إأآٱ]/g, 'ا')
+        .replace(/ى/g, 'ي')
+        .replace(/ة/g, 'ه')
+        .trim();
+    }
+
+    function formatDate(iso) {
+      var d = new Date(iso);
+      if (isNaN(d)) return '';
+      return d.toLocaleDateString('ar', { year: 'numeric', month: 'long', day: 'numeric', numberingSystem: 'latn' });
+    }
+
+    // Only allow same-site links coming from posts.json
+    function safeUrl(u) { return (typeof u === 'string' && u.charAt(0) === '/' && u.charAt(1) !== '/') ? u : '#'; }
+
+    function buildCard(p) {
+      var $a = $('<a>', {
+        href: safeUrl(p.url),
+        'class': 'group block bg-white rounded-lg border border-rule border-s-4 border-s-brand ps-4 pe-4 py-4 hover:border-e-brand/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
+      });
+
+      $('<h3>', { 'class': 'post-title font-display font-extrabold text-lg leading-snug group-hover:text-brand', text: p.title }).appendTo($a);
+      if (p.excerpt) $('<p>', { 'class': 'mt-1.5 text-ink/75 leading-relaxed', text: p.excerpt }).appendTo($a);
+
+      var $meta = $('<div>', { 'class': 'mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60' }).appendTo($a);
+      if (p.category) $('<span>', { 'class': 'rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5', text: p.category }).appendTo($meta);
+      var d = formatDate(p.date);
+      if (d) $('<time>', { datetime: p.date, text: d }).appendTo($meta);
+      if (p.readMinutes) $('<span>', { text: 'قراءة ' + p.readMinutes + ' د' }).appendTo($meta);
+
+      return $a;
+    }
+
+    function renderMore() {
+      var next = results.slice(shown, shown + PAGE_SIZE);
+      $.each(next, function (_, p) { $posts.append(buildCard(p)); });
+      shown += next.length;
+      $more.prop('hidden', shown >= results.length);
+    }
+
+    function render(isSearch) {
+      $posts.empty();
+      shown = 0;
+      $title.text(isSearch ? 'نتائج البحث' : 'أحدث الدروس');
+
+      if (!results.length) {
+        $status.text(isSearch ? 'لا توجد دروس مطابقة. جرّب كلمة أخرى أو وسمًا مختلفًا.' : 'لا توجد دروس منشورة بعد.');
+        $count.text('');
+        $more.prop('hidden', true);
+        return;
+      }
+      $status.empty();
+      $count.text(isSearch ? results.length + ' نتيجة' : '');
+      renderMore();
+    }
+
+    // Instant client-side filter over title, excerpt, category and tags (all terms must match)
+    function filter() {
+      var q = norm($search.val());
+      $clear.prop('hidden', !$search.val());
+      if (!q) { results = allPosts.slice(); render(false); return; }
+
+      var terms = q.split(/\s+/);
+      results = $.grep(allPosts, function (p) {
+        var hay = norm([p.title, p.excerpt, p.category, (p.tags || []).join(' ')].join(' '));
+        return terms.every(function (t) { return hay.indexOf(t) !== -1; });
+      });
+      render(true);
+    }
+
+    function load() {
+      $status.text('جارٍ تحميل الدروس…');
+      $.ajax({ url: '/posts.json', dataType: 'json', cache: false })
+        .done(function (data) {
+          allPosts = $.isArray(data) ? data : [];
+          allPosts.sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
+          filter();
+        })
+        .fail(function () {
+          $status.html('').append(
+            $('<p>', { text: 'تعذّر تحميل الدروس. تحقّق من اتصالك ثم أعد المحاولة.' }),
+            $('<button>', {
+              type: 'button',
+              text: 'إعادة المحاولة',
+              'class': 'mt-3 h-11 px-5 rounded-lg bg-brand text-white font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
+            }).on('click', load)
+          );
+        });
+    }
+
+    $search.on('input', filter);
+    $clear.on('click', function () { $search.val('').trigger('input').trigger('focus'); });
+    $more.on('click', renderMore);
+
+    load();
+  });
+  </script>
+</body>
+</html>
