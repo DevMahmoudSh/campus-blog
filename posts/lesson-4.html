@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>شرح تعامل مع اوامر انشاء قاعدة البيانات | دفتر الدروس</title>
+  <meta name="description" content="شرح اوامر انشاء قاعدة بيانات وتعديل">
+  <meta property="og:title" content="شرح تعامل مع اوامر انشاء قاعدة البيانات">
+  <meta property="og:description" content="شرح اوامر انشاء قاعدة بيانات وتعديل">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      fontFamily: { sans: ['Tajawal','system-ui','sans-serif'], display: ['Cairo','Tajawal','system-ui','sans-serif'] },
+      colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' } } } };
+  </script>
+  <style>
+    .article { font-size: 1.0625rem; line-height: 1.95; }
+    .article > * + * { margin-top: 1rem; }
+    .article h2 { font: 800 1.5rem/1.5 Cairo, Tajawal, sans-serif; margin-top: 2.25rem; }
+    .article h3 { font: 800 1.2rem/1.5 Cairo, Tajawal, sans-serif; margin-top: 1.75rem; }
+    .article ul { list-style: disc; padding-inline-start: 1.5rem; }
+    .article ol { list-style: decimal; padding-inline-start: 1.5rem; }
+    .article a { color: #0F766E; text-decoration: underline; }
+    .article img { max-width: 100%; height: auto; border-radius: .5rem; }
+    .article :not(pre) > code { direction: ltr; unicode-bidi: isolate; background: #E3EAEE; padding: .1rem .4rem; border-radius: .25rem; font-size: .9em; }
+    .codebox { direction: ltr; border-radius: .6rem; overflow: hidden; background: #0d1117; }
+    .codebar { display: flex; justify-content: space-between; align-items: center; padding: .35rem .75rem; background: #161b22; color: #9aa7b4; font: 500 .8rem/1 ui-monospace, monospace; }
+    .codebar button { font: 700 .8rem/1 Tajawal, sans-serif; color: #fff; background: #0F766E; border: 0; border-radius: .4rem; padding: .45rem .8rem; cursor: pointer; }
+    .codebar button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .codebox pre { margin: 0; text-align: left; overflow-x: auto; }
+    .codebox pre code.hljs { padding: 1rem; font-size: .9rem; line-height: 1.7; }
+  </style>
+</head>
+<body class="bg-paper text-ink font-sans antialiased">
+  <header class="bg-ink text-white">
+    <div class="max-w-3xl mx-auto px-4 py-3">
+      <a href="/" class="font-display font-extrabold text-xl">دفتر الدروس</a>
+    </div>
+  </header>
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <article>
+      <h1 class="font-display font-extrabold text-3xl leading-snug">شرح تعامل مع اوامر انشاء قاعدة البيانات</h1>
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink/60">
+        <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
+        <time datetime="2026-10-11">11 أكتوبر 2026</time>
+        <span>قراءة 1 د</span>
+      </p>
+      <div class="article mt-6">
+<!--content-start-->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كيفية كتابة كود نظيف | دفتر الدروس</title>
+    
+    <!-- خطوط جوجل العربية (كايرو للعناوين، وتجوال للنصوص) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                        display: ['Cairo', 'sans-serif']
+                    },
+                    colors: { brand: '#0F766E' }
+                }
+            }
+        }
+    </script>
+
+    <!-- مكتبة تلوين الأكواد البرمجية (Highlight.js) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- تنسيقات مخصصة لضبط المحتوى داخل المقال -->
+    <style>
+        body { background-color: #f8fafc; color: #1e293b; }
+        .article-content p { margin-bottom: 1.5rem; line-height: 1.9; font-size: 1.125rem; }
+        .article-content h2 { font-family: 'Cairo', sans-serif; font-size: 1.75rem; font-weight: 700; color: #0F766E; margin-top: 2.5rem; margin-bottom: 1rem; }
+        .article-content h3 { font-family: 'Cairo', sans-serif; font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
+        .article-content ul { list-style-type: disc; padding-inline-start: 1.5rem; margin-bottom: 1.5rem; font-size: 1.125rem; line-height: 1.8; }
+        .article-content a { color: #0ea5e9; text-
+<!--content-end-->
+      </div>
+    </article>
+    <a href="/" class="inline-block mt-10 text-brand font-bold underline">العودة إلى كل الدروس</a>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="/assets/post.js"></script>
+</body>
+</html>

@@ -1,11 +1,29 @@
 [
   {
+    "id": "lesson-4",
+    "title": "شرح تعامل مع اوامر انشاء قاعدة البيانات",
+    "url": "/posts/lesson-4.html",
+    "excerpt": "شرح اوامر انشاء قاعدة بيانات وتعديل",
+    "category": "mysql",
+    "tags": [
+      "mysql",
+      "sql",
+      "db1"
+    ],
+    "date": "2026-10-11",
+    "readMinutes": 1
+  },
+  {
     "id": "lesson-3",
     "title": "التعامل مع الأحداث في jQuery",
     "url": "/posts/lesson-3.html",
     "excerpt": "تعلّم ربط النقر والإدخال والتمرير بالعناصر، مع أمثلة عملية على delegation.",
     "category": "jQuery",
-    "tags": ["jQuery", "أحداث", "JavaScript"],
+    "tags": [
+      "jQuery",
+      "أحداث",
+      "JavaScript"
+    ],
     "date": "2026-10-08",
     "readMinutes": 6
   },
@@ -15,7 +33,11 @@
     "url": "/posts/lesson-2.html",
     "excerpt": "كيف تبني صفحة متجاوبة بالمحاذاة والتوزيع دون أي إطار عمل.",
     "category": "CSS",
-    "tags": ["CSS", "Flexbox", "تصميم متجاوب"],
+    "tags": [
+      "CSS",
+      "Flexbox",
+      "تصميم متجاوب"
+    ],
     "date": "2026-10-03",
     "readMinutes": 8
   },
@@ -25,7 +47,11 @@
     "url": "/posts/lesson-1.html",
     "excerpt": "أول درس في اللغة: كيف تعرّف المتغيرات وتكتب دالة وتستدعيها.",
     "category": "JavaScript",
-    "tags": ["JavaScript", "مبتدئ", "دوال"],
+    "tags": [
+      "JavaScript",
+      "مبتدئ",
+      "دوال"
+    ],
     "date": "2026-09-27",
     "readMinutes": 5
   }
