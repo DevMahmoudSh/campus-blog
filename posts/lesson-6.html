@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تست٢ | دفتر الدروس</title>
+  <meta name="description" content="تست">
+  <meta property="og:title" content="تست٢">
+  <meta property="og:description" content="تست">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      fontFamily: { sans: ['Tajawal','system-ui','sans-serif'], display: ['Cairo','Tajawal','system-ui','sans-serif'] },
+      colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' } } } };
+  </script>
+  <style>
+    .article { font-size: 1.0625rem; line-height: 1.95; }
+    .article > * + * { margin-top: 1rem; }
+    .article h2 { font: 800 1.5rem/1.5 Cairo, Tajawal, sans-serif; margin-top: 2.25rem; }
+    .article h3 { font: 800 1.2rem/1.5 Cairo, Tajawal, sans-serif; margin-top: 1.75rem; }
+    .article ul { list-style: disc; padding-inline-start: 1.5rem; }
+    .article ol { list-style: decimal; padding-inline-start: 1.5rem; }
+    .article a { color: #0F766E; text-decoration: underline; }
+    .article img { max-width: 100%; height: auto; border-radius: .5rem; }
+    .article :not(pre) > code { direction: ltr; unicode-bidi: isolate; background: #E3EAEE; padding: .1rem .4rem; border-radius: .25rem; font-size: .9em; }
+    .codebox { direction: ltr; border-radius: .6rem; overflow: hidden; background: #0d1117; }
+    .codebar { display: flex; justify-content: space-between; align-items: center; padding: .35rem .75rem; background: #161b22; color: #9aa7b4; font: 500 .8rem/1 ui-monospace, monospace; }
+    .codebar button { font: 700 .8rem/1 Tajawal, sans-serif; color: #fff; background: #0F766E; border: 0; border-radius: .4rem; padding: .45rem .8rem; cursor: pointer; }
+    .codebar button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .codebox pre { margin: 0; text-align: left; overflow-x: auto; }
+    .codebox pre code.hljs { padding: 1rem; font-size: .9rem; line-height: 1.7; }
+  </style>
+</head>
+<body class="bg-paper text-ink font-sans antialiased">
+  <header class="bg-ink text-white">
+    <div class="max-w-3xl mx-auto px-4 py-3">
+      <a href="/" class="font-display font-extrabold text-xl">دفتر الدروس</a>
+    </div>
+  </header>
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <article>
+      <h1 class="font-display font-extrabold text-3xl leading-snug">تست٢</h1>
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink/60">
+        <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">شرح جديد</span>
+        <time datetime="2026-10-11">11 أكتوبر 2026</time>
+        <span>قراءة 1 د</span>
+      </p>
+      <div class="article mt-6">
+<!--content-start-->
+<pre><code class="language-html"
+<!-- صندوق مقدمة الدرس بتصميم أنيق (Tailwind) -->
+<div class="bg-teal-50 border-r-4 border-teal-600 p-5 rounded-lg mb-8 shadow-sm">
+    <h3 class="text-xl font-bold text-teal-800 mb-3 mt-0">💡 ماذا سنتعلم في هذا الدرس؟</h3>
+    <p class="text-teal-700 m-0 leading-relaxed">
+        سنتعلم اليوم الأساسيات الأولى للتعامل مع قواعد البيانات (MySQL) وكيفية إنشائها وإدارتها من خلال سطر الأوامر، بالإضافة إلى تجربة بعض التنسيقات التفاعلية.
+    </p>
+</div>
+
+<!-- العنوان الأول والشرح -->
+<h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4">1. إنشاء قاعدة بيانات جديدة</h2>
+<p class="text-gray-600 mb-4 text-lg leading-relaxed">
+    لإنشاء قاعدة بيانات، نستخدم الأمر المخصص للإنشاء متبوعاً بالاسم الذي نريده للقاعدة. يُفضل دائماً كتابة الاسم بحروف إنجليزية صغيرة وعدم استخدام مسافات.
+</p>
+
+<!-- كتلة كود SQL (سيعمل معها زر النسخ والتلوين تلقائياً بواسطة نظامك) -->
+<pre><code class="language-sql">
+-- إنشاء قاعدة بيانات باسم المدرسة
+CREATE DATABASE school_db;
+</code></pre>
+
+<!-- العنوان الثاني -->
+<h2 class="text-2xl font-bold text-gray-800 mt-10 mb-4">2. عرض قواعد البيانات الموجودة</h2>
+<p class="text-gray-600 mb-4 text-lg leading-relaxed">
+    بعد تنفيذ أمر الإنشاء، كيف نتأكد من أن القاعدة تم إنشاؤها بالفعل؟ نستخدم الأمر التالي لعرض كل القواعد الموجودة في الخادم:
+</p>
+
+<pre><code class="language-sql">
+-- عرض كل قواعد البيانات
+SHOW DATABASES;
+</code></pre>
+
+<!-- تجربة الإشعارات (SweetAlert) -->
+<h2 class="text-2xl font-bold text-gray-800 mt-10 mb-4">3. زر تفاعلي للتجربة (SweetAlert)</h2>
+<p class="text-gray-600 mb-4 text-lg leading-relaxed">
+    يمكننا دمج أزرار تفاعلية داخل الدروس. هذا الزر مصمم باستخدام Tailwind CSS ومربوط بمكتبة الإشعارات SweetAlert2. جرب الضغط عليه!
+</p>
+<button onclick="Swal.fire('نجاح!', 'تم تنفيذ الاستعلام الوهمي بنجاح، أنت مبدع!', 'success')" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-md my-2">
+    جرب الإشعار التفاعلي ✨
+</button>
+
+<!-- صندوق ملاحظة تحذيرية -->
+<div class="bg-amber-50 border-r-4 border-amber-500 p-5 rounded-lg mt-10 shadow-sm">
+    <h3 class="text-lg font-bold text-amber-800 mb-2 mt-0">⚠️ ملاحظة هامة:</h3>
+    <p class="text-amber-700 m-0 leading-relaxed">
+        احذر عند استخدام أمر <code class="bg-amber-200 px-2 py-1 rounded text-sm text-amber-900">DROP DATABASE</code> لأنه يقوم بحذف القاعدة بجميع محتوياتها ولا يمكن التراجع عن هذه الخطوة!
+    </p>
+</div>
+ا</code></pre>
+<!--content-end-->
+      </div>
+    </article>
+    <a href="/" class="inline-block mt-10 text-brand font-bold underline">العودة إلى كل الدروس</a>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="/assets/post.js"></script>
+</body>
+</html>

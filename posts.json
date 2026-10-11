@@ -1,5 +1,17 @@
 [
   {
+    "id": "lesson-6",
+    "title": "تست٢",
+    "url": "/posts/lesson-6.html",
+    "excerpt": "تست",
+    "category": "شرح جديد",
+    "tags": [
+      "تست"
+    ],
+    "date": "2026-10-11",
+    "readMinutes": 1
+  },
+  {
     "id": "lesson-5",
     "title": "تست",
     "url": "/posts/lesson-5.html",
