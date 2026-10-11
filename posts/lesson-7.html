@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تست ٣ | دفتر الدروس</title>
+  <meta name="description" content="هـا تست ٣">
+  <meta property="og:title" content="تست ٣">
+  <meta property="og:description" content="هـا تست ٣">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      fontFamily: { sans: ['Tajawal','system-ui','sans-serif'], display: ['Cairo','Tajawal','system-ui','sans-serif'] },
+      colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' } } } };
+  </script>
+  <style>
+    .article { font-size: 1.0625rem; line-height: 1.95; }
+    .article > * + * { margin-top: 1rem; }
+    .article h2 { font: 800 1.5rem/1.5 Cairo, Tajawal, sans-serif; margin-top: 2.25rem; }
+    .article h3 { font: 800 1.2rem/1.5 Cairo, Tajawal, sans-serif; margin-top: 1.75rem; }
+    .article ul { list-style: disc; padding-inline-start: 1.5rem; }
+    .article ol { list-style: decimal; padding-inline-start: 1.5rem; }
+    .article a { color: #0F766E; text-decoration: underline; }
+    .article img { max-width: 100%; height: auto; border-radius: .5rem; }
+    .article :not(pre) > code { direction: ltr; unicode-bidi: isolate; background: #E3EAEE; padding: .1rem .4rem; border-radius: .25rem; font-size: .9em; }
+    .codebox { direction: ltr; border-radius: .6rem; overflow: hidden; background: #0d1117; }
+    .codebar { display: flex; justify-content: space-between; align-items: center; padding: .35rem .75rem; background: #161b22; color: #9aa7b4; font: 500 .8rem/1 ui-monospace, monospace; }
+    .codebar button { font: 700 .8rem/1 Tajawal, sans-serif; color: #fff; background: #0F766E; border: 0; border-radius: .4rem; padding: .45rem .8rem; cursor: pointer; }
+    .codebar button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .codebox pre { margin: 0; text-align: left; overflow-x: auto; }
+    .codebox pre code.hljs { padding: 1rem; font-size: .9rem; line-height: 1.7; }
+  </style>
+</head>
+<body class="bg-paper text-ink font-sans antialiased">
+  <header class="bg-ink text-white">
+    <div class="max-w-3xl mx-auto px-4 py-3">
+      <a href="/" class="font-display font-extrabold text-xl">دفتر الدروس</a>
+    </div>
+  </header>
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <article>
+      <h1 class="font-display font-extrabold text-3xl leading-snug">تست ٣</h1>
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink/60">
+        <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">تست ٣</span>
+        <time datetime="2026-10-11">11 أكتوبر 2026</time>
+        <span>قراءة 1 د</span>
+      </p>
+      <div class="article mt-6">
+<!--content-start-->
+<code>
+<!-- استدعاء مكتبة SweetAlert لتعمل داخل صفحة الدرس -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- صندوق مقدمة بتصميم عصري (تدرج لوني Gradient) -->
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-l from-teal-500 to-emerald-400 p-6 shadow-lg mb-10 text-white">
+    <!-- تأثير دائرة شفافة في الخلفية لجمالية التصميم -->
+    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+    <div class="flex items-start gap-4 relative z-10">
+        <span class="text-4xl">💡</span>
+        <div>
+            <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">ماذا سنتعلم في هذا الدرس؟</h3>
+            <p class="text-teal-50 leading-relaxed m-0 text-lg">
+                سنتعلم اليوم الأساسيات الأولى للتعامل مع قواعد البيانات (MySQL) وكيفية إنشائها وإدارتها، مع تصميم جديد كلياً يضفي لمسة احترافية على مدونتك.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- عنوان مع أيقونة جذابة -->
+<div class="flex items-center gap-3 mt-10 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">1. إنشاء قاعدة بيانات جديدة</h2>
+</div>
+
+<p class="text-slate-600 mb-6 text-lg leading-relaxed border-r-4 border-slate-300 pr-4">
+    لإنشاء قاعدة بيانات، نستخدم الأمر المخصص للإنشاء متبوعاً بالاسم. يُفضل دائماً كتابة الاسم بحروف إنجليزية صغيرة وتجنب المسافات.
+</p>
+
+<!-- كود برمجي سيتم تلوينه تلقائياً -->
+<pre><code class="language-sql">
+-- إنشاء قاعدة بيانات باسم المدرسة
+CREATE DATABASE school_db;
+</code></pre>
+
+<!-- فاصل منقط أنيق -->
+<hr class="my-10 border-t-2 border-dashed border-slate-200">
+
+<!-- قسم الزر التفاعلي بتصميم جديد -->
+<div class="flex items-center gap-3 mt-10 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">2. اختبار الإشعار الذكي (SweetAlert)</h2>
+</div>
+
+<p class="text-slate-600 mb-6 text-lg">
+    الآن مكتبة SweetAlert مفعلة في هذه الصفحة. جرب الضغط على الزر التالي المصمم بلمسة عصرية:
+</p>
+
+<!-- الزر تم تحديث تصميمه وربطه بالكود بنجاح -->
+<button onclick="Swal.fire({title: 'عمل رائع يا بطل!', text: 'الزر يعمل الآن بنجاح وبشكل متجاوب تماماً.', icon: 'success', confirmButtonText: 'ممتاز', confirmButtonColor: '#0F766E'})" class="group relative inline-flex items-center justify-center px-8 py-3.5 text-base font-bold text-white transition-all duration-200 bg-slate-800 border border-transparent rounded-xl hover:bg-teal-600 hover:-translate-y-1 shadow-lg hover:shadow-teal-500/30">
+    <span class="ml-2 text-xl">🚀</span>
+    اضغط لتجربة الإشعار
+</button>
+
+<!-- صندوق تحذير متقدم بتصميم فخم -->
+<div class="mt-12 rounded-2xl border border-red-100 bg-red-50 p-6 shadow-sm">
+    <div class="flex items-center gap-3 mb-3">
+        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 text-red-600">
+            <svg class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.
+</code>
+<!--content-end-->
+      </div>
+    </article>
+    <a href="/" class="inline-block mt-10 text-brand font-bold underline">العودة إلى كل الدروس</a>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="/assets/post.js"></script>
+</body>
+</html>

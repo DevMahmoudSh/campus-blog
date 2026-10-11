@@ -1,5 +1,17 @@
 [
   {
+    "id": "lesson-7",
+    "title": "تست ٣",
+    "url": "/posts/lesson-7.html",
+    "excerpt": "هـا تست ٣",
+    "category": "تست ٣",
+    "tags": [
+      "شرج جيد تست"
+    ],
+    "date": "2026-10-11",
+    "readMinutes": 1
+  },
+  {
     "id": "lesson-6",
     "title": "تست٢",
     "url": "/posts/lesson-6.html",
