@@ -51,43 +51,42 @@
       </p>
       <div class="article mt-6">
 <!--content-start-->
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>كيفية كتابة كود نظيف | دفتر الدروس</title>
-    
-    <!-- خطوط جوجل العربية (كايرو للعناوين، وتجوال للنصوص) -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- مكتبة Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Tajawal', 'sans-serif'],
-                        display: ['Cairo', 'sans-serif']
-                    },
-                    colors: { brand: '#0F766E' }
-                }
-            }
-        }
-    </script>
+<p>كتابة الكود لا تقتصر فقط على جعل البرنامج يعمل، بل تمتد لتشمل جعل الكود مقروءاً وقابلاً للتطوير لك ولزملائك في المستقبل. يُعتبر مصطلح <strong>الكود النظيف</strong> من أهم المفاهيم التي يجب على أي مبرمج إتقانها.</p>
 
-    <!-- مكتبة تلوين الأكواد البرمجية (Highlight.js) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    
-    <!-- تنسيقات مخصصة لضبط المحتوى داخل المقال -->
-    <style>
-        body { background-color: #f8fafc; color: #1e293b; }
-        .article-content p { margin-bottom: 1.5rem; line-height: 1.9; font-size: 1.125rem; }
-        .article-content h2 { font-family: 'Cairo', sans-serif; font-size: 1.75rem; font-weight: 700; color: #0F766E; margin-top: 2.5rem; margin-bottom: 1rem; }
-        .article-content h3 { font-family: 'Cairo', sans-serif; font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
-        .article-content ul { list-style-type: disc; padding-inline-start: 1.5rem; margin-bottom: 1.5rem; font-size: 1.125rem; line-height: 1.8; }
-        .article-content a { color: #0ea5e9; text-
+<h2>1. تسمية المتغيرات بشكل واضح ومفهوم</h2>
+<p>تجنب الأسماء المختصرة والغامضة. يجب أن يكون اسم المتغير دالاً بشكل واضح على البيانات التي يحملها.</p>
+
+<pre><code class="language-javascript">
+// ❌ مثال على كود سيء
+let d = 86400; // ماذا يعني حرف الـ d؟
+
+// ✅ مثال على كود نظيف
+const SECONDS_IN_A_DAY = 86400;
+let elapsedDays = 3;
+let totalSeconds = elapsedDays * SECONDS_IN_A_DAY;
+</code></pre>
+
+<h2>2. تصميم الدوال (Functions)</h2>
+<p>من أهم قواعد كتابة الدوال النظيفة:</p>
+<ul>
+    <li>يجب أن تقوم الدالة بمهمة <strong>واحدة فقط</strong>.</li>
+    <li>لا تجعل الدالة طويلة جداً (يفضل ألا تتجاوز 20-30 سطراً).</li>
+    <li>استخدم أسماء أفعال واضحة للدوال مثل getUserData أو calculateTotal.</li>
+</ul>
+
+<pre><code class="language-php">
+&lt;?php
+// دالة تقوم بمهمة واحدة بشكل واضح ومباشر
+function calculateDiscount($price, $discountPercentage) {
+    if ($price <= 0 || $discountPercentage < 0) {
+        return 0;
+    }
+    return $price - ($price * ($discountPercentage / 100));
+}
+
+echo calculateDiscount(100, 20); // النتيجة: 80
+?&gt;
+</code></pre>
 <!--content-end-->
       </div>
     </article>
