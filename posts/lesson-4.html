@@ -51,55 +51,26 @@
       </p>
       <div class="article mt-6">
 <!--content-start-->
+<pre><code class="language-html"><p>إليكم الكود المصدري (Source Code) لإنشاء تصميم متجاوب مع زر إشعارات تفاعلي (SweetAlert2) وصناديق ملاحظات باستخدام Tailwind CSS:</p>
+
 <pre><code class="language-html">
-<!-- صندوق مقدمة الدرس (مظلل باللون الأخضر الأنيق) -->
-<div class="bg-teal-50 border-r-4 border-teal-600 p-5 rounded-l-lg my-6 shadow-sm">
-    <h3 class="text-xl font-bold text-teal-800 mb-2 mt-0">💡 ماذا سنتعلم في هذا الدرس؟</h3>
-    <p class="text-teal-700 m-0 leading-relaxed">
-        سنتعلم في هذا الدرس كيفية تنسيق المقالات بشكل احترافي، كتابة أكواد تفاعلية، واستخدام الإشعارات الذكية (SweetAlert) لجعل تطبيقاتنا أكثر تفاعلية مع المستخدمين.
-    </p>
-</div>
+&lt;!-- صندوق مقدمة الدرس --&gt;
+&lt;div class="bg-teal-50 border-r-4 border-teal-600 p-5 rounded-l-lg my-6"&gt;
+    &lt;h3 class="text-xl font-bold text-teal-800"&gt;💡 ماذا سنتعلم؟&lt;/h3&gt;
+    &lt;p class="text-teal-700 m-0"&gt;سنتعلم تنسيق المقالات واستخدام SweetAlert.&lt;/p&gt;
+&lt;/div&gt;
 
-<h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4">1. كتابة كود مع ميزة النسخ</h2>
-<p class="text-gray-600 mb-4 text-lg">
-    النظام الذي قمنا ببنائه يدعم تلوين الأكواد وإضافة زر النسخ الاحترافي تلقائياً. كل ما عليك فعله هو وضع الكود، وسيتكفل النظام بالباقي. جرب نسخ الكود التالي:
-</p>
-
-<!-- كود برمجي (سيتم تلوينه وإضافة زر النسخ له تلقائياً) -->
-<pre><code class="language-javascript">
-// دالة بسيطة لإظهار رسالة ترحيبية
-function sayHello(name) {
-    let message = "مرحباً بك يا " + name + " في منصتنا التعليمية!";
-    return message;
-}
-
-console.log(sayHello("محمود"));
-</code></pre>
-
-<h2 class="text-2xl font-bold text-gray-800 mt-10 mb-4">2. تجربة الإشعارات (SweetAlert2)</h2>
-<p class="text-gray-600 mb-4 text-lg">
-    بما أن مكتبة SweetAlert2 مدمجة في نظامنا، يمكنك إضافتها داخل الدروس كأزرار تفاعلية ليقوم الطلاب بتجربتها عملياً أثناء القراءة!
-</p>
-
-<!-- زر تفاعلي مبرمج مسبقاً لإظهار إشعار SweetAlert عند الضغط عليه -->
-<button onclick="Swal.fire('عمل رائع!', 'لقد قمت ببرمجة هذا الزر بنجاح، أنت الآن مطور محترف!', 'success')" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-md my-4">
+&lt;!-- زر تفاعلي مبرمج مسبقاً لإظهار إشعار SweetAlert --&gt;
+&lt;button onclick="Swal.fire('عمل رائع!', 'لقد قمت ببرمجة هذا الزر بنجاح!', 'success')" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg transition-colors"&gt;
     اضغط هنا لتجربة الإشعار ✨
-</button>
+&lt;/button&gt;
 
-<!-- صندوق ملاحظة تحذيرية (مظلل باللون البرتقالي) -->
-<div class="bg-amber-50 border-r-4 border-amber-500 p-5 rounded-l-lg mt-10 shadow-sm">
-    <h3 class="text-lg font-bold text-amber-800 mb-2 mt-0">⚠️ ملاحظة هامة للمطورين:</h3>
-    <p class="text-amber-700 m-0 leading-relaxed">
-        تأكد دائماً من كتابة الأكواد داخل وسوم <code>&lt;pre&gt;&lt;code class="language-اسم-اللغة"&gt;</code> لكي يتعرف عليها النظام ويضيف لها زر النسخ السحري الخاص بك.
-    </p>
-</div>
-
-<hr class="my-10 border-gray-200">
-
-<p class="text-center text-gray-500 font-semibold">
-    نهاية الدرس.. بالتوفيق في برمجتك القادمة! 🚀
-</p>
-</code></pre>
+&lt;!-- صندوق ملاحظة تحذيرية --&gt;
+&lt;div class="bg-amber-50 border-r-4 border-amber-500 p-5 rounded-l-lg mt-10"&gt;
+    &lt;h3 class="text-lg font-bold text-amber-800"&gt;⚠️ ملاحظة هامة:&lt;/h3&gt;
+    &lt;p class="text-amber-700 m-0"&gt;تأكد من كتابة الأكواد داخل وسوم خاصة.&lt;/p&gt;
+&lt;/div&gt;
+</code></pre></code></pre>
 <!--content-end-->
       </div>
     </article>
