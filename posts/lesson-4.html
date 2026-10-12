@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>شرح تعامل مع اوامر انشاء قاعدة البيانات | دفتر الدروس</title>
-  <meta name="description" content="شرح اوامر انشاء قاعدة بيانات وتعديل">
-  <meta property="og:title" content="شرح تعامل مع اوامر انشاء قاعدة البيانات">
-  <meta property="og:description" content="شرح اوامر انشاء قاعدة بيانات وتعديل">
+  <title>شرح درس DDL create | دفتر الدروس</title>
+  <meta name="description" content="ملخص شامل لأساسيات بناء قواعد البيانات (DDL CREATE)، يغطي ضبط الترميز الصحيح للغات، هندسة القيود والمفاتيح (الأساسية والأجنبية)، والفرق الحاسم بين أوامر الحذف والإفراغ (DROP vs TRUNCATE).">
+  <meta property="og:title" content="شرح درس DDL create">
+  <meta property="og:description" content="ملخص شامل لأساسيات بناء قواعد البيانات (DDL CREATE)، يغطي ضبط الترميز الصحيح للغات، هندسة القيود والمفاتيح (الأساسية والأجنبية)، والفرق الحاسم بين أوامر الحذف والإفراغ (DROP vs TRUNCATE).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
@@ -43,55 +43,225 @@
   </header>
   <main class="max-w-3xl mx-auto px-4 py-8">
     <article>
-      <h1 class="font-display font-extrabold text-3xl leading-snug">شرح تعامل مع اوامر انشاء قاعدة البيانات</h1>
+      <h1 class="font-display font-extrabold text-3xl leading-snug">شرح درس DDL create</h1>
       <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink/60">
         <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
         <time datetime="2026-10-11">11 أكتوبر 2026</time>
-        <span>قراءة 1 د</span>
+        <span>قراءة 3 د</span>
       </p>
       <div class="article mt-6">
 <!--content-start-->
-<!-- صندوق مقدمة الدرس -->
-<div class="bg-teal-50 border-r-4 border-teal-600 p-5 rounded-l-lg my-6 shadow-sm">
-    <h3 class="text-xl font-bold text-teal-800 mb-2 mt-0">💡 ماذا سنتعلم في هذا الدرس؟</h3>
-    <p class="text-teal-700 m-0 leading-relaxed">
-        سنتعلم في هذا الدرس كيفية تنسيق المقالات بشكل احترافي، كتابة أكواد تفاعلية، واستخدام الإشعارات الذكية (SweetAlert) لجعل تطبيقاتنا أكثر تفاعلية مع المستخدمين.
-    </p>
+<code>
+<!-- استدعاء مكتبة SweetAlert لتعمل داخل صفحة الدرس -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- صندوق مقدمة الدرس بتصميم عصري (Gradient) -->
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-l from-teal-500 to-emerald-400 p-6 shadow-lg mb-10 text-white">
+    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+    <div class="flex items-start gap-4 relative z-10">
+        <span class="text-4xl">📚</span>
+        <div>
+            <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">ملخص شامل ومنظم لدرس DDL CREATE</h3>
+            <p class="text-teal-50 leading-relaxed m-0 text-lg">
+                في هذا الدرس سنغوص في أعماق بناء قواعد البيانات، بدءاً من ضبط الترميز الصحيح، مروراً بهندسة الأعمدة والقيود، وصولاً إلى أوامر الإفراغ والهدم.
+            </p>
+        </div>
+    </div>
 </div>
 
-<h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4">1. كتابة كود مع ميزة النسخ</h2>
-<p class="text-gray-600 mb-4 text-lg">
-    النظام الذي قمنا ببنائه يدعم تلوين الأكواد وإضافة زر النسخ الاحترافي تلقائياً. كل ما عليك فعله هو وضع الكود، وسيتكفل النظام بالباقي. جرب نسخ الكود التالي:
+<!-- القسم الأول -->
+<div class="flex items-center gap-3 mt-10 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+        <span class="text-2xl font-bold">1</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">ضبط بيئة التخزين والترميز</h2>
+</div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">
+    قاعدة البيانات تمثل "مساحة التخزين الفعلية" (الدفتر)، والتطبيق يمثل "لغة النقل" (ساعي البريد). لضمان استيعاب كافة اللغات والحروف والرموز التعبيرية بدون مشاكل الترميز (???? أو تشوه النصوص):
 </p>
+<ul class="list-disc list-inside text-slate-600 mb-6 text-lg leading-relaxed bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <li class="mb-2"><strong class="text-teal-700 font-mono">utf8mb4 (Character Set):</strong> يدعم تخزين جميع لغات العالم مع الرموز التعبيرية (Emojis) بدقة تصل إلى 4 بايت لكل رمز.</li>
+    <li><strong class="text-teal-700 font-mono">utf8mb4_unicode_ci (Collation):</strong> يحدد قواعد الترتيب والمقارنة المعتمدة عالمياً مع تجاهل حساسية حالة الأحرف الكبيرة والصغيرة (Case-Insensitive).</li>
+</ul>
 
-<!-- هذا هو المكان الوحيد الذي نستخدم فيه pre و code -->
-<pre><code class="language-javascript">
-// دالة بسيطة لإظهار رسالة ترحيبية
-function sayHello(name) {
-    let message = "مرحباً بك يا " + name + " في منصتنا التعليمية!";
-    return message;
-}
+<pre><code class="language-sql">
+-- إنشاء قاعدة البيانات مع تحديد الترميز وقواعد الترتيب صراحةً
+CREATE DATABASE IF NOT EXISTS UniversityDB
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
 
-console.log(sayHello("محمود"));
+USE UniversityDB;
 </code></pre>
 
-<h2 class="text-2xl font-bold text-gray-800 mt-10 mb-4">2. تجربة الإشعارات (SweetAlert2)</h2>
-<p class="text-gray-600 mb-4 text-lg">
-    بما أن مكتبة SweetAlert2 مدمجة في نظامنا، يمكنك إضافتها داخل الدروس كأزرار تفاعلية ليقوم الطلاب بتجربتها عملياً أثناء القراءة!
+<!-- القسم الثاني -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
+        <span class="text-2xl font-bold">2</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">الهيكلية المعيارية لبناء العمود</h2>
+</div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">
+    عند تعريف أي عمود داخل الجدول، يتبع محرك قواعد البيانات ترتيباً منطقياً محدداً. إليك هذا الجدول الذي يلخص القيود الهندسية:
 </p>
 
-<!-- زر الإشعار -->
-<button onclick="Swal.fire('عمل رائع!', 'لقد قمت ببرمجة هذا الزر بنجاح، أنت الآن مطور محترف!', 'success')" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-md my-4">
-    اضغط هنا لتجربة الإشعار ✨
-</button>
-
-<!-- صندوق ملاحظة تحذيرية -->
-<div class="bg-amber-50 border-r-4 border-amber-500 p-5 rounded-l-lg mt-10 shadow-sm">
-    <h3 class="text-lg font-bold text-amber-800 mb-2 mt-0">⚠️ ملاحظة هامة للمطورين:</h3>
-    <p class="text-amber-700 m-0 leading-relaxed">
-        تأكد دائماً من وضع الأكواد البرمجية فقط داخل الصناديق السوداء، واترك باقي الشرح كعناصر عادية.
-    </p>
+<!-- جدول احترافي باستخدام Tailwind -->
+<div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
+    <table class="w-full text-right border-collapse bg-white">
+        <thead class="bg-slate-100 text-slate-700">
+            <tr>
+                <th class="p-4 border-b border-slate-200 font-bold w-1/3">القيد / الخاصية</th>
+                <th class="p-4 border-b border-slate-200 font-bold">الدور الهندسي</th>
+            </tr>
+        </thead>
+        <tbody class="text-slate-600 text-base">
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">NOT NULL</td>
+                <td class="p-4">يمنع ترك الحقل فارغاً، ويُستخدم للحقول الإلزامية في النظام.</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">DEFAULT</td>
+                <td class="p-4">يُسند قيمة تلقائية للحقل في حال لم يرسلها التطبيق أثناء الإضافة.</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">AUTO_INCREMENT</td>
+                <td class="p-4">يُولّد أرقاماً تسلسلية فريدة تلقائياً مع كل صف جديد.</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">UNIQUE</td>
+                <td class="p-4">يمنع تكرار القيمة في العمود عبر كامل الجدول (مثل البريد ورقم الهوية).</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">CHECK</td>
+                <td class="p-4">يتحقق منطقياً من مطابقة البيانات لشرط معين قبل قبولها.</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">PRIMARY KEY</td>
+                <td class="p-4">المعرّف الفريد للجدول (يجمع تلقائياً بين NOT NULL و UNIQUE).</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">FOREIGN KEY</td>
+                <td class="p-4">يضمن التكامل المرجعي بربط العمود بمفتاح أساسي في جدول آخر.</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+
+<!-- القسم الثالث -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
+        <span class="text-2xl font-bold">3</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">القيود: مستوى العمود مقابل الجدول</h2>
+</div>
+<ul class="list-disc list-inside text-slate-600 mb-6 text-lg leading-relaxed">
+    <li class="mb-2"><strong class="text-slate-800">على مستوى العمود (Column-level):</strong> يُكتب بجانب اسم العمود مباشرة، ويُستخدم عندما يخص القيد عموداً واحداً فقط. (ملاحظة: NOT NULL و DEFAULT لا يُكتبان إلا هنا).</li>
+    <li><strong class="text-slate-800">على مستوى الجدول (Table-level):</strong> يُكتب في نهاية الجدول، وتكمن أهميته في إمكانية تسمية القيد لتسهيل إدارته، وإنشاء المفاتيح المركبة.</li>
+</ul>
+
+<pre><code class="language-sql">
+-- أولاً: إنشاء الجدول الأب (Departments)
+CREATE TABLE Departments (
+    DeptID INT AUTO_INCREMENT PRIMARY KEY,
+    DeptName VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ثانياً: إنشاء الجدول التابع (Employees) موضحاً المستويين
+CREATE TABLE Employees (
+    -- قيود على مستوى العمود (Column-level)
+    EmployeeID INT AUTO_INCREMENT PRIMARY KEY,
+    FullName VARCHAR(100) NOT NULL,
+    Email VARCHAR(150) NOT NULL UNIQUE,
+    AccountStatus VARCHAR(20) NOT NULL DEFAULT 'Active',
+    Salary DECIMAL(10, 2) NOT NULL,
+    DeptID INT,
+
+    -- قيود على مستوى الجدول (Table-level)
+    -- 1. قيد تحقق منطقي مسمى (Named Check Constraint)
+    CONSTRAINT chk_minimum_salary CHECK (Salary &gt;= 3000.00),
+
+    -- 2. مفتاح أجنبي يربط الموظف بقسمه مع تحديد سلوك الحذف
+    CONSTRAINT fk_employee_dept FOREIGN KEY (DeptID) 
+        REFERENCES Departments(DeptID) 
+        ON DELETE SET NULL
+);
+</code></pre>
+
+<p class="text-slate-600 my-4 text-lg font-bold">مثال المفتاح الأساسي المركب (Composite Primary Key):</p>
+
+<pre><code class="language-sql">
+-- جدول تسجيل المواد: لا يمكن للطالب تسجيل نفس المادة مرتين
+CREATE TABLE CourseEnrollments (
+    StudentID INT NOT NULL,
+    CourseID INT NOT NULL,
+    EnrollmentDate DATE DEFAULT (CURRENT_DATE),
+
+    -- مفتاح أساسي مركب يتكون من عمودين معاً
+    CONSTRAINT pk_student_course PRIMARY KEY (StudentID, CourseID)
+);
+</code></pre>
+
+<!-- القسم الرابع -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm">
+        <span class="text-2xl font-bold">4</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">أوامر الإفراغ والهدم</h2>
+</div>
+<p class="text-slate-600 mb-6 text-lg leading-relaxed">
+    كلا الأمرين يندرجان تحت لغة تعريف البيانات (DDL)، ولكل منهما سلوك تشغيلي مختلف تماماً:
+</p>
+
+<!-- صندوق تفريق أنيق -->
+<div class="grid md:grid-cols-2 gap-4 mb-8">
+    <div class="bg-orange-50 border border-orange-200 p-5 rounded-xl">
+        <h4 class="font-bold text-orange-800 text-xl font-mono mb-2">TRUNCATE TABLE</h4>
+        <p class="text-orange-700 m-0 leading-relaxed">يُفرغ الجدول من جميع البيانات فوراً ويُعيد تصفير عداد AUTO_INCREMENT إلى (1)، <strong>مع الاحتفاظ بهيكل الجدول</strong> والأعمدة والقيود كاملة.</p>
+    </div>
+    <div class="bg-red-50 border border-red-200 p-5 rounded-xl">
+        <h4 class="font-bold text-red-800 text-xl font-mono mb-2">DROP TABLE</h4>
+        <p class="text-red-700 m-0 leading-relaxed">يمحو الجدول <strong>بالكامل من القرص الصلب</strong> (البيانات والهيكل والقيود معاً)، كأنه لم يكن موجوداً من الأساس.</p>
+    </div>
+</div>
+
+<pre><code class="language-sql">
+-- إفراغ جدول التسجيل من السجلات مع بقاء الجدول جاهزاً للاستخدام
+TRUNCATE TABLE CourseEnrollments;
+
+-- حذف الجداول بالكامل وإزالتها من الوجود
+DROP TABLE IF EXISTS CourseEnrollments;
+DROP TABLE IF EXISTS Employees;
+DROP TABLE IF EXISTS Departments;
+
+-- حذف قاعدة البيانات بالكامل
+DROP DATABASE IF EXISTS UniversityDB;
+</code></pre>
+
+<!-- سكربت تفاعلي: ربط زر النسخ مع SweetAlert -->
+<script>
+    // مراقبة الضغطات في الصفحة لعمل الإشعار عند نسخ الكود
+    document.addEventListener('click', function(e) {
+        // البحث عما إذا كان العنصر المضغوط هو زر يحتوي على كلمة "نسخ"
+        const btn = e.target.closest('button');
+        if (btn && btn.innerText.includes('نسخ')) {
+            // إظهار إشعار SweetAlert أنيق (Toast) أسفل الشاشة
+            Swal.fire({
+                title: 'تم النسخ بنجاح! 🚀',
+                text: 'أصبح الكود جاهزاً للصق',
+                icon: 'success',
+                toast: true,
+                position: 'bottom-end',
+                timer: 2500,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#0F766E',
+                color: '#ffffff',
+                iconColor: '#ffffff'
+            });
+        }
+    });
+</script>
+
+</code>
 <!--content-end-->
       </div>
     </article>
