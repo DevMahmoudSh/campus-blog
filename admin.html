@@ -16,12 +16,15 @@
       colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' } } } };
   </script>
   <style>
+    [hidden] { display: none !important; }
     .swal2-popup { font-family: 'Tajawal', sans-serif; }
     .field { width: 100%; border: 1px solid #CBD5DC; border-radius: .5rem; background: #fff; padding: .65rem .75rem; }
     .field:focus { outline: none; border-color: #0F766E; box-shadow: 0 0 0 2px rgba(15,118,110,.3); }
     .tool { height: 2.5rem; padding: 0 .75rem; border: 1px solid #CBD5DC; border-radius: .5rem; background: #fff; font-weight: 500; }
     .tool:hover { background: #F2F5F7; }
-    .tool:focus-visible { outline: 2px solid #0F766E; outline-offset: 2px; }
+    .tool:focus-visible, .tab:focus-visible { outline: 2px solid #0F766E; outline-offset: 2px; }
+    .tab { min-height: 2.75rem; padding: 0 1.5rem; font-weight: 700; color: #4a5b6b; border-bottom: 3px solid transparent; margin-bottom: -1px; }
+    .tab[aria-selected="true"] { color: #0F766E; border-bottom-color: #0F766E; }
   </style>
 </head>
 
@@ -36,6 +39,7 @@
   <main class="max-w-3xl mx-auto px-4 py-6">
     <section aria-labelledby="list-h">
       <h1 id="list-h" class="font-display font-extrabold text-2xl">الدروس المنشورة</h1>
+      <p id="totals" class="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-ink/70"></p>
       <div id="list" class="mt-4 space-y-2"></div>
     </section>
 
@@ -45,11 +49,6 @@
     </div>
 
     <form id="post-form" class="mt-5 space-y-4" novalidate>
-      <div>
-        <label for="title" class="block font-medium mb-1.5">عنوان الدرس</label>
-        <input id="title" class="field" maxlength="150" required>
-      </div>
-
       <div class="grid sm:grid-cols-2 gap-4">
         <div>
           <label for="slug" class="block font-medium mb-1.5">الرابط المختصر</label>
@@ -67,18 +66,14 @@
         <input id="tags" class="field" placeholder="افصل بينها بفاصلة: jQuery، أحداث، مبتدئ">
       </div>
 
+      <!-- Language tabs -->
       <div>
-        <label for="excerpt" class="block font-medium mb-1.5">ملخص قصير</label>
-        <textarea id="excerpt" class="field" rows="2" maxlength="300" required></textarea>
-      </div>
-
-      <div>
-        <div class="flex items-center justify-between mb-1.5">
-          <label for="content" class="font-medium">محتوى الدرس (HTML)</label>
-          <button id="toggle-preview" type="button" class="text-sm text-brand underline">معاينة</button>
+        <div role="tablist" aria-label="لغة المحتوى" class="flex border-b border-rule">
+          <button type="button" role="tab" id="tab-ar" class="tab" data-tab="ar" aria-controls="panel-ar" aria-selected="true">العربية</button>
+          <button type="button" role="tab" id="tab-en" class="tab" data-tab="en" aria-controls="panel-en" aria-selected="false" tabindex="-1" lang="en">English</button>
         </div>
 
-        <div id="toolbar" class="flex flex-wrap gap-2 mb-2" role="toolbar" aria-label="أدوات التنسيق">
+        <div id="toolbar" class="flex flex-wrap gap-2 my-3" role="toolbar" aria-label="أدوات التنسيق">
           <button type="button" class="tool" data-tool="h2">عنوان</button>
           <button type="button" class="tool" data-tool="h3">عنوان فرعي</button>
           <button type="button" class="tool" data-tool="p">فقرة</button>
@@ -100,10 +95,41 @@
           </span>
         </div>
 
-        <!-- RTL editor; code blocks are escaped automatically by the code buttons -->
-        <textarea id="content" class="field" dir="rtl" rows="16" required
-          placeholder="اكتب الدرس هنا. حدّد النص ثم اضغط زرًّا من الأعلى لتنسيقه."></textarea>
+        <!-- Arabic panel (RTL) -->
+        <div id="panel-ar" role="tabpanel" aria-labelledby="tab-ar" class="space-y-4" dir="rtl">
+          <div>
+            <label for="titleAr" class="block font-medium mb-1.5">العنوان بالعربية</label>
+            <input id="titleAr" class="field" maxlength="150">
+          </div>
+          <div>
+            <label for="excerptAr" class="block font-medium mb-1.5">الوصف بالعربية</label>
+            <textarea id="excerptAr" class="field" rows="2" maxlength="300"></textarea>
+          </div>
+          <div>
+            <label for="contentAr" class="block font-medium mb-1.5">المحتوى بالعربية (HTML)</label>
+            <textarea id="contentAr" class="field" rows="16" placeholder="اكتب الدرس هنا. حدّد النص ثم اضغط زرًّا من الأعلى لتنسيقه."></textarea>
+          </div>
+        </div>
+
+        <!-- English panel (LTR) -->
+        <div id="panel-en" role="tabpanel" aria-labelledby="tab-en" class="space-y-4" dir="ltr" lang="en" hidden>
+          <p class="text-sm text-ink/60" dir="rtl" lang="ar">النسخة الإنجليزية اختيارية. أكمل الحقول الثلاثة أو اتركها فارغة.</p>
+          <div>
+            <label for="titleEn" class="block font-medium mb-1.5">Title</label>
+            <input id="titleEn" class="field" maxlength="150">
+          </div>
+          <div>
+            <label for="excerptEn" class="block font-medium mb-1.5">Description</label>
+            <textarea id="excerptEn" class="field" rows="2" maxlength="300"></textarea>
+          </div>
+          <div>
+            <label for="contentEn" class="block font-medium mb-1.5">Content (HTML)</label>
+            <textarea id="contentEn" class="field" rows="16" placeholder="Write the lesson here. Select text, then use a toolbar button to format it."></textarea>
+          </div>
+        </div>
+
         <iframe id="preview" sandbox title="معاينة الدرس" hidden class="w-full h-96 bg-white border border-rule rounded-lg"></iframe>
+        <button id="toggle-preview" type="button" class="mt-2 text-sm text-brand underline">معاينة</button>
       </div>
 
       <button id="publish" type="submit"
@@ -121,44 +147,62 @@
     var token = sessionStorage.getItem('adminToken');
     if (!token) { location.replace('login.html'); return; }
 
-    var $content = $('#content');
     var swalBase = { confirmButtonText: 'حسنًا', confirmButtonColor: '#0F766E' };
+    var tab = 'ar', posts = [], stats = null, editing = null;
 
+    function $ta() { return $(tab === 'ar' ? '#contentAr' : '#contentEn'); }
     function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    function num(n) { return Number(n).toLocaleString('en-US'); }
 
+    /* ---------- Editor: toolbar acts on the active language ---------- */
     function insert(before, after, fallback, escape) {
-      var el = $content[0], s = el.selectionStart, e = el.selectionEnd;
+      var el = $ta()[0], s = el.selectionStart, e = el.selectionEnd;
       var sel = el.value.slice(s, e) || fallback;
       el.setRangeText(before + (escape ? esc(sel) : sel) + after, s, e, 'end');
       el.focus();
     }
-
     var tools = {
-      h2: function () { insert('<h2>', '</h2>\n\n', 'عنوان القسم'); },
-      h3: function () { insert('<h3>', '</h3>\n\n', 'عنوان فرعي'); },
-      p:  function () { insert('<p>', '</p>\n\n', 'نص الفقرة'); },
-      ul: function () { insert('<ul>\n  <li>', '</li>\n</ul>\n\n', 'عنصر'); },
-      a:  function () { insert('<a href="https://">', '</a>', 'نص الرابط'); },
+      h2: function () { insert('<h2>', '</h2>\n\n', tab === 'ar' ? 'عنوان القسم' : 'Section title'); },
+      h3: function () { insert('<h3>', '</h3>\n\n', tab === 'ar' ? 'عنوان فرعي' : 'Subheading'); },
+      p:  function () { insert('<p>', '</p>\n\n', tab === 'ar' ? 'نص الفقرة' : 'Paragraph text'); },
+      ul: function () { insert('<ul>\n  <li>', '</li>\n</ul>\n\n', tab === 'ar' ? 'عنصر' : 'Item'); },
+      a:  function () { insert('<a href="https://">', '</a>', tab === 'ar' ? 'نص الرابط' : 'Link text'); },
       ic: function () { insert('<code>', '</code>', 'code', true); },
-      code: function () { insert('<pre><code class="language-' + $('#lang').val() + '">', '</code></pre>\n\n', '// الصق الكود هنا', true); }
+      code: function () { insert('<pre><code class="language-' + $('#lang').val() + '">', '</code></pre>\n\n', '// paste code here', true); }
     };
     $('#toolbar').on('click', '[data-tool]', function () { tools[$(this).data('tool')](); });
 
-    // Preview in a sandboxed iframe (scripts cannot run)
-    $('#toggle-preview').on('click', function () {
-      var showing = !$('#preview').prop('hidden');
-      if (!showing) {
-        $('#preview').attr('srcdoc', '<html dir="rtl"><body style="font-family:sans-serif;line-height:1.9;padding:1rem">' + $content.val() + '</body></html>');
+    function setPreview(on) {
+      if (on) {
+        $('#preview').attr('srcdoc', '<html lang="' + tab + '" dir="' + (tab === 'ar' ? 'rtl' : 'ltr') + '"><body style="font-family:sans-serif;line-height:1.9;padding:1rem">' + $ta().val() + '</body></html>');
       }
-      $('#preview').prop('hidden', showing);
-      $content.prop('hidden', !showing);
-      $('#toolbar').toggleClass('hidden', !showing);
-      $(this).text(showing ? 'معاينة' : 'تحرير');
+      $('#preview').prop('hidden', !on);
+      $ta().prop('hidden', on);
+      $('#toolbar').toggleClass('hidden', on);
+      $('#toggle-preview').text(on ? 'تحرير' : 'معاينة').data('on', on);
+    }
+    $('#toggle-preview').on('click', function () { setPreview(!$(this).data('on')); });
+
+    /* ---------- Tabs ---------- */
+    function showTab(t) {
+      setPreview(false);
+      tab = t;
+      $('[data-tab]').each(function () {
+        var on = $(this).attr('data-tab') === t;
+        $(this).attr({ 'aria-selected': on, tabindex: on ? 0 : -1 });
+      });
+      $('#panel-ar').prop('hidden', t !== 'ar');
+      $('#panel-en').prop('hidden', t !== 'en');
+    }
+    $('[data-tab]').on('click', function () { showTab($(this).attr('data-tab')); });
+    $('[role="tablist"]').on('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var t = tab === 'ar' ? 'en' : 'ar';
+      showTab(t);
+      $('#tab-' + t).trigger('focus');
     });
 
-    // ---- State and helpers ----
-    var posts = [], editing = null;
-
+    /* ---------- API helpers ---------- */
     function call(payload) {
       return $.ajax({
         url: API, method: 'POST', contentType: 'application/json',
@@ -174,12 +218,12 @@
       return isNaN(d) ? '' : d.toLocaleDateString('ar', { year: 'numeric', month: 'long', day: 'numeric', numberingSystem: 'latn' });
     }
 
+    /* ---------- Form state ---------- */
     function suggestSlug() {
       var max = 0;
       $.each(posts, function (_, p) { var m = /^lesson-(\d+)$/.exec(p.id); if (m) max = Math.max(max, +m[1]); });
       $('#slug').val('lesson-' + (max + 1));
     }
-
     function setMode(slug) {
       editing = slug;
       $('#slug').prop('readonly', !!slug).css('background', slug ? '#E3EAEE' : '');
@@ -187,28 +231,44 @@
       $('#cancel-edit').prop('hidden', !slug);
       $('#publish').text(slug ? 'حفظ التعديلات' : 'نشر الدرس');
     }
-
-    function resetForm() { $('#post-form')[0].reset(); $('#slug').val(''); setMode(null); }
-
+    function resetForm() { $('#post-form')[0].reset(); $('#slug').val(''); setMode(null); showTab('ar'); }
     function confirmReplace() {
-      if (!$content.val().trim()) return Promise.resolve(true);
+      if (!$('#contentAr').val().trim() && !$('#contentEn').val().trim()) return Promise.resolve(true);
       return Swal.fire({
         icon: 'question', title: 'استبدال المحتوى الحالي؟', text: 'ما كتبته في المحرر ولم تحفظه سيُفقد.',
         showCancelButton: true, confirmButtonText: 'متابعة', cancelButtonText: 'إلغاء', confirmButtonColor: '#0F766E'
       }).then(function (r) { return r.isConfirmed; });
     }
 
-    // ---- Posts list (read live from GitHub, so it is current even before Netlify finishes deploying) ----
+    /* ---------- Posts list with analytics ---------- */
+    function renderTotals() {
+      var $t = $('#totals').empty();
+      if (!stats) { $t.text('إحصاءات المشاهدات غير مفعّلة. أضف مفاتيح Upstash في إعدادات Netlify.'); return; }
+      var v = 0, u = 0;
+      $.each(stats, function (_, s) { v += s.views; u += s.unique; });
+      $('<span>').append('إجمالي المشاهدات: ', $('<b>', { text: num(v) })).appendTo($t);
+      $('<span>').append('مجموع الزوار الفريدين: ', $('<b>', { text: num(u) })).appendTo($t);
+    }
+
     function renderList() {
       var $l = $('#list').empty();
       if (!posts.length) { $l.append($('<p>', { 'class': 'text-ink/70', text: 'لا توجد دروس منشورة بعد.' })); return; }
       $.each(posts, function (_, p) {
         var $row = $('<div>', { 'class': 'bg-white border border-rule rounded-lg p-3 flex flex-wrap items-center justify-between gap-3' });
         var $info = $('<div>', { 'class': 'min-w-0 flex-1' }).appendTo($row);
-        $('<div>', { 'class': 'font-bold', text: p.title }).appendTo($info);
-        var $meta = $('<div>', { 'class': 'mt-0.5 flex flex-wrap gap-x-3 text-sm text-ink/60' }).appendTo($info);
+
+        var $t = $('<div>', { 'class': 'font-bold flex flex-wrap items-center gap-2' }).appendTo($info);
+        $('<span>', { text: p.title }).appendTo($t);
+        if ($.inArray('en', p.langs || ['ar']) > -1) $('<span>', { 'class': 'text-xs font-bold rounded bg-ink/10 px-1.5 py-0.5', text: 'EN', lang: 'en' }).appendTo($t);
+
+        var $meta = $('<div>', { 'class': 'mt-0.5 flex flex-wrap gap-x-4 gap-y-0.5 text-sm text-ink/60' }).appendTo($info);
         if (p.category) $('<span>', { text: p.category }).appendTo($meta);
         $('<span>', { text: fmt(p.date) }).appendTo($meta);
+        var st = stats && stats[p.id];
+        if (st) {
+          $('<span>').append('المشاهدات ', $('<b>', { 'class': 'text-ink', text: num(st.views) })).appendTo($meta);
+          $('<span>').append('الزوار الفريدون ', $('<b>', { 'class': 'text-ink', text: num(st.unique) })).appendTo($meta);
+        }
 
         var $btns = $('<div>', { 'class': 'flex gap-2' }).appendTo($row);
         $('<button>', { type: 'button', 'class': 'tool', text: 'تعديل', 'aria-label': 'تعديل: ' + p.title }).attr('data-edit', p.id).appendTo($btns);
@@ -221,6 +281,8 @@
       $('#list').empty().append($('<p>', { 'class': 'text-ink/70', text: 'جارٍ تحميل الدروس…' }));
       return call({ action: 'list' }).done(function (res) {
         posts = res.posts || [];
+        stats = res.stats || null;
+        renderTotals();
         renderList();
         if (!editing && !$('#slug').val()) suggestSlug();
       }).fail(function (xhr) {
@@ -228,7 +290,7 @@
       });
     }
 
-    // ---- Edit ----
+    /* ---------- Edit ---------- */
     $('#list').on('click', '[data-edit]', function () {
       var slug = $(this).attr('data-edit'), p = findPost(slug);
       if (!p) return;
@@ -236,17 +298,20 @@
         if (!ok) return;
         Swal.fire({ title: 'جارٍ فتح الدرس…', allowOutsideClick: false, allowEscapeKey: false, didOpen: function () { Swal.showLoading(); } });
         call({ action: 'get', slug: slug }).done(function (res) {
-          if (!$('#preview').prop('hidden')) $('#toggle-preview').trigger('click'); // leave preview mode
-          $('#title').val(p.title);
+          showTab('ar');
           $('#slug').val(p.id);
           $('#category').val(p.category || '');
           $('#tags').val((p.tags || []).join('، '));
-          $('#excerpt').val(p.excerpt || '');
-          $content.val(res.content);
+          $('#titleAr').val(p.title);
+          $('#excerptAr').val(p.excerpt || '');
+          $('#contentAr').val(res.content);
+          $('#titleEn').val(p.title_en || '');
+          $('#excerptEn').val(p.excerpt_en || '');
+          $('#contentEn').val(res.contentEn || '');
           setMode(slug);
           Swal.close();
           $('#editor')[0].scrollIntoView({ behavior: 'smooth' });
-          $('#title').trigger('focus');
+          $('#titleAr').trigger('focus');
         }).fail(function (xhr) {
           if (xhr.status === 401) return;
           Swal.fire($.extend({ icon: 'error', title: 'تعذّر فتح الدرس', text: errMsg(xhr) }, swalBase));
@@ -258,14 +323,14 @@
       confirmReplace().then(function (ok) { if (ok) { resetForm(); suggestSlug(); } });
     });
 
-    // ---- Delete (SweetAlert2 confirmation; the request runs inside the dialog) ----
+    /* ---------- Delete ---------- */
     $('#list').on('click', '[data-del]', function () {
       var slug = $(this).attr('data-del'), p = findPost(slug);
       if (!p) return;
       Swal.fire({
         icon: 'warning',
         title: 'حذف الدرس؟',
-        text: '«' + p.title + '» سيُحذف من الموقع ومن المستودع. يمكن استرجاعه من سجل GitHub فقط.',
+        text: '«' + p.title + '» سيُحذف من الموقع ومن المستودع مع عدّاد مشاهداته. يمكن استرجاع الملفات من سجل GitHub فقط.',
         showCancelButton: true, focusCancel: true,
         confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#B42318',
         showLoaderOnConfirm: true,
@@ -273,7 +338,7 @@
         preConfirm: function () {
           return call({ action: 'delete', slug: slug }).then(null, function (xhr) {
             if (xhr.status !== 401) Swal.showValidationMessage(errMsg(xhr));
-            return false; // keep the dialog open
+            return false;
           });
         }
       }).then(function (r) {
@@ -286,28 +351,30 @@
 
     $('#logout').on('click', function () { sessionStorage.removeItem('adminToken'); location.replace('login.html'); });
 
-    // ---- Publish / save edits ----
+    /* ---------- Publish / save ---------- */
     $('#post-form').on('submit', function (e) {
       e.preventDefault();
       var isEdit = !!editing;
-      var data = {
+      var d = {
         action: isEdit ? 'update' : 'publish',
-        title: $('#title').val().trim(),
         slug: $('#slug').val().trim().toLowerCase(),
         category: $('#category').val().trim(),
         tags: $('#tags').val().split(/[,،]/).map(function (t) { return t.trim(); }).filter(Boolean),
-        excerpt: $('#excerpt').val().trim(),
-        content: $content.val().trim()
+        titleAr: $('#titleAr').val().trim(), excerptAr: $('#excerptAr').val().trim(), contentAr: $('#contentAr').val().trim(),
+        titleEn: $('#titleEn').val().trim(), excerptEn: $('#excerptEn').val().trim(), contentEn: $('#contentEn').val().trim()
       };
-      if (!data.title || !data.slug || !data.excerpt || !data.content) {
-        Swal.fire($.extend({ icon: 'warning', title: 'بيانات ناقصة', text: 'العنوان والرابط والملخص والمحتوى حقول مطلوبة.' }, swalBase));
-        return;
+      function warn(text, t) { showTab(t); Swal.fire($.extend({ icon: 'warning', title: 'بيانات ناقصة', text: text }, swalBase)); }
+
+      if (!d.slug) { Swal.fire($.extend({ icon: 'warning', title: 'بيانات ناقصة', text: 'الرابط المختصر مطلوب.' }, swalBase)); return; }
+      if (!d.titleAr || !d.excerptAr || !d.contentAr) { warn('العنوان والوصف والمحتوى بالعربية حقول مطلوبة.', 'ar'); return; }
+      if ((d.titleEn || d.excerptEn || d.contentEn) && !(d.titleEn && d.excerptEn && d.contentEn)) {
+        warn('أكمل الحقول الإنجليزية الثلاثة (العنوان والوصف والمحتوى) أو اتركها فارغة.', 'en'); return;
       }
 
       Swal.fire({ title: isEdit ? 'جارٍ الحفظ…' : 'جارٍ النشر…', allowOutsideClick: false, allowEscapeKey: false, didOpen: function () { Swal.showLoading(); } });
       $('#publish').prop('disabled', true);
 
-      call(data).done(function (res) {
+      call(d).done(function (res) {
         Swal.fire($.extend({
           icon: 'success',
           title: isEdit ? 'تم حفظ التعديلات' : 'تم النشر',
