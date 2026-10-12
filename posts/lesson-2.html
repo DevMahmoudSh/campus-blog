@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>الدليل الشامل لتثبيت وتشغيل خادم MySQL على أندرويد عبر تطبيق Termux | دفتر الدروس</title>
+  <meta name="description" content="تشغيل وإدارة MySQL على هاتفك الذكي باستخدام Termux.">
+  <meta property="og:title" content="الدليل الشامل لتثبيت وتشغيل خادم MySQL على أندرويد عبر تطبيق Termux">
+  <meta property="og:description" content="تشغيل وإدارة MySQL على هاتفك الذكي باستخدام Termux.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' } } } };
+  </script>
+  <style>
+    html[lang="ar"] { --body: Tajawal, system-ui, sans-serif; --head: Cairo, Tajawal, system-ui, sans-serif; }
+    html[lang="en"] { --body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; --head: var(--body); }
+    body { font-family: var(--body); }
+    .heading, .article h2, .article h3 { font-family: var(--head); }
+    [hidden] { display: none !important; }
+    html[lang="ar"] #lang-en, html[lang="en"] #lang-ar { display: none; }
+    .article { font-size: 1.0625rem; line-height: 1.95; }
+    .article > * + * { margin-top: 1rem; }
+    .article h2 { font-weight: 800; font-size: 1.5rem; line-height: 1.5; margin-top: 2.25rem; }
+    .article h3 { font-weight: 800; font-size: 1.2rem; line-height: 1.5; margin-top: 1.75rem; }
+    .article ul { list-style: disc; padding-inline-start: 1.5rem; }
+    .article ol { list-style: decimal; padding-inline-start: 1.5rem; }
+    .article a { color: #0F766E; text-decoration: underline; }
+    .article img { max-width: 100%; height: auto; border-radius: .5rem; }
+    .article :not(pre) > code { direction: ltr; unicode-bidi: isolate; background: #E3EAEE; padding: .1rem .4rem; border-radius: .25rem; font-size: .9em; }
+    .codebox { direction: ltr; border-radius: .6rem; overflow: hidden; background: #0d1117; }
+    .codebar { display: flex; justify-content: space-between; align-items: center; padding: .35rem .75rem; background: #161b22; color: #9aa7b4; font: 500 .8rem/1 ui-monospace, monospace; }
+    .codebar button { font: 700 .8rem/1 system-ui, sans-serif; color: #fff; background: #0F766E; border: 0; border-radius: .4rem; padding: .45rem .8rem; cursor: pointer; }
+    .codebar button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .codebox pre { margin: 0; text-align: left; overflow-x: auto; }
+    .codebox pre code.hljs { padding: 1rem; font-size: .9rem; line-height: 1.7; }
+  </style>
+</head>
+<body class="bg-paper text-ink antialiased">
+  <header class="bg-ink text-white">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <a href="/" class="heading font-extrabold text-xl" data-ar="دفتر الدروس" data-en="Lessons Notebook">دفتر الدروس</a>
+    </div>
+  </header>
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <article>
+    <section id="lang-ar" lang="ar" dir="rtl">
+      <h1 class="heading font-extrabold text-3xl leading-snug">الدليل الشامل لتثبيت وتشغيل خادم MySQL على أندرويد عبر تطبيق Termux</h1>
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
+        
+        <time datetime="2026-10-12">12 أكتوبر 2026</time>
+        <span>قراءة 3 د</span>
+        <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
+      </p>
+      <div class="article mt-6">
+<!--ar-start-->
+<code>
+<!-- استدعاء مكتبة SweetAlert لتعمل داخل صفحة الدرس -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- تنسيقات الإشعار ودعم RTL -->
+<style>
+    .copy-toast-container {
+        direction: ltr !important;
+        padding: 1.25rem !important;
+    }
+    .copy-toast-popup {
+        direction: rtl;
+        font-family: inherit !important;
+        border-radius: 1rem !important;
+        padding: 0.9rem 1.1rem !important;
+        border-right: 6px solid #5eead4 !important;
+        box-shadow: 0 20px 25px -5px rgba(15, 118, 110, 0.35),
+                    0 8px 10px -6px rgba(15, 118, 110, 0.35) !important;
+        backdrop-filter: blur(6px);
+    }
+    .copy-toast-title {
+        font-size: 1rem !important;
+        font-weight: 800 !important;
+        margin: 0 0 2px 0 !important;
+        text-align: right !important;
+    }
+    .copy-toast-text {
+        font-size: 0.85rem !important;
+        opacity: 0.9;
+        margin: 0 !important;
+        text-align: right !important;
+    }
+    .copy-toast-popup .swal2-timer-progress-bar {
+        background: rgba(255, 255, 255, 0.7) !important;
+        height: 3px !important;
+    }
+    .lesson-rtl pre {
+        direction: ltr;
+        text-align: left;
+        unicode-bidi: isolate;
+        overflow-x: auto;
+    }
+    .lesson-rtl pre code {
+        direction: ltr;
+        text-align: left;
+    }
+</style>
+
+<div dir="rtl" class="lesson-rtl text-right">
+
+<!-- صندوق مقدمة الدرس بتصميم عصري (Gradient) -->
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-l from-teal-500 to-emerald-400 p-6 shadow-lg mb-10 text-white">
+    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+    <div class="flex items-start gap-4 relative z-10">
+        <span class="text-4xl">📱</span>
+        <div>
+            <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">تشغيل خادم <bdi dir="ltr">MySQL (MariaDB)</bdi> داخل <bdi dir="ltr">Termux</bdi></h3>
+            <p class="text-teal-50 leading-relaxed m-0 text-lg">
+                دليل عملي ومنهجي لإعداد وتشغيل بيئة خادم <bdi dir="ltr">MySQL (MariaDB)</bdi> داخل تطبيق <bdi dir="ltr">Termux</bdi>، مقسماً حسب المراحل التشغيلية مع تفصيل أوامر الطرفية (<bdi dir="ltr">Bash</bdi>) واستعلامات قاعدة البيانات (<bdi dir="ltr">SQL</bdi>).
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- المتطلبات -->
+<div class="flex items-center gap-3 mt-10 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+        <span class="text-2xl">💾</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">المتطلبات وسعة التخزين (<bdi dir="ltr">Disk Usage</bdi>)</h2>
+</div>
+
+<div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
+    <table class="w-full text-right border-collapse bg-white">
+        <thead class="bg-slate-100 text-slate-700">
+            <tr>
+                <th class="p-4 border-b border-slate-200 font-bold">البيان</th>
+                <th class="p-4 border-b border-slate-200 font-bold">الحجم التقريبي</th>
+                <th class="p-4 border-b border-slate-200 font-bold">الغرض</th>
+            </tr>
+        </thead>
+        <tbody class="text-slate-600 text-base">
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-bold text-teal-600">حجم حزم التحميل (<bdi dir="ltr">Download</bdi>)</td>
+                <td class="p-4">~ 40 ميجابايت</td>
+                <td class="p-4">الأرشيفات المضغوطة للحزم</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-bold text-teal-600">المساحة بعد التثبيت (<bdi dir="ltr">Extracted</bdi>)</td>
+                <td class="p-4">~ 160 - 200 ميجابايت</td>
+                <td class="p-4">الملفات التنفيذية والمكتبات</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-bold text-teal-600">المساحة الموصى بها كحد أدنى</td>
+                <td class="p-4">500 ميجابايت</td>
+                <td class="p-4">لاستيعاب ملفات المحركات، الجداول، وملفات السجلات (<bdi dir="ltr">Logs</bdi>)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- المرحلة الأولى -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
+        <span class="text-2xl font-bold">1</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">المرحلة الأولى: تجهيز البيئة وتثبيت الخادم</h2>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">تحديث مستودعات الحزم</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        تحديث الفهارس وترقية البرمجيات القائمة لتفادي مشاكل توافق المكتبات المشتركة:
+    </p>
+    <pre dir="ltr"><code class="language-bash">pkg update &amp;&amp; pkg upgrade -y</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">تثبيت حزمة <bdi dir="ltr">MariaDB</bdi></h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        في أنظمة <bdi dir="ltr">Linux</bdi> و<bdi dir="ltr">Termux</bdi>، تُعد حزمة <bdi dir="ltr">MariaDB</bdi> هي المعيار البديل والمطابق لمحرك <bdi dir="ltr">MySQL</bdi>:
+    </p>
+    <pre dir="ltr"><code class="language-bash">pkg install mariadb -y</code></pre>
+</div>
+
+<!-- المرحلة الثانية -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
+        <span class="text-2xl font-bold">2</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">المرحلة الثانية: تهيئة النظام وتشغيل الخدمة</h2>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">بناء الجداول الأساسية للنظام (تُنفذ لمرة واحدة فقط)</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        يقوم هذا الأمر بإنشاء دليل البيانات وافتتاح جداول الصلاحيات الخاصة بالمستخدم <bdi dir="ltr">root</bdi>:
+    </p>
+    <pre dir="ltr"><code class="language-bash">mariadb-install-db</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">تشغيل خادم قاعدة البيانات في الخلفية</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        يتم استخدام سكربت <bdi dir="ltr">mysqld_safe</bdi> متبوعاً بالرمز <bdi dir="ltr">&amp;</bdi> ليعمل الخادم دون قفل واجهة الأوامر الحالية:
+    </p>
+    <pre dir="ltr"><code class="language-bash">mysqld_safe &amp;</code></pre>
+
+    <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
+        <span class="text-2xl">💡</span>
+        <p class="text-amber-800 m-0 leading-relaxed">
+            <strong>ملاحظة تطبيقية:</strong> عند ظهور مخرجات الإقلاع وعبارة <bdi dir="ltr" class="font-mono">mysqld_safe Starting mysqld daemon...</bdi>، اضغط على زر <bdi dir="ltr">Enter</bdi> للعودة إلى سطر الأوامر.
+        </p>
+    </div>
+</div>
+
+<!-- المرحلة الثالثة -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+        <span class="text-2xl font-bold">3</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">المرحلة الثالثة: الاتصال وإدارة قواعد البيانات (<bdi dir="ltr">SQL</bdi>)</h2>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">تسجيل الدخول إلى موجه الأوامر التفاعلي</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        افتراضياً في <bdi dir="ltr">Termux</bdi>، يدخل حساب المشرف بدون كلمة مرور:
+    </p>
+    <pre dir="ltr"><code class="language-bash">mysql -u root</code></pre>
+    <p class="text-slate-500 mt-3 mb-0 leading-relaxed">
+        (سيتغير سطر الأوامر إلى <bdi dir="ltr" class="font-mono">MariaDB [(none)]&gt;</bdi>)
+    </p>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">تنفيذ أول سيناريو تجريبي (إنشاء قاعدة بيانات، جدول، وسجلات)</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        انسخ الاستعلامات التالية بالترتيب:
+    </p>
+    <pre dir="ltr"><code class="language-sql">
+-- 1. إنشاء قاعدة بيانات تجريبية باسم university_db
+CREATE DATABASE university_db;
+
+-- 2. عرض قواعد البيانات للتأكد من إنشائها
+SHOW DATABASES;
+
+-- 3. تفعيل استخدام قاعدة البيانات الجديدة
+USE university_db;
+
+-- 4. إنشاء جدول للطلاب بحقول المعرف والاسم والمعدل التراكمي
+CREATE TABLE students (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    major VARCHAR(50),
+    gpa DECIMAL(3,2)
+);
+
+-- 5. عرض بنية الجدول والتحقق من الحقول
+DESCRIBE students;
+
+-- 6. إدراج بيانات تجريبية
+INSERT INTO students (full_name, major, gpa) 
+VALUES ('محمود أحمد', 'Computer Science', 3.85);
+
+-- 7. الاستعلام عن البيانات المضافة
+SELECT * FROM students;
+</code></pre>
+</div>
+
+<!-- المرحلة الرابعة -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm">
+        <span class="text-2xl font-bold">4</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">المرحلة الرابعة: الإنهاء وإيقاف العمليات</h2>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">الخروج من موجه <bdi dir="ltr">SQL</bdi></h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        للعودة إلى طرفية <bdi dir="ltr">Termux</bdi> العادية:
+    </p>
+    <pre dir="ltr"><code class="language-sql">EXIT;</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">إيقاف الخادم بشكل كامل</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        للحفاظ على موارد بطارية ومعالج الجهاز بعد الانتهاء من العمل المخبري:
+    </p>
+    <pre dir="ltr"><code class="language-bash">killall mysqld mysqld_safe</code></pre>
+</div>
+
+</div>
+
+<!-- سكربت تفاعلي: ربط زر النسخ مع SweetAlert -->
+<script>
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('button');
+        if (btn && (btn.innerText.includes('نسخ') || /copy/i.test(btn.innerText))) {
+            Swal.fire({
+                title: 'تم النسخ بنجاح! 🚀',
+                text: 'أصبح الكود جاهزاً للصق',
+                icon: 'success',
+                toast: true,
+                position: 'top-end',
+                timer: 2500,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#0F766E',
+                color: '#ffffff',
+                iconColor: '#ffffff',
+                customClass: {
+                    container: 'copy-toast-container',
+                    popup: 'copy-toast-popup',
+                    title: 'copy-toast-title',
+                    htmlContainer: 'copy-toast-text'
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+        }
+    });
+</script>
+</code>
+<!--ar-end-->
+      </div>
+    </section>
+    </article>
+    <a href="/" class="inline-block mt-10 text-brand font-bold underline" data-ar="العودة إلى كل الدروس" data-en="Back to all lessons">العودة إلى كل الدروس</a>
+  </main>
+  <script type="application/json" id="post-meta">{"slug":"lesson-2","hasEn":false,"default":"ar","site":{"ar":"دفتر الدروس","en":"Lessons Notebook"},"ar":{"title":"الدليل الشامل لتثبيت وتشغيل خادم MySQL على أندرويد عبر تطبيق Termux","description":"تشغيل وإدارة MySQL على هاتفك الذكي باستخدام Termux."},"en":null}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="/assets/post.js"></script>
+</body>
+</html>
