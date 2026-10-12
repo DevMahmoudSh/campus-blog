@@ -76,35 +76,13 @@
     </div>
     <h2 class="text-2xl font-bold text-slate-800 m-0">ضبط بيئة التخزين والترميز</h2>
 </div>
-
-<p class="text-slate-600 mb-6 text-lg leading-relaxed">
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">
     قاعدة البيانات تمثل "مساحة التخزين الفعلية" (الدفتر)، والتطبيق يمثل "لغة النقل" (ساعي البريد). لضمان استيعاب كافة اللغات والحروف والرموز التعبيرية بدون مشاكل الترميز (???? أو تشوه النصوص):
 </p>
-
-<!-- شبكة توضيح المصطلحات الإنجليزية باليسار والشرح بالعربي باليمين -->
-<div class="bg-white rounded-xl border border-slate-200 shadow-sm mb-6 overflow-hidden">
-    <!-- العنصر الأول -->
-    <div class="grid md:grid-cols-3 border-b border-slate-100 hover:bg-slate-50 transition-colors">
-        <div class="md:col-span-2 p-5 text-slate-600 text-lg leading-relaxed">
-            يدعم تخزين جميع لغات العالم مع الرموز التعبيرية (Emojis) بدقة تصل إلى 4 بايت لكل رمز.
-        </div>
-        <div class="md:col-span-1 p-5 bg-slate-50/70 border-r border-slate-100 text-left flex flex-col justify-center" dir="ltr">
-            <strong class="text-teal-700 font-mono text-xl">utf8mb4</strong>
-            <span class="text-slate-400 text-xs font-bold tracking-wider uppercase mt-1">Character Set</span>
-        </div>
-    </div>
-
-    <!-- العنصر الثاني -->
-    <div class="grid md:grid-cols-3 hover:bg-slate-50 transition-colors">
-        <div class="md:col-span-2 p-5 text-slate-600 text-lg leading-relaxed">
-            يحدد قواعد الترتيب والمقارنة المعتمدة عالمياً مع تجاهل حساسية حالة الأحرف الكبيرة والصغيرة (Case-Insensitive).
-        </div>
-        <div class="md:col-span-1 p-5 bg-slate-50/70 border-r border-slate-100 text-left flex flex-col justify-center" dir="ltr">
-            <strong class="text-teal-700 font-mono text-xl">utf8mb4_unicode_ci</strong>
-            <span class="text-slate-400 text-xs font-bold tracking-wider uppercase mt-1">Collation</span>
-        </div>
-    </div>
-</div>
+<ul class="list-disc list-inside text-slate-600 mb-6 text-lg leading-relaxed bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <li class="mb-2"><strong class="text-teal-700 font-mono">utf8mb4 (Character Set):</strong> يدعم تخزين جميع لغات العالم مع الرموز التعبيرية (Emojis) بدقة تصل إلى 4 بايت لكل رمز.</li>
+    <li><strong class="text-teal-700 font-mono">utf8mb4_unicode_ci (Collation):</strong> يحدد قواعد الترتيب والمقارنة المعتمدة عالمياً مع تجاهل حساسية حالة الأحرف الكبيرة والصغيرة (Case-Insensitive).</li>
+</ul>
 
 <pre><code class="language-sql">
 -- إنشاء قاعدة البيانات مع تحديد الترميز وقواعد الترتيب صراحةً
@@ -122,12 +100,11 @@ USE UniversityDB;
     </div>
     <h2 class="text-2xl font-bold text-slate-800 m-0">الهيكلية المعيارية لبناء العمود</h2>
 </div>
-
 <p class="text-slate-600 mb-4 text-lg leading-relaxed">
-    عند تعريف أي عمود داخل الجدول، يتبع محرك قواعد البيانات ترتيباً منطقياً محدداً:
+    عند تعريف أي عمود داخل الجدول، يتبع محرك قواعد البيانات ترتيباً منطقياً محدداً. إليك هذا الجدول الذي يلخص القيود الهندسية:
 </p>
 
-<!-- جدول القيود الهندسية -->
+<!-- جدول احترافي باستخدام Tailwind -->
 <div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
     <table class="w-full text-right border-collapse bg-white">
         <thead class="bg-slate-100 text-slate-700">
@@ -137,32 +114,32 @@ USE UniversityDB;
             </tr>
         </thead>
         <tbody class="text-slate-600 text-base">
-            <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-mono font-bold text-teal-600" dir="ltr" style="text-align: right;">NOT NULL</td>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">NOT NULL</td>
                 <td class="p-4">يمنع ترك الحقل فارغاً، ويُستخدم للحقول الإلزامية في النظام.</td>
             </tr>
-            <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-mono font-bold text-teal-600" dir="ltr" style="text-align: right;">DEFAULT</td>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">DEFAULT</td>
                 <td class="p-4">يُسند قيمة تلقائية للحقل في حال لم يرسلها التطبيق أثناء الإضافة.</td>
             </tr>
-            <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-mono font-bold text-teal-600" dir="ltr" style="text-align: right;">AUTO_INCREMENT</td>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">AUTO_INCREMENT</td>
                 <td class="p-4">يُولّد أرقاماً تسلسلية فريدة تلقائياً مع كل صف جديد.</td>
             </tr>
-            <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-mono font-bold text-teal-600" dir="ltr" style="text-align: right;">UNIQUE</td>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">UNIQUE</td>
                 <td class="p-4">يمنع تكرار القيمة في العمود عبر كامل الجدول (مثل البريد ورقم الهوية).</td>
             </tr>
-            <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-mono font-bold text-teal-600" dir="ltr" style="text-align: right;">CHECK</td>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">CHECK</td>
                 <td class="p-4">يتحقق منطقياً من مطابقة البيانات لشرط معين قبل قبولها.</td>
             </tr>
-            <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-mono font-bold text-teal-600" dir="ltr" style="text-align: right;">PRIMARY KEY</td>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">PRIMARY KEY</td>
                 <td class="p-4">المعرّف الفريد للجدول (يجمع تلقائياً بين NOT NULL و UNIQUE).</td>
             </tr>
             <tr class="hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-mono font-bold text-teal-600" dir="ltr" style="text-align: right;">FOREIGN KEY</td>
+                <td class="p-4 font-mono font-bold text-teal-600">FOREIGN KEY</td>
                 <td class="p-4">يضمن التكامل المرجعي بربط العمود بمفتاح أساسي في جدول آخر.</td>
             </tr>
         </tbody>
@@ -176,22 +153,10 @@ USE UniversityDB;
     </div>
     <h2 class="text-2xl font-bold text-slate-800 m-0">القيود: مستوى العمود مقابل الجدول</h2>
 </div>
-
-<ul class="list-disc list-inside text-slate-600 mb-6 text-lg leading-relaxed bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-    <li class="mb-3">
-        <strong class="text-slate-800">على مستوى العمود (Column-level):</strong> يُكتب بجانب اسم العمود مباشرة، ويُستخدم عندما يخص القيد عموداً واحداً فقط. 
-        <span class="text-amber-700 text-sm block mt-1 pr-6 font-semibold">(ملاحظة: NOT NULL و DEFAULT لا يُكتبان إلا هنا).</span>
-    </li>
-    <li>
-        <strong class="text-slate-800">على مستوى الجدول (Table-level):</strong> يُكتب في نهاية الجدول، وتكمن أهميته في:
-        <ul class="list-circle list-inside pr-6 mt-2 space-y-1 text-base text-slate-500">
-            <li>إمكانية تسمية القيد (<code class="font-mono text-teal-700 bg-slate-100 px-1 rounded">CONSTRAINT constraint_name</code>) لتسهيل إدارته لاحقاً.</li>
-            <li>إنشاء المفاتيح المركبة (Composite Keys) التي تجمع أكثر من عمود.</li>
-        </ul>
-    </li>
+<ul class="list-disc list-inside text-slate-600 mb-6 text-lg leading-relaxed">
+    <li class="mb-2"><strong class="text-slate-800">على مستوى العمود (Column-level):</strong> يُكتب بجانب اسم العمود مباشرة، ويُستخدم عندما يخص القيد عموداً واحداً فقط. (ملاحظة: NOT NULL و DEFAULT لا يُكتبان إلا هنا).</li>
+    <li><strong class="text-slate-800">على مستوى الجدول (Table-level):</strong> يُكتب في نهاية الجدول، وتكمن أهميته في إمكانية تسمية القيد لتسهيل إدارته، وإنشاء المفاتيح المركبة.</li>
 </ul>
-
-<p class="text-slate-600 my-4 text-lg font-bold">الكود التطبيقي للدمج بين المستويين:</p>
 
 <pre><code class="language-sql">
 -- أولاً: إنشاء الجدول الأب (Departments)
@@ -212,7 +177,7 @@ CREATE TABLE Employees (
 
     -- قيود على مستوى الجدول (Table-level)
     -- 1. قيد تحقق منطقي مسمى (Named Check Constraint)
-    CONSTRAINT chk_minimum_salary CHECK (Salary >= 3000.00),
+    CONSTRAINT chk_minimum_salary CHECK (Salary &gt;= 3000.00),
 
     -- 2. مفتاح أجنبي يربط الموظف بقسمه مع تحديد سلوك الحذف
     CONSTRAINT fk_employee_dept FOREIGN KEY (DeptID) 
@@ -240,26 +205,21 @@ CREATE TABLE CourseEnrollments (
     <div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm">
         <span class="text-2xl font-bold">4</span>
     </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">أوامر الإفراغ والهدم (TRUNCATE مقابل DROP)</h2>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">أوامر الإفراغ والهدم</h2>
 </div>
-
 <p class="text-slate-600 mb-6 text-lg leading-relaxed">
     كلا الأمرين يندرجان تحت لغة تعريف البيانات (DDL)، ولكل منهما سلوك تشغيلي مختلف تماماً:
 </p>
 
-<!-- كروت المقارنة بين TRUNCATE و DROP -->
+<!-- صندوق تفريق أنيق -->
 <div class="grid md:grid-cols-2 gap-4 mb-8">
-    <div class="bg-orange-50 border border-orange-200 p-5 rounded-xl shadow-sm">
-        <h4 class="font-bold text-orange-800 text-xl font-mono mb-2" dir="ltr" style="text-align: right;">TRUNCATE TABLE</h4>
-        <p class="text-orange-700 m-0 leading-relaxed text-base">
-            يُفرغ الجدول من جميع البيانات فوراً ويُعيد تصفير عداد <code class="bg-orange-100 px-1 rounded font-mono">AUTO_INCREMENT</code> إلى قيمته الابتدائية (1)، <strong>مع الاحتفاظ بهيكل الجدول</strong> والأعمدة والقيود كاملة.
-        </p>
+    <div class="bg-orange-50 border border-orange-200 p-5 rounded-xl">
+        <h4 class="font-bold text-orange-800 text-xl font-mono mb-2">TRUNCATE TABLE</h4>
+        <p class="text-orange-700 m-0 leading-relaxed">يُفرغ الجدول من جميع البيانات فوراً ويُعيد تصفير عداد AUTO_INCREMENT إلى (1)، <strong>مع الاحتفاظ بهيكل الجدول</strong> والأعمدة والقيود كاملة.</p>
     </div>
-    <div class="bg-red-50 border border-red-200 p-5 rounded-xl shadow-sm">
-        <h4 class="font-bold text-red-800 text-xl font-mono mb-2" dir="ltr" style="text-align: right;">DROP TABLE</h4>
-        <p class="text-red-700 m-0 leading-relaxed text-base">
-            يمحو الجدول <strong>بالكامل من القرص الصلب</strong> (البيانات والهيكل والقيود معاً)، ولا يمكن التراجع عن هذا الإجراء نهائياً.
-        </p>
+    <div class="bg-red-50 border border-red-200 p-5 rounded-xl">
+        <h4 class="font-bold text-red-800 text-xl font-mono mb-2">DROP TABLE</h4>
+        <p class="text-red-700 m-0 leading-relaxed">يمحو الجدول <strong>بالكامل من القرص الصلب</strong> (البيانات والهيكل والقيود معاً)، كأنه لم يكن موجوداً من الأساس.</p>
     </div>
 </div>
 
@@ -276,14 +236,17 @@ DROP TABLE IF EXISTS Departments;
 DROP DATABASE IF EXISTS UniversityDB;
 </code></pre>
 
-<!-- سكربت تفعيل SweetAlert عند الضغط على زر النسخ -->
+<!-- سكربت تفاعلي: ربط زر النسخ مع SweetAlert -->
 <script>
+    // مراقبة الضغطات في الصفحة لعمل الإشعار عند نسخ الكود
     document.addEventListener('click', function(e) {
+        // البحث عما إذا كان العنصر المضغوط هو زر يحتوي على كلمة "نسخ"
         const btn = e.target.closest('button');
         if (btn && btn.innerText.includes('نسخ')) {
+            // إظهار إشعار SweetAlert أنيق (Toast) أسفل الشاشة
             Swal.fire({
                 title: 'تم النسخ بنجاح! 🚀',
-                text: 'أصبح الكود جاهزاً في الحافظة',
+                text: 'أصبح الكود جاهزاً للصق',
                 icon: 'success',
                 toast: true,
                 position: 'bottom-end',
