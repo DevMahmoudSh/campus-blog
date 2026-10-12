@@ -38,8 +38,14 @@
   {
     "id": "lesson-4",
     "title": "شرح درس DDL create",
-    "url": "/posts/lesson-4.html",
     "excerpt": "ملخص شامل لأساسيات بناء قواعد البيانات (DDL CREATE)، يغطي ضبط الترميز الصحيح للغات، هندسة القيود والمفاتيح (الأساسية والأجنبية)، والفرق الحاسم بين أوامر الحذف والإفراغ (DROP vs TRUNCATE).",
+    "title_en": "The Complete Guide to DDL CREATE in MySQL",
+    "excerpt_en": "Understand database storage configurations, enforce data integrity with primary and foreign keys, and explore safe database management in MySQL.",
+    "langs": [
+      "ar",
+      "en"
+    ],
+    "url": "/posts/lesson-4.html",
     "category": "mysql",
     "tags": [
       "mysql",

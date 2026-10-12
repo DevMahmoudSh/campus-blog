@@ -7,21 +7,26 @@
   <meta name="description" content="ملخص شامل لأساسيات بناء قواعد البيانات (DDL CREATE)، يغطي ضبط الترميز الصحيح للغات، هندسة القيود والمفاتيح (الأساسية والأجنبية)، والفرق الحاسم بين أوامر الحذف والإفراغ (DROP vs TRUNCATE).">
   <meta property="og:title" content="شرح درس DDL create">
   <meta property="og:description" content="ملخص شامل لأساسيات بناء قواعد البيانات (DDL CREATE)، يغطي ضبط الترميز الصحيح للغات، هندسة القيود والمفاتيح (الأساسية والأجنبية)، والفرق الحاسم بين أوامر الحذف والإفراغ (DROP vs TRUNCATE).">
+  <script>try{if(localStorage.getItem('lang')==='en'){var h=document.documentElement;h.lang='en';h.dir='ltr'}}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script>
-    tailwind.config = { theme: { extend: {
-      fontFamily: { sans: ['Tajawal','system-ui','sans-serif'], display: ['Cairo','Tajawal','system-ui','sans-serif'] },
-      colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' } } } };
+    tailwind.config = { theme: { extend: { colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' } } } };
   </script>
   <style>
+    html[lang="ar"] { --body: Tajawal, system-ui, sans-serif; --head: Cairo, Tajawal, system-ui, sans-serif; }
+    html[lang="en"] { --body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; --head: var(--body); }
+    body { font-family: var(--body); }
+    .heading, .article h2, .article h3 { font-family: var(--head); }
+    [hidden] { display: none !important; }
+    html[lang="ar"] #lang-en, html[lang="en"] #lang-ar { display: none; }
     .article { font-size: 1.0625rem; line-height: 1.95; }
     .article > * + * { margin-top: 1rem; }
-    .article h2 { font: 800 1.5rem/1.5 Cairo, Tajawal, sans-serif; margin-top: 2.25rem; }
-    .article h3 { font: 800 1.2rem/1.5 Cairo, Tajawal, sans-serif; margin-top: 1.75rem; }
+    .article h2 { font-weight: 800; font-size: 1.5rem; line-height: 1.5; margin-top: 2.25rem; }
+    .article h3 { font-weight: 800; font-size: 1.2rem; line-height: 1.5; margin-top: 1.75rem; }
     .article ul { list-style: disc; padding-inline-start: 1.5rem; }
     .article ol { list-style: decimal; padding-inline-start: 1.5rem; }
     .article a { color: #0F766E; text-decoration: underline; }
@@ -29,28 +34,31 @@
     .article :not(pre) > code { direction: ltr; unicode-bidi: isolate; background: #E3EAEE; padding: .1rem .4rem; border-radius: .25rem; font-size: .9em; }
     .codebox { direction: ltr; border-radius: .6rem; overflow: hidden; background: #0d1117; }
     .codebar { display: flex; justify-content: space-between; align-items: center; padding: .35rem .75rem; background: #161b22; color: #9aa7b4; font: 500 .8rem/1 ui-monospace, monospace; }
-    .codebar button { font: 700 .8rem/1 Tajawal, sans-serif; color: #fff; background: #0F766E; border: 0; border-radius: .4rem; padding: .45rem .8rem; cursor: pointer; }
+    .codebar button { font: 700 .8rem/1 system-ui, sans-serif; color: #fff; background: #0F766E; border: 0; border-radius: .4rem; padding: .45rem .8rem; cursor: pointer; }
     .codebar button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
     .codebox pre { margin: 0; text-align: left; overflow-x: auto; }
     .codebox pre code.hljs { padding: 1rem; font-size: .9rem; line-height: 1.7; }
   </style>
 </head>
-<body class="bg-paper text-ink font-sans antialiased">
+<body class="bg-paper text-ink antialiased">
   <header class="bg-ink text-white">
-    <div class="max-w-3xl mx-auto px-4 py-3">
-      <a href="/" class="font-display font-extrabold text-xl">دفتر الدروس</a>
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <a href="/" class="heading font-extrabold text-xl" data-ar="دفتر الدروس" data-en="Lessons Notebook">دفتر الدروس</a>
+      <button id="lang-toggle" type="button" class="h-10 px-4 rounded-full border border-white/40 text-sm font-bold hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white" aria-label="Switch to English" lang="en">English</button>
     </div>
   </header>
   <main class="max-w-3xl mx-auto px-4 py-8">
     <article>
-      <h1 class="font-display font-extrabold text-3xl leading-snug">شرح درس DDL create</h1>
-      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink/60">
+    <section id="lang-ar" lang="ar" dir="rtl">
+      <h1 class="heading font-extrabold text-3xl leading-snug">شرح درس DDL create</h1>
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
         <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
         <time datetime="2026-10-11">11 أكتوبر 2026</time>
         <span>قراءة 4 د</span>
+        <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
       </p>
       <div class="article mt-6">
-<!--content-start-->
+<!--ar-start-->
 <code>
 <!-- استدعاء مكتبة SweetAlert لتعمل داخل صفحة الدرس -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -325,11 +333,292 @@ DROP DATABASE IF EXISTS UniversityDB;
     });
 </script>
 </code>
-<!--content-end-->
+<!--ar-end-->
       </div>
+    </section>
+    <section id="lang-en" lang="en" dir="ltr">
+      <h1 class="heading font-extrabold text-3xl leading-snug">The Complete Guide to DDL CREATE in MySQL</h1>
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
+        <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
+        <time datetime="2026-10-11">October 11, 2026</time>
+        <span>4 min read</span>
+        <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>views</span></span>
+      </p>
+      <div class="article mt-6">
+<!--en-start-->
+<code>
+<!-- استدعاء مكتبة SweetAlert لتعمل داخل صفحة الدرس -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Toast styles -->
+<style>
+    .copy-toast-container {
+        direction: ltr !important;
+        padding: 1.25rem !important;
+    }
+    .copy-toast-popup {
+        direction: ltr;
+        font-family: inherit !important;
+        border-radius: 1rem !important;
+        padding: 0.9rem 1.1rem !important;
+        border-left: 6px solid #5eead4 !important;
+        box-shadow: 0 20px 25px -5px rgba(15, 118, 110, 0.35),
+                    0 8px 10px -6px rgba(15, 118, 110, 0.35) !important;
+        backdrop-filter: blur(6px);
+    }
+    .copy-toast-title {
+        font-size: 1rem !important;
+        font-weight: 800 !important;
+        margin: 0 0 2px 0 !important;
+        text-align: left !important;
+    }
+    .copy-toast-text {
+        font-size: 0.85rem !important;
+        opacity: 0.9;
+        margin: 0 !important;
+        text-align: left !important;
+    }
+    .copy-toast-popup .swal2-timer-progress-bar {
+        background: rgba(255, 255, 255, 0.7) !important;
+        height: 3px !important;
+    }
+    .lesson-ltr pre {
+        direction: ltr;
+        text-align: left;
+        overflow-x: auto;
+    }
+</style>
+
+<div dir="ltr" class="lesson-ltr text-left">
+
+<!-- Lesson intro box -->
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-teal-500 to-emerald-400 p-6 shadow-lg mb-10 text-white">
+    <div class="absolute top-0 left-0 -mt-4 -ml-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+    <div class="flex items-start gap-4 relative z-10">
+        <span class="text-4xl">📚</span>
+        <div>
+            <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">A Complete, Structured Summary of DDL CREATE</h3>
+            <p class="text-teal-50 leading-relaxed m-0 text-lg">
+                In this lesson we dive deep into building databases: from configuring the correct encoding, through engineering columns and constraints, to the commands that empty and tear down tables.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Section 1 -->
+<div class="flex items-center gap-3 mt-10 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+        <span class="text-2xl font-bold">1</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">Storage Environment &amp; Character Encoding</h2>
+</div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">
+    A database represents the physical storage space, while your application acts as the transport medium. To guarantee support for all global alphabets, special characters, and emojis without data corruption (such as ???? or Mojibake), both layers must be explicitly configured:
+</p>
+<ul class="list-disc list-inside text-slate-600 mb-6 text-lg leading-relaxed bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <li class="mb-2"><strong class="text-teal-700 font-mono">utf8mb4 (Character Set):</strong> A 4-byte UTF-8 encoding standard that stores any character set worldwide, including modern symbols and emojis.</li>
+    <li><strong class="text-teal-700 font-mono">utf8mb4_unicode_ci (Collation):</strong> Defines comparison and sorting rules according to Unicode standards while remaining case-insensitive (ci).</li>
+</ul>
+
+<pre><code class="language-sql">
+-- Create the database explicitly defining character set and collation
+CREATE DATABASE IF NOT EXISTS UniversityDB
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+USE UniversityDB;
+</code></pre>
+
+<!-- Section 2 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
+        <span class="text-2xl font-bold">2</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">Standard Column Definition Order &amp; Constraints</h2>
+</div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">
+    When declaring columns inside a table, relational engines (such as MySQL/InnoDB) parse attributes in a strict, standard order:
+</p>
+
+<div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
+    <table class="w-full text-left border-collapse bg-white">
+        <thead class="bg-slate-100 text-slate-700">
+            <tr>
+                <th class="p-4 border-b border-slate-200 font-bold w-1/3">Constraint / Property</th>
+                <th class="p-4 border-b border-slate-200 font-bold">Architectural Role</th>
+            </tr>
+        </thead>
+        <tbody class="text-slate-600 text-base">
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">NOT NULL</td>
+                <td class="p-4">Rejects NULL values; mandatory for business-critical attributes.</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">DEFAULT</td>
+                <td class="p-4">Assigns a fallback value when the insert statement omits the column.</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">AUTO_INCREMENT</td>
+                <td class="p-4">Generates an automatically incrementing integer sequence for new rows.</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">UNIQUE</td>
+                <td class="p-4">Ensures all values in the column remain distinct across the table.</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">CHECK</td>
+                <td class="p-4">Validates that inputs satisfy a specific boolean condition before storage.</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">PRIMARY KEY</td>
+                <td class="p-4">The unique row identifier; enforces both NOT NULL and UNIQUE implicitly.</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">FOREIGN KEY</td>
+                <td class="p-4">Enforces referential integrity by validating values against another table's primary key.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Section 3 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
+        <span class="text-2xl font-bold">3</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">Column-Level vs. Table-Level Constraints</h2>
+</div>
+<ul class="list-disc list-inside text-slate-600 mb-6 text-lg leading-relaxed">
+    <li class="mb-2"><strong class="text-slate-800">Column-Level:</strong> Declared inline immediately after the column's data type. Use this when the constraint evaluates a single column independently. Note: <span class="font-mono">NOT NULL</span> and <span class="font-mono">DEFAULT</span> can only be defined at this level.</li>
+    <li>
+        <strong class="text-slate-800">Table-Level:</strong> Declared at the bottom of the table specification. Required for:
+        <ul class="list-disc ml-8 mt-2 space-y-1">
+            <li>Assigning custom constraint names (<span class="font-mono">CONSTRAINT constraint_name</span>) for maintainability.</li>
+            <li>Defining Composite Keys that span across two or more columns.</li>
+        </ul>
+    </li>
+</ul>
+
+<p class="text-slate-600 my-4 text-lg font-bold">Applied Implementation:</p>
+
+<pre><code class="language-sql">
+-- Parent Table: Departments
+CREATE TABLE Departments (
+    DeptID INT AUTO_INCREMENT PRIMARY KEY,
+    DeptName VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Child Table: Employees (Demonstrating both levels)
+CREATE TABLE Employees (
+    -- Column-level constraints
+    EmployeeID INT AUTO_INCREMENT PRIMARY KEY,
+    FullName VARCHAR(100) NOT NULL,
+    Email VARCHAR(150) NOT NULL UNIQUE,
+    AccountStatus VARCHAR(20) NOT NULL DEFAULT 'Active',
+    Salary DECIMAL(10, 2) NOT NULL,
+    DeptID INT,
+
+    -- Table-level constraints
+    -- 1. Named business validation rule
+    CONSTRAINT chk_minimum_salary CHECK (Salary &gt;= 3000.00),
+
+    -- 2. Foreign Key referencing the parent table with deletion handling
+    CONSTRAINT fk_employee_dept FOREIGN KEY (DeptID) 
+        REFERENCES Departments(DeptID) 
+        ON DELETE SET NULL
+);
+</code></pre>
+
+<p class="text-slate-600 my-4 text-lg font-bold">Composite Primary Key Implementation:</p>
+
+<pre><code class="language-sql">
+-- Junction Table: Prevents duplicate registrations for the same student and course
+CREATE TABLE CourseEnrollments (
+    StudentID INT NOT NULL,
+    CourseID INT NOT NULL,
+    EnrollmentDate DATE DEFAULT (CURRENT_DATE),
+
+    -- Table-level Composite Primary Key combining two columns
+    CONSTRAINT pk_student_course PRIMARY KEY (StudentID, CourseID)
+);
+</code></pre>
+
+<!-- Section 4 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm">
+        <span class="text-2xl font-bold">4</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">Deconstruction Commands: TRUNCATE vs. DROP</h2>
+</div>
+<p class="text-slate-600 mb-6 text-lg leading-relaxed">
+    Both commands belong to the Data Definition Language (DDL) family, but they operate differently at the storage engine level:
+</p>
+
+<div class="grid md:grid-cols-2 gap-4 mb-8">
+    <div class="bg-orange-50 border border-orange-200 p-5 rounded-xl">
+        <h4 class="font-bold text-orange-800 text-xl font-mono mb-2">TRUNCATE TABLE</h4>
+        <p class="text-orange-700 m-0 leading-relaxed">Deletes all rows by deallocating table data pages rather than deleting row-by-row. It resets the <span class="font-mono">AUTO_INCREMENT</span> counter back to 1 while <strong>keeping the schema, columns, and constraints intact</strong>.</p>
+    </div>
+    <div class="bg-red-50 border border-red-200 p-5 rounded-xl">
+        <h4 class="font-bold text-red-800 text-xl font-mono mb-2">DROP TABLE</h4>
+        <p class="text-red-700 m-0 leading-relaxed"><strong>Permanently purges the table structure</strong>, its metadata, indexes, and all associated rows from disk.</p>
+    </div>
+</div>
+
+<pre><code class="language-sql">
+-- Wipe all records while preserving table structure and resetting auto-increment
+TRUNCATE TABLE CourseEnrollments;
+
+-- Permanently remove tables from the database
+DROP TABLE IF EXISTS CourseEnrollments;
+DROP TABLE IF EXISTS Employees;
+DROP TABLE IF EXISTS Departments;
+
+-- Remove the entire database and all contained objects
+DROP DATABASE IF EXISTS UniversityDB;
+</code></pre>
+
+</div>
+
+<!-- سكربت تفاعلي: ربط زر النسخ مع SweetAlert -->
+<script>
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('button');
+        if (btn && (btn.innerText.includes('نسخ') || /copy/i.test(btn.innerText))) {
+            Swal.fire({
+                title: 'Copied successfully! 🚀',
+                text: 'The code is ready to paste',
+                icon: 'success',
+                toast: true,
+                position: 'top-end',
+                timer: 2500,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#0F766E',
+                color: '#ffffff',
+                iconColor: '#ffffff',
+                customClass: {
+                    container: 'copy-toast-container',
+                    popup: 'copy-toast-popup',
+                    title: 'copy-toast-title',
+                    htmlContainer: 'copy-toast-text'
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+        }
+    });
+</script>
+</code>
+<!--en-end-->
+      </div>
+    </section>
     </article>
-    <a href="/" class="inline-block mt-10 text-brand font-bold underline">العودة إلى كل الدروس</a>
+    <a href="/" class="inline-block mt-10 text-brand font-bold underline" data-ar="العودة إلى كل الدروس" data-en="Back to all lessons">العودة إلى كل الدروس</a>
   </main>
+  <script type="application/json" id="post-meta">{"slug":"lesson-4","hasEn":true,"default":"ar","site":{"ar":"دفتر الدروس","en":"Lessons Notebook"},"ar":{"title":"شرح درس DDL create","description":"ملخص شامل لأساسيات بناء قواعد البيانات (DDL CREATE)، يغطي ضبط الترميز الصحيح للغات، هندسة القيود والمفاتيح (الأساسية والأجنبية)، والفرق الحاسم بين أوامر الحذف والإفراغ (DROP vs TRUNCATE)."},"en":{"title":"The Complete Guide to DDL CREATE in MySQL","description":"Understand database storage configurations, enforce data integrity with primary and foreign keys, and explore safe database management in MySQL."}}</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="/assets/post.js"></script>
 </body>
