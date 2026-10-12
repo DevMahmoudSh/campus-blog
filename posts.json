@@ -1,42 +1,6 @@
 [
   {
-    "id": "lesson-7",
-    "title": "تست ٣",
-    "url": "/posts/lesson-7.html",
-    "excerpt": "هـا تست ٣",
-    "category": "تست ٣",
-    "tags": [
-      "شرج جيد تست"
-    ],
-    "date": "2026-10-11",
-    "readMinutes": 1
-  },
-  {
-    "id": "lesson-6",
-    "title": "تست٢",
-    "url": "/posts/lesson-6.html",
-    "excerpt": "تست",
-    "category": "شرح جديد",
-    "tags": [
-      "تست"
-    ],
-    "date": "2026-10-11",
-    "readMinutes": 1
-  },
-  {
-    "id": "lesson-5",
-    "title": "تست",
-    "url": "/posts/lesson-5.html",
-    "excerpt": "تست تست",
-    "category": "تست",
-    "tags": [
-      "تس"
-    ],
-    "date": "2026-10-11",
-    "readMinutes": 2
-  },
-  {
-    "id": "lesson-4",
+    "id": "lesson-1",
     "title": "شرح درس DDL create",
     "excerpt": "ملخص شامل لأساسيات بناء قواعد البيانات (DDL CREATE)، يغطي ضبط الترميز الصحيح للغات، هندسة القيود والمفاتيح (الأساسية والأجنبية)، والفرق الحاسم بين أوامر الحذف والإفراغ (DROP vs TRUNCATE).",
     "title_en": "The Complete Guide to DDL CREATE in MySQL",
@@ -45,7 +9,7 @@
       "ar",
       "en"
     ],
-    "url": "/posts/lesson-4.html",
+    "url": "/posts/lesson-1.html",
     "category": "mysql",
     "tags": [
       "mysql",
@@ -54,47 +18,5 @@
     ],
     "date": "2026-10-11",
     "readMinutes": 4
-  },
-  {
-    "id": "lesson-3",
-    "title": "التعامل مع الأحداث في jQuery",
-    "url": "/posts/lesson-3.html",
-    "excerpt": "تعلّم ربط النقر والإدخال والتمرير بالعناصر، مع أمثلة عملية على delegation.",
-    "category": "jQuery",
-    "tags": [
-      "jQuery",
-      "أحداث",
-      "JavaScript"
-    ],
-    "date": "2026-10-08",
-    "readMinutes": 6
-  },
-  {
-    "id": "lesson-2",
-    "title": "تخطيط الصفحات بـ Flexbox خطوة بخطوة",
-    "url": "/posts/lesson-2.html",
-    "excerpt": "كيف تبني صفحة متجاوبة بالمحاذاة والتوزيع دون أي إطار عمل.",
-    "category": "CSS",
-    "tags": [
-      "CSS",
-      "Flexbox",
-      "تصميم متجاوب"
-    ],
-    "date": "2026-10-03",
-    "readMinutes": 8
-  },
-  {
-    "id": "lesson-1",
-    "title": "مقدمة في JavaScript: المتغيرات والدوال",
-    "url": "/posts/lesson-1.html",
-    "excerpt": "أول درس في اللغة: كيف تعرّف المتغيرات وتكتب دالة وتستدعيها.",
-    "category": "JavaScript",
-    "tags": [
-      "JavaScript",
-      "مبتدئ",
-      "دوال"
-    ],
-    "date": "2026-09-27",
-    "readMinutes": 5
   }
 ]
