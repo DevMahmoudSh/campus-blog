@@ -115,7 +115,7 @@
         <div>
             <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">تشغيل <bdi dir="ltr">MySQL (MariaDB)</bdi> على أجهزة آبل عبر <bdi dir="ltr">iSH</bdi></h3>
             <p class="text-teal-50 leading-relaxed m-0 text-lg">
-                خطوات تنزيل برنامج <bdi dir="ltr">iSH Shell</bdi> وتهيئة خادم قاعدة البيانات وتشغيله والاتصال به، مع أوامر مفيدة وطريقة إيقاف الخادم.
+                خطوات تنزيل برنامج <bdi dir="ltr">iSH Shell</bdi> وتثبيت حزم قاعدة البيانات وتهيئة الخادم وتشغيله والاتصال به، مع أوامر مفيدة وطريقة إيقاف الخادم.
             </p>
         </div>
     </div>
@@ -156,6 +156,24 @@
     <p class="text-amber-800 m-0 leading-relaxed">
         اكتبي هذه الأوامر <strong>كل أمر لحاله</strong>. وتُكتب <strong>في أول مرة</strong> تشغّلين فيها البرنامج فقط.
     </p>
+</div>
+
+<!-- الخطوة صفر -->
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">0. تثبيت حزم <bdi dir="ltr">MariaDB (MySQL)</bdi></h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        هذه خطوة أساسية يجب تنفيذها <strong>قبل الخطوة رقم 1</strong>. تطبيق <bdi dir="ltr">iSH</bdi> مبني على توزيعة <bdi dir="ltr">Alpine Linux</bdi>، ويأتي كنظام خام لا يحتوي على برامج مثبتة مسبقاً. لذلك، قبل إنشاء المجلدات وتهيئة قاعدة البيانات، يجب تثبيت خادم وعميل <bdi dir="ltr">MySQL/MariaDB</bdi> في التطبيق.
+    </p>
+    <p class="text-slate-500 mb-2 leading-relaxed">أولاً: تحديث فهرس الحزم</p>
+    <pre dir="ltr"><code class="language-bash">apk update</code></pre>
+    <p class="text-slate-500 mt-4 mb-2 leading-relaxed">ثانياً: تثبيت الخادم والعميل</p>
+    <pre dir="ltr"><code class="language-bash">apk add mariadb mariadb-client</code></pre>
+    <div class="mt-4 bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex items-start gap-3">
+        <span class="text-2xl">✅</span>
+        <p class="text-emerald-800 m-0 leading-relaxed">
+            بعد تنفيذ هذا الأمر بنجاح، يمكنك إكمال الخطوات التالية بالترتيب.
+        </p>
+    </div>
 </div>
 
 <div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
