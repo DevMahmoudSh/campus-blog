@@ -52,7 +52,7 @@
       <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
         <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
         <time datetime="2026-10-16">16 أكتوبر 2026</time>
-        <span>قراءة 8 د</span>
+        <span>قراءة 7 د</span>
         <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
       </p>
       <div class="article mt-6">
@@ -131,7 +131,7 @@
         </div>
         <div>
             <h4 class="text-lg font-extrabold text-slate-800 m-0">حمّل ملخص المحاضرة</h4>
-            <p class="text-slate-500 text-sm m-0 mt-1 leading-relaxed">ملف <bdi dir="ltr">PDF</bdi> منسّق وجاهز للمراجعة والطباعة دون اتصال بالإنترنت</p>
+            <p class="text-slate-500 text-sm m-0 mt-1 leading-relaxed">ملف <bdi dir="ltr">PDF</bdi> منسّق وبجودة طباعة أصلية جاهز للمراجعة دون اتصال بالإنترنت</p>
         </div>
     </div>
     <button type="button"
@@ -444,17 +444,12 @@ DROP COLUMN TempColumn;
 
 </div>
 
-<!-- سكربت تفاعلي محدّث: إشعار النسخ + تحميل PDF مع معالجة RTL والأقواس -->
+<!-- سكربت تفاعلي: إشعار النسخ + توليد PDF أصلي (Vector PDF) يدعم العربية والـ RTL بنسبة 100% -->
 <script>
 (function () {
-    // منع تكرار ربط الأحداث إذا أُعيد تنفيذ السكربت
     if (window.__lessonHandlersBound) return;
     window.__lessonHandlersBound = true;
 
-    var PDF_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-    var PDF_FILENAME = 'ALTER-TABLE-Summary.pdf';
-
-    // إشعار Toast أعلى يمين الشاشة
     function showToast(title, text, icon) {
         Swal.fire({
             title: title,
@@ -481,147 +476,84 @@ DROP COLUMN TempColumn;
         });
     }
 
-    // تحميل مكتبة PDF عند أول ضغطة فقط
-    function loadScript(src) {
-        return new Promise(function (resolve, reject) {
-            if (window.html2pdf) return resolve();
-            var s = document.createElement('script');
-            s.src = src;
-            s.onload = resolve;
-            s.onerror = function () { reject(new Error('Failed to load PDF library')); };
-            document.head.appendChild(s);
-        });
-    }
-
-    // دالة لإصلاح مشكلة انعكاس الأقواس والنقطتين في html2canvas مع اللغة العربية
-    function fixArabicBiDiForCanvas(root) {
-        var RLM = '\u200F'; // محرف ضبط الاتجاه من اليمين لليسار
-        var LRM = '\u200E'; // محرف ضبط الاتجاه من اليسار لليمين
-
-        // 1. استبدال عناصر bdi بنص محمي بمحارف الاتجاه لمنع تشتت html2canvas
-        root.querySelectorAll('bdi').forEach(function (bdi) {
-            var text = bdi.textContent;
-            var span = document.createElement('span');
-            span.className = bdi.className;
-            span.textContent = LRM + text + LRM;
-            bdi.parentNode.replaceChild(span, bdi);
-        });
-
-        // 2. تثبيت اتجاه الأقواس والنقطتين في النصوص العربية (خارج الأكواد)
-        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
-        var textNodes = [];
-        while (walker.nextNode()) {
-            textNodes.push(walker.currentNode);
-        }
-
-        textNodes.forEach(function (node) {
-            var parent = node.parentElement;
-            if (!parent) return;
-            // تجاهل صناديق الأكواد والعناصر الإنجليزية الصريحة
-            if (parent.closest('pre, code, [dir="ltr"]')) return;
-
-            var val = node.nodeValue;
-            if (!val || !val.trim()) return;
-
-            // إحاطة الأقواس والنقطتين والفاصلة بمحرف RLM لضمان عدم انقلابها
-            val = val
-                .replace(/\(/g, RLM + '(' + RLM)
-                .replace(/\)/g, RLM + ')' + RLM)
-                .replace(/:/g, RLM + ':' + RLM)
-                .replace(/،/g, RLM + '،' + RLM);
-
-            node.nodeValue = val;
-        });
-    }
-
     var SPINNER = '<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
 
-    async function downloadPdf(btn) {
+    function exportNativePdf(btn) {
         var iconEl = btn.querySelector('.js-pdf-icon');
         var labelEl = btn.querySelector('.js-pdf-label');
         var originalIcon = iconEl.innerHTML;
         var originalLabel = labelEl.innerHTML;
-        var holder = null;
 
         btn.disabled = true;
         iconEl.innerHTML = SPINNER;
         labelEl.textContent = 'جارٍ تجهيز الملف...';
 
         try {
-            await loadScript(PDF_LIB);
-
             var source = document.getElementById('lesson-content');
             var clone = source.cloneNode(true);
-            clone.removeAttribute('id');
-            clone.classList.add('lesson-rtl');
-            clone.setAttribute('dir', 'rtl');
 
-            // إزالة العناصر غير المرغوبة في الـ PDF
-            clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function (el) { el.remove(); });
-
-            // تطبيق إصلاح الأقواس والنصوص العربية
-            fixArabicBiDiForCanvas(clone);
-
-            // ضبط العرض بدقة ليتناسب مع مقاس A4 دون أي اقتطاع من اليسار
-            var CONTENT_WIDTH = 700;
-            clone.style.cssText = 'width:' + CONTENT_WIDTH + 'px !important; max-width:' + CONTENT_WIDTH + 'px !important; margin:0 auto !important; padding:16px !important; background:#ffffff !important; box-sizing:border-box !important; direction:rtl !important; text-align:right !important; overflow:hidden !important;';
-
-            // إصلاح الجداول وصناديق الأكواد لمنع خروجها عن إطار الصفحة اليسرى
-            clone.querySelectorAll('.overflow-x-auto').forEach(function (el) {
-                el.style.cssText += ';overflow:visible !important; width:100% !important;';
+            // إزالة الأزرار والعناصر غير المطلوبة في ملف PDF
+            clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function (el) {
+                el.remove();
             });
 
-            clone.querySelectorAll('table').forEach(function (el) {
-                el.classList.remove('min-w-[720px]', 'min-w-[760px]');
-                el.style.cssText += ';min-width:0 !important; width:100% !important; table-layout:fixed !important; word-wrap:break-word !important;';
+            // جمع كافة ملفات الـ CSS والـ Styles الموجودة في الصفحة لضمان تطابق التصميم 100%
+            var stylesHtml = '';
+            document.querySelectorAll('link[rel="stylesheet"], style').forEach(function (node) {
+                stylesHtml += node.outerHTML;
             });
 
-            clone.querySelectorAll('th, td').forEach(function (cell) {
-                cell.style.cssText += ';word-break:break-word !important; overflow-wrap:break-word !important; padding:10px 8px !important; font-size:13px !important;';
-            });
+            // إنشاء إطار مخفي للطباعة المتجهة الأصلية (يمنع تقطع الحروف العربية وانعكاس الأقواس نهائياً)
+            var iframe = document.createElement('iframe');
+            iframe.style.cssText = 'position:fixed; right:0; bottom:0; width:0; height:0; border:0; visibility:hidden;';
+            document.body.appendChild(iframe);
 
-            clone.querySelectorAll('pre').forEach(function (el) {
-                el.style.cssText += ';overflow:visible !important; white-space:pre-wrap !important; word-break:break-word !important; width:100% !important; box-sizing:border-box !important; padding:12px !important;';
-            });
+            var doc = iframe.contentWindow.document;
+            doc.open();
+            doc.write(
+                '<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="utf-8">' +
+                '<title>ALTER-TABLE-Summary</title>' +
+                stylesHtml +
+                '<style>' +
+                '@page { size: A4 portrait; margin: 10mm; }' +
+                '* { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }' +
+                'html, body { background: #ffffff !important; margin: 0 !important; padding: 0 !important; direction: rtl !important; font-family: inherit; }' +
+                '#lesson-content { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 4px !important; }' +
+                '.overflow-x-auto { overflow: visible !important; }' +
+                'table { width: 100% !important; min-width: 0 !important; border-collapse: collapse !important; table-layout: auto !important; }' +
+                'th, td { padding: 10px 8px !important; font-size: 13px !important; word-break: normal !important; overflow-wrap: normal !important; }' +
+                'pre { white-space: pre-wrap !important; word-break: break-word !important; overflow: visible !important; background: #0f172a !important; color: #f8fafc !important; padding: 12px !important; border-radius: 10px !important; direction: ltr !important; text-align: left !important; }' +
+                'pre code { color: inherit !important; }' +
+                'tr, pre, .rounded-xl, .rounded-2xl { break-inside: avoid; page-break-inside: avoid; }' +
+                'h2, h3, h4 { break-after: avoid; page-break-after: avoid; }' +
+                '</style>' +
+                '</head><body class="bg-white">' +
+                clone.outerHTML +
+                '</body></html>'
+            );
+            doc.close();
 
-            clone.querySelectorAll('h2').forEach(function (h) {
-                if (h.parentElement) h.parentElement.classList.add('pdf-avoid');
-            });
+            iframe.onload = function () {
+                setTimeout(function () {
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
 
-            // وضع الحاوية في نقطة (0,0) بدلاً من (-10000px) لمنع إزاحة واقتطاع اليسار في RTL
-            holder = document.createElement('div');
-            holder.dir = 'ltr';
-            holder.style.cssText = 'position:fixed; left:0; top:0; width:' + CONTENT_WIDTH + 'px; background:#ffffff; z-index:-9999; opacity:0; pointer-events:none;';
-            holder.appendChild(clone);
-            document.body.appendChild(holder);
+                    btn.disabled = false;
+                    iconEl.innerHTML = originalIcon;
+                    labelEl.innerHTML = originalLabel;
+                    showToast('جاهز للحفظ! 📄', 'اختر "حفظ بتنسيق PDF" من نافذة الطباعة', 'success');
 
-            await window.html2pdf().set({
-                margin: [10, 10, 10, 10],
-                filename: PDF_FILENAME,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: '#ffffff',
-                    width: CONTENT_WIDTH,
-                    windowWidth: CONTENT_WIDTH,
-                    x: 0,
-                    scrollX: 0,
-                    scrollY: 0
-                },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: ['css', 'legacy'], avoid: ['.pdf-avoid', 'pre', 'tr', '.rounded-xl', '.rounded-2xl'] }
-            }).from(clone).save();
-
-            showToast('تم تجهيز الملف! 📄', 'بدأ تحميل ملخص المحاضرة', 'success');
+                    setTimeout(function () {
+                        if (iframe && iframe.parentNode) iframe.parentNode.removeChild(iframe);
+                    }, 2000);
+                }, 400);
+            };
         } catch (err) {
             console.error(err);
-            showToast('تعذّر إنشاء الملف', 'تأكد من اتصالك بالإنترنت وحاول مجدداً', 'error');
-        } finally {
-            if (holder && holder.parentNode) holder.parentNode.removeChild(holder);
             btn.disabled = false;
             iconEl.innerHTML = originalIcon;
             labelEl.innerHTML = originalLabel;
+            showToast('تعذّر تجهيز الملف', 'حدث خطأ غير متوقع، حاول مجدداً', 'error');
         }
     }
 
@@ -629,7 +561,7 @@ DROP COLUMN TempColumn;
         // زر تحميل PDF
         var pdfBtn = e.target.closest('.js-pdf-btn');
         if (pdfBtn) {
-            if (!pdfBtn.disabled) downloadPdf(pdfBtn);
+            if (!pdfBtn.disabled) exportNativePdf(pdfBtn);
             return;
         }
 
