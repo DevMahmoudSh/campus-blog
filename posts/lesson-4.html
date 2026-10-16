@@ -52,7 +52,7 @@
       <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
         <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
         <time datetime="2026-10-16">16 أكتوبر 2026</time>
-        <span>قراءة 5 د</span>
+        <span>قراءة 7 د</span>
         <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
       </p>
       <div class="article mt-6">
@@ -105,10 +105,10 @@
     }
 </style>
 
-<div dir="rtl" class="lesson-rtl text-right">
+<div dir="rtl" class="lesson-rtl text-right" id="lesson-content">
 
 <!-- صندوق مقدمة الدرس بتصميم عصري (Gradient) -->
-<div class="relative overflow-hidden rounded-2xl bg-gradient-to-l from-teal-500 to-emerald-400 p-6 shadow-lg mb-10 text-white">
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-l from-teal-500 to-emerald-400 p-6 shadow-lg mb-8 text-white">
     <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
     <div class="flex items-start gap-4 relative z-10">
         <span class="text-4xl">🛠️</span>
@@ -119,6 +119,30 @@
             </p>
         </div>
     </div>
+</div>
+
+<!-- بطاقة تحميل الملخص PDF (لا تظهر داخل ملف PDF) -->
+<div data-pdf-ignore class="mb-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+    <div class="flex items-center gap-4 flex-1">
+        <div class="w-14 h-14 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
+        </div>
+        <div>
+            <h4 class="text-lg font-extrabold text-slate-800 m-0">حمّل ملخص المحاضرة</h4>
+            <p class="text-slate-500 text-sm m-0 mt-1 leading-relaxed">ملف <bdi dir="ltr">PDF</bdi> منسّق وجاهز للمراجعة والطباعة دون اتصال بالإنترنت</p>
+        </div>
+    </div>
+    <button type="button"
+        class="js-pdf-btn inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-l from-teal-500 to-emerald-400 text-white font-bold text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 border-0 cursor-pointer">
+        <span class="js-pdf-icon inline-flex">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+        </span>
+        <span class="js-pdf-label">تحميل الملخص (<bdi dir="ltr">PDF</bdi>)</span>
+    </button>
 </div>
 
 <!-- أولاً -->
@@ -132,24 +156,65 @@
     سواء كنت تنشئ جدولاً جديداً (<bdi dir="ltr">CREATE</bdi>) أو تضيف عموداً (<bdi dir="ltr">ALTER</bdi>)، فإن الترتيب القياسي لخصائص العمود يكون كالتالي:
 </p>
 
-<div dir="rtl" class="flex flex-wrap items-center gap-2 mb-5 bg-white p-5 rounded-xl border border-slate-100 shadow-sm font-mono text-sm md:text-base">
-    <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 font-bold">اسم العمود</span>
-    <span class="text-slate-400">←</span>
-    <span class="px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-700 font-bold">نوع البيانات</span>
-    <span class="text-slate-400">←</span>
-    <span class="px-3 py-1.5 rounded-lg bg-teal-50 text-teal-700 font-bold">NOT NULL</span>
-    <span class="text-slate-400">←</span>
-    <span class="px-3 py-1.5 rounded-lg bg-teal-50 text-teal-700 font-bold">DEFAULT</span>
-    <span class="text-slate-400">←</span>
-    <span class="px-3 py-1.5 rounded-lg bg-amber-50 text-amber-700 font-bold">AUTO_INCREMENT</span>
-    <span class="text-slate-400">←</span>
-    <span class="px-3 py-1.5 rounded-lg bg-amber-50 text-amber-700 font-bold">UNIQUE</span>
-    <span class="text-slate-400">←</span>
-    <span class="px-3 py-1.5 rounded-lg bg-amber-50 text-amber-700 font-bold">CHECK</span>
-    <span class="text-slate-400">←</span>
-    <span class="px-3 py-1.5 rounded-lg bg-red-50 text-red-700 font-bold">PRIMARY KEY</span>
-    <span class="text-slate-400">←</span>
-    <span class="px-3 py-1.5 rounded-lg bg-red-50 text-red-700 font-bold">FOREIGN KEY</span>
+<!-- ترتيب تعريف العمود: إنجليزي من اليسار لليمين -->
+<div dir="ltr" class="mb-5 bg-white p-5 rounded-xl border border-slate-100 shadow-sm text-left">
+    <p class="text-xs font-bold tracking-widest text-slate-400 uppercase mt-0 mb-4">Column Definition Order</p>
+    <div class="flex flex-wrap items-center gap-y-3 gap-x-2">
+
+        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-slate-100 border border-slate-200">
+            <span class="w-6 h-6 rounded-full bg-slate-600 text-white text-xs font-bold flex items-center justify-center">1</span>
+            <span class="font-mono font-bold text-slate-700 text-sm">Column Name</span>
+        </div>
+        <span class="text-slate-300 font-bold">→</span>
+
+        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-indigo-50 border border-indigo-100">
+            <span class="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center">2</span>
+            <span class="font-mono font-bold text-indigo-700 text-sm">Data Type</span>
+        </div>
+        <span class="text-slate-300 font-bold">→</span>
+
+        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-teal-50 border border-teal-100">
+            <span class="w-6 h-6 rounded-full bg-teal-600 text-white text-xs font-bold flex items-center justify-center">3</span>
+            <span class="font-mono font-bold text-teal-700 text-sm">NOT NULL</span>
+        </div>
+        <span class="text-slate-300 font-bold">→</span>
+
+        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-teal-50 border border-teal-100">
+            <span class="w-6 h-6 rounded-full bg-teal-600 text-white text-xs font-bold flex items-center justify-center">4</span>
+            <span class="font-mono font-bold text-teal-700 text-sm">DEFAULT</span>
+        </div>
+        <span class="text-slate-300 font-bold">→</span>
+
+        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-amber-50 border border-amber-100">
+            <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center">5</span>
+            <span class="font-mono font-bold text-amber-700 text-sm">AUTO_INCREMENT</span>
+        </div>
+        <span class="text-slate-300 font-bold">→</span>
+
+        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-amber-50 border border-amber-100">
+            <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center">6</span>
+            <span class="font-mono font-bold text-amber-700 text-sm">UNIQUE</span>
+        </div>
+        <span class="text-slate-300 font-bold">→</span>
+
+        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-amber-50 border border-amber-100">
+            <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center">7</span>
+            <span class="font-mono font-bold text-amber-700 text-sm">CHECK</span>
+        </div>
+        <span class="text-slate-300 font-bold">→</span>
+
+        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-red-50 border border-red-100">
+            <span class="w-6 h-6 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">8</span>
+            <span class="font-mono font-bold text-red-700 text-sm">PRIMARY KEY</span>
+        </div>
+        <span class="text-slate-300 font-bold">→</span>
+
+        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-red-50 border border-red-100">
+            <span class="w-6 h-6 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">9</span>
+            <span class="font-mono font-bold text-red-700 text-sm">FOREIGN KEY</span>
+        </div>
+
+    </div>
 </div>
 
 <p class="text-slate-600 my-4 text-lg font-bold">مثال تطبيقي:</p>
@@ -288,7 +353,7 @@ ALTER TABLE Employees ALTER COLUMN Status DROP DEFAULT;
             <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
                 <td class="p-4 font-bold text-slate-800">الشرط المنطقي (<bdi dir="ltr">Check</bdi>)</td>
                 <td dir="ltr" class="p-4 font-mono text-sm text-left text-teal-700">ADD CONSTRAINT chk_age CHECK (Age &gt;= 18);</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left text-red-600">DROP CHECK chk_age;</td>
+                <td dir="ltr" class="p-4 font-mono text-sm text-left text-red-600">DROP CONSTRAINT chk_age;</td>
             </tr>
             <tr class="hover:bg-slate-50 transition-colors">
                 <td class="p-4 font-bold text-slate-800">الفهارس (<bdi dir="ltr">Indexes</bdi> - لتسريع البحث)</td>
@@ -379,36 +444,131 @@ DROP COLUMN TempColumn;
 
 </div>
 
-<!-- سكربت تفاعلي: ربط زر النسخ مع SweetAlert -->
+<!-- سكربت تفاعلي: إشعار النسخ + تحميل PDF -->
 <script>
-    document.addEventListener('click', function(e) {
-        const btn = e.target.closest('button');
-        if (btn && (btn.innerText.includes('نسخ') || /copy/i.test(btn.innerText))) {
-            Swal.fire({
-                title: 'تم النسخ بنجاح! 🚀',
-                text: 'أصبح الكود جاهزاً للصق',
-                icon: 'success',
-                toast: true,
-                position: 'top-end',
-                timer: 2500,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                background: '#0F766E',
-                color: '#ffffff',
-                iconColor: '#ffffff',
-                customClass: {
-                    container: 'copy-toast-container',
-                    popup: 'copy-toast-popup',
-                    title: 'copy-toast-title',
-                    htmlContainer: 'copy-toast-text'
-                },
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer);
-                    toast.addEventListener('mouseleave', Swal.resumeTimer);
-                }
+(function () {
+    // منع تكرار ربط الأحداث إذا أُعيد تنفيذ السكربت
+    if (window.__lessonHandlersBound) return;
+    window.__lessonHandlersBound = true;
+
+    var PDF_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+    var PDF_FILENAME = 'ALTER-TABLE-Summary.pdf';
+
+    // إشعار Toast أعلى يمين الشاشة
+    function showToast(title, text, icon) {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: icon || 'success',
+            toast: true,
+            position: 'top-end',
+            timer: 2500,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: icon === 'error' ? '#B91C1C' : '#0F766E',
+            color: '#ffffff',
+            iconColor: '#ffffff',
+            customClass: {
+                container: 'copy-toast-container',
+                popup: 'copy-toast-popup',
+                title: 'copy-toast-title',
+                htmlContainer: 'copy-toast-text'
+            },
+            didOpen: function (toast) {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+    }
+
+    // تحميل مكتبة PDF عند أول ضغطة فقط
+    function loadScript(src) {
+        return new Promise(function (resolve, reject) {
+            if (window.html2pdf) return resolve();
+            var s = document.createElement('script');
+            s.src = src;
+            s.onload = resolve;
+            s.onerror = function () { reject(new Error('Failed to load PDF library')); };
+            document.head.appendChild(s);
+        });
+    }
+
+    var SPINNER = '<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+
+    async function downloadPdf(btn) {
+        var iconEl = btn.querySelector('.js-pdf-icon');
+        var labelEl = btn.querySelector('.js-pdf-label');
+        var originalIcon = iconEl.innerHTML;
+        var originalLabel = labelEl.innerHTML;
+        var holder = null;
+
+        btn.disabled = true;
+        iconEl.innerHTML = SPINNER;
+        labelEl.textContent = 'جارٍ تجهيز الملف...';
+
+        try {
+            await loadScript(PDF_LIB);
+
+            var source = document.getElementById('lesson-content');
+            var clone = source.cloneNode(true);
+            clone.removeAttribute('id');
+            clone.classList.add('lesson-rtl');
+            clone.setAttribute('dir', 'rtl');
+
+            // إزالة العناصر التي لا يجب أن تظهر في الملف
+            clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function (el) { el.remove(); });
+
+            // تهيئة العناصر لتظهر كاملة داخل الصفحة
+            clone.querySelectorAll('.overflow-x-auto, pre').forEach(function (el) { el.style.overflow = 'visible'; });
+            clone.querySelectorAll('table').forEach(function (el) { el.style.minWidth = '0'; });
+            clone.querySelectorAll('pre').forEach(function (el) { el.style.whiteSpace = 'pre-wrap'; });
+            clone.querySelectorAll('h2').forEach(function (h) {
+                if (h.parentElement) h.parentElement.classList.add('pdf-avoid');
             });
+            clone.style.cssText += ';width:778px;padding:8px;background:#ffffff;';
+
+            // حاوية مؤقتة بعرض ثابت لضمان تنسيق موحد على الجوال والكمبيوتر
+            holder = document.createElement('div');
+            holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:794px;background:#ffffff;';
+            holder.appendChild(clone);
+            document.body.appendChild(holder);
+
+            await window.html2pdf().set({
+                margin: [10, 8, 10, 8],
+                filename: PDF_FILENAME,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', scrollX: 0, scrollY: 0 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['css', 'legacy'], avoid: ['.pdf-avoid', 'pre', 'tr', '.rounded-xl', '.rounded-2xl'] }
+            }).from(clone).save();
+
+            showToast('تم تجهيز الملف! 📄', 'بدأ تحميل ملخص المحاضرة', 'success');
+        } catch (err) {
+            console.error(err);
+            showToast('تعذّر إنشاء الملف', 'تأكد من اتصالك بالإنترنت وحاول مجدداً', 'error');
+        } finally {
+            if (holder && holder.parentNode) holder.parentNode.removeChild(holder);
+            btn.disabled = false;
+            iconEl.innerHTML = originalIcon;
+            labelEl.innerHTML = originalLabel;
+        }
+    }
+
+    document.addEventListener('click', function (e) {
+        // زر تحميل PDF
+        var pdfBtn = e.target.closest('.js-pdf-btn');
+        if (pdfBtn) {
+            if (!pdfBtn.disabled) downloadPdf(pdfBtn);
+            return;
+        }
+
+        // أزرار نسخ الكود
+        var btn = e.target.closest('button');
+        if (btn && (btn.innerText.includes('نسخ') || /copy/i.test(btn.innerText))) {
+            showToast('تم النسخ بنجاح! 🚀', 'أصبح الكود جاهزاً للصق', 'success');
         }
     });
+})();
 </script>
 </code>
 <!--ar-end-->
