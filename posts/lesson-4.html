@@ -52,7 +52,7 @@
       <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
         <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
         <time datetime="2026-10-16">16 أكتوبر 2026</time>
-        <span>قراءة 7 د</span>
+        <span>قراءة 8 د</span>
         <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
       </p>
       <div class="article mt-6">
@@ -444,7 +444,7 @@ DROP COLUMN TempColumn;
 
 </div>
 
-<!-- سكربت تفاعلي: إشعار النسخ + تحميل PDF -->
+<!-- سكربت تفاعلي محدّث: إشعار النسخ + تحميل PDF مع معالجة RTL والأقواس -->
 <script>
 (function () {
     // منع تكرار ربط الأحداث إذا أُعيد تنفيذ السكربت
@@ -493,6 +493,47 @@ DROP COLUMN TempColumn;
         });
     }
 
+    // دالة لإصلاح مشكلة انعكاس الأقواس والنقطتين في html2canvas مع اللغة العربية
+    function fixArabicBiDiForCanvas(root) {
+        var RLM = '\u200F'; // محرف ضبط الاتجاه من اليمين لليسار
+        var LRM = '\u200E'; // محرف ضبط الاتجاه من اليسار لليمين
+
+        // 1. استبدال عناصر bdi بنص محمي بمحارف الاتجاه لمنع تشتت html2canvas
+        root.querySelectorAll('bdi').forEach(function (bdi) {
+            var text = bdi.textContent;
+            var span = document.createElement('span');
+            span.className = bdi.className;
+            span.textContent = LRM + text + LRM;
+            bdi.parentNode.replaceChild(span, bdi);
+        });
+
+        // 2. تثبيت اتجاه الأقواس والنقطتين في النصوص العربية (خارج الأكواد)
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+        var textNodes = [];
+        while (walker.nextNode()) {
+            textNodes.push(walker.currentNode);
+        }
+
+        textNodes.forEach(function (node) {
+            var parent = node.parentElement;
+            if (!parent) return;
+            // تجاهل صناديق الأكواد والعناصر الإنجليزية الصريحة
+            if (parent.closest('pre, code, [dir="ltr"]')) return;
+
+            var val = node.nodeValue;
+            if (!val || !val.trim()) return;
+
+            // إحاطة الأقواس والنقطتين والفاصلة بمحرف RLM لضمان عدم انقلابها
+            val = val
+                .replace(/\(/g, RLM + '(' + RLM)
+                .replace(/\)/g, RLM + ')' + RLM)
+                .replace(/:/g, RLM + ':' + RLM)
+                .replace(/،/g, RLM + '،' + RLM);
+
+            node.nodeValue = val;
+        });
+    }
+
     var SPINNER = '<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
 
     async function downloadPdf(btn) {
@@ -515,29 +556,59 @@ DROP COLUMN TempColumn;
             clone.classList.add('lesson-rtl');
             clone.setAttribute('dir', 'rtl');
 
-            // إزالة العناصر التي لا يجب أن تظهر في الملف
+            // إزالة العناصر غير المرغوبة في الـ PDF
             clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function (el) { el.remove(); });
 
-            // تهيئة العناصر لتظهر كاملة داخل الصفحة
-            clone.querySelectorAll('.overflow-x-auto, pre').forEach(function (el) { el.style.overflow = 'visible'; });
-            clone.querySelectorAll('table').forEach(function (el) { el.style.minWidth = '0'; });
-            clone.querySelectorAll('pre').forEach(function (el) { el.style.whiteSpace = 'pre-wrap'; });
+            // تطبيق إصلاح الأقواس والنصوص العربية
+            fixArabicBiDiForCanvas(clone);
+
+            // ضبط العرض بدقة ليتناسب مع مقاس A4 دون أي اقتطاع من اليسار
+            var CONTENT_WIDTH = 700;
+            clone.style.cssText = 'width:' + CONTENT_WIDTH + 'px !important; max-width:' + CONTENT_WIDTH + 'px !important; margin:0 auto !important; padding:16px !important; background:#ffffff !important; box-sizing:border-box !important; direction:rtl !important; text-align:right !important; overflow:hidden !important;';
+
+            // إصلاح الجداول وصناديق الأكواد لمنع خروجها عن إطار الصفحة اليسرى
+            clone.querySelectorAll('.overflow-x-auto').forEach(function (el) {
+                el.style.cssText += ';overflow:visible !important; width:100% !important;';
+            });
+
+            clone.querySelectorAll('table').forEach(function (el) {
+                el.classList.remove('min-w-[720px]', 'min-w-[760px]');
+                el.style.cssText += ';min-width:0 !important; width:100% !important; table-layout:fixed !important; word-wrap:break-word !important;';
+            });
+
+            clone.querySelectorAll('th, td').forEach(function (cell) {
+                cell.style.cssText += ';word-break:break-word !important; overflow-wrap:break-word !important; padding:10px 8px !important; font-size:13px !important;';
+            });
+
+            clone.querySelectorAll('pre').forEach(function (el) {
+                el.style.cssText += ';overflow:visible !important; white-space:pre-wrap !important; word-break:break-word !important; width:100% !important; box-sizing:border-box !important; padding:12px !important;';
+            });
+
             clone.querySelectorAll('h2').forEach(function (h) {
                 if (h.parentElement) h.parentElement.classList.add('pdf-avoid');
             });
-            clone.style.cssText += ';width:778px;padding:8px;background:#ffffff;';
 
-            // حاوية مؤقتة بعرض ثابت لضمان تنسيق موحد على الجوال والكمبيوتر
+            // وضع الحاوية في نقطة (0,0) بدلاً من (-10000px) لمنع إزاحة واقتطاع اليسار في RTL
             holder = document.createElement('div');
-            holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:794px;background:#ffffff;';
+            holder.dir = 'ltr';
+            holder.style.cssText = 'position:fixed; left:0; top:0; width:' + CONTENT_WIDTH + 'px; background:#ffffff; z-index:-9999; opacity:0; pointer-events:none;';
             holder.appendChild(clone);
             document.body.appendChild(holder);
 
             await window.html2pdf().set({
-                margin: [10, 8, 10, 8],
+                margin: [10, 10, 10, 10],
                 filename: PDF_FILENAME,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', scrollX: 0, scrollY: 0 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    width: CONTENT_WIDTH,
+                    windowWidth: CONTENT_WIDTH,
+                    x: 0,
+                    scrollX: 0,
+                    scrollY: 0
+                },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
                 pagebreak: { mode: ['css', 'legacy'], avoid: ['.pdf-avoid', 'pre', 'tr', '.rounded-xl', '.rounded-2xl'] }
             }).from(clone).save();
@@ -570,6 +641,7 @@ DROP COLUMN TempColumn;
     });
 })();
 </script>
+
 </code>
 <!--ar-end-->
       </div>
