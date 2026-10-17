@@ -52,7 +52,7 @@
       <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
         <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
         <time datetime="2026-10-16">16 أكتوبر 2026</time>
-        <span>قراءة 6 د</span>
+        <span>قراءة 7 د</span>
         <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
       </p>
       <div class="article mt-6">
@@ -74,18 +74,23 @@
     .copy-toast-popup .swal2-timer-progress-bar { background: rgba(255, 255, 255, 0.7) !important; height: 3px !important; }
     .lesson-rtl pre { direction: ltr; text-align: left; unicode-bidi: isolate; overflow-x: auto; }
     .lesson-rtl pre code { direction: ltr; text-align: left; }
+    .lesson-rtl pre { margin: 0; padding: 1rem 1.1rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: .75rem; color: #0f172a; font-size: .9rem; line-height: 1.75; tab-size: 4; }
+    .lesson-rtl > pre { margin: 1rem 0 1.5rem; }
+    .lesson-rtl p + pre { margin-top: .5rem; }
+    .lesson-rtl pre code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; background: transparent; }
+    .lesson-rtl pre:focus-visible, .lesson-rtl [role="region"]:focus-visible { outline: 3px solid #14b8a6; outline-offset: 2px; }
 </style>
 
 <div dir="rtl" class="lesson-rtl text-right" id="lesson-content">
 
 <!-- صندوق مقدمة الدرس -->
-<div class="relative overflow-hidden rounded-2xl bg-gradient-to-l from-teal-500 to-emerald-400 p-6 shadow-lg mb-8 text-white">
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-l from-teal-700 to-emerald-700 p-6 shadow-lg mb-8 text-white">
     <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
     <div class="flex items-start gap-4 relative z-10">
-        <span class="text-4xl">🛠️</span>
+        <span class="text-4xl" aria-hidden="true">🛠️</span>
         <div>
-            <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">ملخص: أمر <bdi dir="ltr">ALTER TABLE</bdi> في <bdi dir="ltr">MySQL</bdi></h3>
-            <p class="text-teal-50 leading-relaxed m-0 text-lg">
+            <h2 class="text-2xl font-extrabold mb-2 text-white mt-0">ملخص: أمر <bdi dir="ltr">ALTER TABLE</bdi> في <bdi dir="ltr">MySQL</bdi></h2>
+            <p class="text-white leading-relaxed m-0 text-lg">
                 يُستخدم الأمر لتعديل هيكل جدول موجود: إضافة الأعمدة وحذفها وتعديلها، وإدارة القيود (<bdi dir="ltr">UNIQUE</bdi>، <bdi dir="ltr">CHECK</bdi>، <bdi dir="ltr">DEFAULT</bdi>، <bdi dir="ltr">PRIMARY KEY</bdi>) دون المساس بالبيانات المخزنة.
             </p>
         </div>
@@ -106,7 +111,7 @@
         </div>
     </div>
     <button type="button"
-        class="js-pdf-btn inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-l from-teal-500 to-emerald-400 text-white font-bold text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 border-0 cursor-pointer">
+        class="js-pdf-btn inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-l from-teal-700 to-emerald-700 text-white font-bold text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 border-0 cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-300 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
         <span class="js-pdf-icon inline-flex">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -141,7 +146,7 @@ ALTER TABLE Employees DROP Salary;</code></pre>
 </div>
 
 <div class="mb-6 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
-    <span class="text-2xl">💡</span>
+    <span class="text-2xl" aria-hidden="true">💡</span>
     <p class="text-amber-800 m-0 leading-relaxed"><strong>ملاحظة:</strong> كلمة <bdi dir="ltr" class="font-mono font-bold">COLUMN</bdi> اختيارية، يمكنك كتابتها أو تجاهلها.</p>
 </div>
 
@@ -150,9 +155,7 @@ ALTER TABLE Employees DROP Salary;</code></pre>
     <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm"><span class="text-2xl font-bold">2</span></div>
     <h2 class="text-2xl font-bold text-slate-800 m-0">تغيير اسم الجدول</h2>
 </div>
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees RENAME TO Staff;</code></pre>
-</div>
+<pre dir="ltr"><code class="language-sql">ALTER TABLE Employees RENAME TO Staff;</code></pre>
 
 <!-- 3 -->
 <div class="flex items-center gap-3 mt-12 mb-5">
@@ -179,9 +182,7 @@ ALTER TABLE Employees DROP Salary;</code></pre>
 <p class="text-slate-600 mb-6 text-lg leading-relaxed">
     تُستخدم <bdi dir="ltr" class="font-mono font-bold">CHANGE</bdi> لتغيير اسم العمود أو نوع البيانات أو كليهما معاً، وتتطلب كتابة الاسم القديم ثم الجديد.
 </p>
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees CHANGE Age Employee_Age INT;</code></pre>
-</div>
+<pre dir="ltr"><code class="language-sql">ALTER TABLE Employees CHANGE Age Employee_Age INT;</code></pre>
 
 <!-- 5 -->
 <div class="flex items-center gap-3 mt-12 mb-5">
@@ -225,7 +226,7 @@ ALTER TABLE Employees DROP Salary;</code></pre>
     <h2 class="text-2xl font-bold text-slate-800 m-0">قيد <bdi dir="ltr">DEFAULT</bdi> (القيمة الافتراضية)</h2>
 </div>
 <div class="mb-6 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
-    <span class="text-2xl">💡</span>
+    <span class="text-2xl" aria-hidden="true">💡</span>
     <p class="text-amber-800 m-0 leading-relaxed"><strong>ملاحظة:</strong> كلمة <bdi dir="ltr" class="font-mono font-bold">COLUMN</bdi> بعد <bdi dir="ltr" class="font-mono font-bold">ALTER</bdi> الثانية اختيارية، ويمكنك كتابتها أو حذفها.</p>
 </div>
 <div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
@@ -249,20 +250,19 @@ ALTER TABLE Employees ALTER City DROP DEFAULT;</code></pre>
     <h2 class="text-2xl font-bold text-slate-800 m-0">الاستعلام عن القيود في الجدول</h2>
 </div>
 <p class="text-slate-600 mb-4 text-lg leading-relaxed">لمعرفة القيود التي أضفتها على جدول معين، استخدم هذا الأمر:</p>
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <pre dir="ltr"><code class="language-sql">SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE
+<pre dir="ltr"><code class="language-sql">SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE
 FROM information_schema.TABLE_CONSTRAINTS
 WHERE TABLE_NAME = 'Employees'
   AND TABLE_SCHEMA = 'اسم_قاعدة_البيانات_هنا';</code></pre>
-</div>
 
 <p class="text-slate-600 my-4 text-lg font-bold">شرح الأمر:</p>
-<div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
-    <table class="w-full min-w-[640px] text-right border-collapse bg-white">
+<p data-pdf-ignore class="sm:hidden text-sm text-slate-500 mt-4 mb-0">اسحب الجدول جانبياً لعرض باقي الأعمدة</p>
+<div tabindex="0" role="region" aria-label="جدول شرح الأمر" class="overflow-x-auto mt-2 mb-6 border border-slate-200 rounded-xl shadow-sm">
+    <table class="w-full min-w-[640px] text-right border-collapse bg-white"><caption class="sr-only">شرح أجزاء أمر الاستعلام عن القيود</caption>
         <thead class="bg-slate-100 text-slate-700">
             <tr>
-                <th class="p-4 border-b border-slate-200 font-bold">الجزء</th>
-                <th class="p-4 border-b border-slate-200 font-bold">المعنى</th>
+                <th scope="col" class="p-4 border-b border-slate-200 font-bold">الجزء</th>
+                <th scope="col" class="p-4 border-b border-slate-200 font-bold">المعنى</th>
             </tr>
         </thead>
         <tbody class="text-slate-600 text-base">
@@ -291,7 +291,7 @@ WHERE TABLE_NAME = 'Employees'
 </div>
 
 <div class="mb-6 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
-    <span class="text-2xl">⚠️</span>
+    <span class="text-2xl" aria-hidden="true">⚠️</span>
     <p class="text-amber-800 m-0 leading-relaxed">
         <strong>شرط في غاية الأهمية:</strong> بدون <bdi dir="ltr" class="font-mono font-bold">TABLE_SCHEMA</bdi>، إذا كان لديك جدول باسم <bdi dir="ltr" class="font-mono font-bold">Employees</bdi> في قواعد بيانات أخرى على نفس الخادم (مثل قاعدة اختبار وقاعدة إنتاج) فستظهر قيودها جميعاً وتختلط النتائج. تحديده يضمن الحصول على قيود الجدول في القاعدة الحالية فقط.
     </p>
@@ -307,7 +307,7 @@ WHERE TABLE_NAME = 'Employees'
     <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">إضافة القيد (للعمود الموجود بالفعل)</h4>
     <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees ADD PRIMARY KEY (ID);</code></pre>
     <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
-        <span class="text-2xl">💡</span>
+        <span class="text-2xl" aria-hidden="true">💡</span>
         <div class="text-amber-800 leading-relaxed">
             <p class="m-0">لجعل المفتاح الأساسي مركباً من أكثر من عمود (<bdi dir="ltr">Composite Key</bdi>) افصل بين الأعمدة بفاصلة:</p>
             <pre dir="ltr" class="mt-2 mb-0"><code class="language-sql">ADD PRIMARY KEY (ID, Department_ID)</code></pre>
@@ -319,7 +319,7 @@ WHERE TABLE_NAME = 'Employees'
     <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">إضافة القيد مع كتابة اسم (<bdi dir="ltr">CONSTRAINT</bdi>)</h4>
     <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees ADD CONSTRAINT PK_Employee PRIMARY KEY (ID);</code></pre>
     <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
-        <span class="text-2xl">💡</span>
+        <span class="text-2xl" aria-hidden="true">💡</span>
         <p class="text-amber-800 m-0 leading-relaxed">
             <strong>معلومة خاصة بـ <bdi dir="ltr">MySQL</bdi>:</strong> حتى لو كتبت اسماً مخصصاً مثل <bdi dir="ltr" class="font-mono font-bold">PK_Employee</bdi>، يتجاهله النظام ويحفظ المفتاح الأساسي دائماً باسم <bdi dir="ltr" class="font-mono font-bold">PRIMARY</bdi>.
         </p>
@@ -331,7 +331,7 @@ WHERE TABLE_NAME = 'Employees'
     <p class="text-slate-600 mt-0 mb-3 leading-relaxed">لا يمكن أن يحتوي الجدول على أكثر من مفتاح أساسي واحد، لذلك لا تحتاج إلى تحديد اسمه عند الحذف:</p>
     <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees DROP PRIMARY KEY;</code></pre>
     <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
-        <span class="text-2xl">⚠️</span>
+        <span class="text-2xl" aria-hidden="true">⚠️</span>
         <p class="text-amber-800 m-0 leading-relaxed">
             <strong>ملاحظة هامة قبل الحذف:</strong> إذا كان عمود المفتاح الأساسي يحتوي على خاصية الترقيم التلقائي (<bdi dir="ltr" class="font-mono font-bold">AUTO_INCREMENT</bdi>)، فيجب أولاً إزالة هذه الخاصية باستخدام <bdi dir="ltr" class="font-mono font-bold">MODIFY</bdi> أو <bdi dir="ltr" class="font-mono font-bold">CHANGE</bdi>، وإلا سيرفض النظام حذف المفتاح الأساسي.
         </p>
@@ -349,7 +349,10 @@ WHERE TABLE_NAME = 'Employees'
     var PDF_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
     var PDF_FILENAME = 'ALTER-TABLE-Summary.pdf';
 
+    document.querySelectorAll('#lesson-content pre').forEach(function (el) { el.tabIndex = 0; });
+
     function showToast(title, text, icon) {
+        if (!window.Swal) return;
         Swal.fire({
             title: title, text: text, icon: icon || 'success', toast: true, position: 'top-end',
             timer: 2500, timerProgressBar: true, showConfirmButton: false,
