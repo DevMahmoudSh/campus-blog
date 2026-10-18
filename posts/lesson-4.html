@@ -112,9 +112,9 @@
     <div class="flex items-start gap-4 relative z-10">
         <span class="text-4xl">🛠️</span>
         <div>
-            <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">ملخص محاضرة: أوامر تعديل الجداول (<bdi dir="ltr">ALTER TABLE</bdi>) في <bdi dir="ltr">MySQL</bdi></h3>
+            <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">أوامر <bdi dir="ltr">ALTER TABLE</bdi> في <bdi dir="ltr">MySQL</bdi></h3>
             <p class="text-teal-50 leading-relaxed m-0 text-lg">
-                يُعتبر أمر <bdi dir="ltr">ALTER TABLE</bdi> أحد أهم أوامر لغة تعريف البيانات (<bdi dir="ltr">DDL</bdi>)، ويُستخدم لتعديل الهيكل البنائي لجدول موجود مسبقاً (إضافة، تعديل، أو حذف الأعمدة والقيود) دون المساس بالبيانات المخزنة داخله.
+                دليل تطبيقي لأوامر <bdi dir="ltr">ALTER</bdi> في <bdi dir="ltr">MySQL</bdi>: الصيغة العامة، وإدارة الأعمدة والقيود، والاستعلام عن القيود، مع أمثلة جاهزة للنسخ.
             </p>
         </div>
     </div>
@@ -144,301 +144,281 @@
     </button>
 </div>
 
-<!-- أولاً -->
-<div class="flex items-center gap-3 mt-10 mb-5">
+<!-- الصيغة العامة -->
+<p class="text-slate-600 mb-3 text-lg font-bold">الصيغة العامة لأمر <bdi dir="ltr">ALTER</bdi> في <bdi dir="ltr">MySQL</bdi>:</p>
+<pre dir="ltr"><code class="language-sql">ALTER TABLE table_name action;</code></pre>
+
+<!-- 1 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
     <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
         <span class="text-2xl font-bold">1</span>
     </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">أولاً: القاعدة الذهبية لترتيب تعريف العمود</h2>
-</div>
-<p class="text-slate-600 mb-4 text-lg leading-relaxed">
-    سواء كنت تنشئ جدولاً جديداً (<bdi dir="ltr">CREATE</bdi>) أو تضيف عموداً (<bdi dir="ltr">ALTER</bdi>)، فإن الترتيب القياسي لخصائص العمود يكون كالتالي:
-</p>
-
-<!-- ترتيب تعريف العمود: إنجليزي من اليسار لليمين -->
-<div dir="ltr" class="mb-5 bg-white p-5 rounded-xl border border-slate-100 shadow-sm text-left">
-    <p class="text-xs font-bold tracking-widest text-slate-400 uppercase mt-0 mb-4">Column Definition Order</p>
-    <div class="flex flex-wrap items-center gap-y-3 gap-x-2">
-
-        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-slate-100 border border-slate-200">
-            <span class="w-6 h-6 rounded-full bg-slate-600 text-white text-xs font-bold flex items-center justify-center">1</span>
-            <span class="font-mono font-bold text-slate-700 text-sm">Column Name</span>
-        </div>
-        <span class="text-slate-300 font-bold">→</span>
-
-        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-indigo-50 border border-indigo-100">
-            <span class="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center">2</span>
-            <span class="font-mono font-bold text-indigo-700 text-sm">Data Type</span>
-        </div>
-        <span class="text-slate-300 font-bold">→</span>
-
-        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-teal-50 border border-teal-100">
-            <span class="w-6 h-6 rounded-full bg-teal-600 text-white text-xs font-bold flex items-center justify-center">3</span>
-            <span class="font-mono font-bold text-teal-700 text-sm">NOT NULL</span>
-        </div>
-        <span class="text-slate-300 font-bold">→</span>
-
-        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-teal-50 border border-teal-100">
-            <span class="w-6 h-6 rounded-full bg-teal-600 text-white text-xs font-bold flex items-center justify-center">4</span>
-            <span class="font-mono font-bold text-teal-700 text-sm">DEFAULT</span>
-        </div>
-        <span class="text-slate-300 font-bold">→</span>
-
-        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-amber-50 border border-amber-100">
-            <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center">5</span>
-            <span class="font-mono font-bold text-amber-700 text-sm">AUTO_INCREMENT</span>
-        </div>
-        <span class="text-slate-300 font-bold">→</span>
-
-        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-amber-50 border border-amber-100">
-            <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center">6</span>
-            <span class="font-mono font-bold text-amber-700 text-sm">UNIQUE</span>
-        </div>
-        <span class="text-slate-300 font-bold">→</span>
-
-        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-amber-50 border border-amber-100">
-            <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center">7</span>
-            <span class="font-mono font-bold text-amber-700 text-sm">CHECK</span>
-        </div>
-        <span class="text-slate-300 font-bold">→</span>
-
-        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-red-50 border border-red-100">
-            <span class="w-6 h-6 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">8</span>
-            <span class="font-mono font-bold text-red-700 text-sm">PRIMARY KEY</span>
-        </div>
-        <span class="text-slate-300 font-bold">→</span>
-
-        <div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-red-50 border border-red-100">
-            <span class="w-6 h-6 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">9</span>
-            <span class="font-mono font-bold text-red-700 text-sm">FOREIGN KEY</span>
-        </div>
-
-    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">إضافة وحذف عمود</h2>
 </div>
 
-<p class="text-slate-600 my-4 text-lg font-bold">مثال تطبيقي:</p>
-<pre dir="ltr"><code class="language-sql">Role VARCHAR(20) NOT NULL DEFAULT 'Student'</code></pre>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">إضافة عمود</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        تعتبر كلمة <bdi dir="ltr" class="font-mono font-bold">COLUMN</bdi> اختيارية، يمكنك كتابتها أو تجاهلها.
+    </p>
+    <pre dir="ltr"><code class="language-sql">
+ALTER TABLE Employees ADD COLUMN Salary DECIMAL(10,2);
 
-<!-- ثانياً -->
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees ADD Salary DECIMAL(10,2);
+</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">حذف عمود</h4>
+    <pre dir="ltr"><code class="language-sql">
+ALTER TABLE Employees DROP COLUMN Salary;
+
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees DROP Salary;
+</code></pre>
+</div>
+
+<!-- 2 -->
 <div class="flex items-center gap-3 mt-12 mb-5">
     <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
         <span class="text-2xl font-bold">2</span>
     </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">ثانياً: إدارة الأعمدة (إضافة، تعديل، حذف)</h2>
-</div>
-<p class="text-slate-600 mb-4 text-lg leading-relaxed">
-    تُعد عمليات التعامل مع الأعمدة الاستخدام الأكثر شيوعاً لأمر <bdi dir="ltr">ALTER TABLE</bdi>. يوضح الجدول التالي الفروقات الجوهرية بين أوامر التعديل (وهو سؤال شائع في الاختبارات):
-</p>
-
-<div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
-    <table class="w-full min-w-[720px] text-right border-collapse bg-white">
-        <thead class="bg-slate-100 text-slate-700">
-            <tr>
-                <th class="p-4 border-b border-slate-200 font-bold">العملية</th>
-                <th class="p-4 border-b border-slate-200 font-bold">الكلمة المفتاحية</th>
-                <th class="p-4 border-b border-slate-200 font-bold">هل يتطلب كتابة نوع البيانات؟</th>
-                <th class="p-4 border-b border-slate-200 font-bold">مثال برمجي (<bdi dir="ltr">ALTER TABLE Employees ...</bdi>)</th>
-            </tr>
-        </thead>
-        <tbody class="text-slate-600 text-base">
-            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-bold text-slate-800">إضافة عمود</td>
-                <td dir="ltr" class="p-4 font-mono font-bold text-teal-600 text-left">ADD</td>
-                <td class="p-4">نعم</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left">ADD Salary DECIMAL(10,2) AFTER Name;</td>
-            </tr>
-            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-bold text-slate-800">حذف عمود</td>
-                <td dir="ltr" class="p-4 font-mono font-bold text-teal-600 text-left">DROP COLUMN</td>
-                <td class="p-4">لا</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left">DROP COLUMN Email;</td>
-            </tr>
-            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-bold text-slate-800">تعديل النوع/الخصائص فقط</td>
-                <td dir="ltr" class="p-4 font-mono font-bold text-teal-600 text-left">MODIFY</td>
-                <td class="p-4">نعم</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left">MODIFY Name VARCHAR(100) NOT NULL;</td>
-            </tr>
-            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-bold text-slate-800">تغيير الاسم والنوع معاً</td>
-                <td dir="ltr" class="p-4 font-mono font-bold text-teal-600 text-left">CHANGE</td>
-                <td class="p-4">نعم (الاسم القديم ثم الجديد ثم النوع)</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left">CHANGE Name FullName VARCHAR(100);</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-bold text-slate-800">تغيير الاسم فقط (حديث)</td>
-                <td dir="ltr" class="p-4 font-mono font-bold text-teal-600 text-left">RENAME COLUMN</td>
-                <td class="p-4">لا (<bdi dir="ltr">MySQL 8.0+</bdi>)</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left">RENAME COLUMN Name TO FullName;</td>
-            </tr>
-        </tbody>
-    </table>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">تغيير اسم الجدول</h2>
 </div>
 
-<!-- ثالثاً -->
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees RENAME TO Staff;</code></pre>
+</div>
+
+<!-- 3 -->
 <div class="flex items-center gap-3 mt-12 mb-5">
     <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
         <span class="text-2xl font-bold">3</span>
     </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">ثالثاً: التعامل مع قيد الفراغ (<bdi dir="ltr">NOT NULL</bdi>) والقيم الافتراضية</h2>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">تعديل نوع البيانات وإضافة قيد <bdi dir="ltr">NOT NULL</bdi> (باستخدام <bdi dir="ltr">MODIFY</bdi>)</h2>
 </div>
 <p class="text-slate-600 mb-6 text-lg leading-relaxed">
-    يتم التحكم في إجبارية الحقل عن طريق أمر <bdi dir="ltr">MODIFY</bdi> بإعادة تعريف العمود:
+    تُستخدم <bdi dir="ltr" class="font-mono font-bold">MODIFY</bdi> لتعديل نوع بيانات العمود أو إضافة/إزالة قيد <bdi dir="ltr">NOT NULL</bdi> بدون تغيير اسم العمود.
 </p>
 
 <div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">إضافة قيد عدم الفراغ (<bdi dir="ltr">NOT NULL</bdi>)</h4>
-    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees MODIFY PhoneNumber VARCHAR(20) NOT NULL;</code></pre>
-    <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
-        <span class="text-2xl">⚠️</span>
-        <p class="text-amber-800 m-0 leading-relaxed">
-            <strong>تنبيه عملي:</strong> سيفشل هذا الأمر إذا كان الجدول يحتوي مسبقاً على سجلات فارغة (<bdi dir="ltr">NULL</bdi>) في هذا العمود. الحل هو تحديث البيانات القديمة أولاً بأمر <bdi dir="ltr" class="font-mono font-bold">UPDATE</bdi> لملء الفراغات، ثم تطبيق <bdi dir="ltr" class="font-mono font-bold">ALTER</bdi>.
-        </p>
-    </div>
+    <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">التعديل وإضافة القيد</h4>
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees MODIFY Age INT NOT NULL;</code></pre>
 </div>
 
 <div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">إلغاء قيد (<bdi dir="ltr">NOT NULL</bdi>) والسماح بالفراغ مجدداً</h4>
-    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees MODIFY PhoneNumber VARCHAR(20) NULL;</code></pre>
+    <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">إزالة قيد <bdi dir="ltr">NOT NULL</bdi> (إرجاعه ليقبل القيم الفارغة <bdi dir="ltr">NULL</bdi>)</h4>
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees MODIFY Age INT NULL;</code></pre>
 </div>
 
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">ضبط أو حذف القيمة الافتراضية (<bdi dir="ltr">DEFAULT</bdi>)</h4>
-    <pre dir="ltr"><code class="language-sql">
--- إضافة قيمة افتراضية
-ALTER TABLE Employees ALTER COLUMN Status SET DEFAULT 'Active';
-
--- حذف القيمة الافتراضية
-ALTER TABLE Employees ALTER COLUMN Status DROP DEFAULT;
-</code></pre>
-</div>
-
-<!-- رابعاً -->
+<!-- 4 -->
 <div class="flex items-center gap-3 mt-12 mb-5">
     <div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm">
         <span class="text-2xl font-bold">4</span>
     </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">رابعاً: إدارة القيود والمفاتيح (<bdi dir="ltr">Constraints &amp; Keys</bdi>)</h2>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">تعديل اسم العمود أو نوعه (باستخدام <bdi dir="ltr">CHANGE</bdi>)</h2>
 </div>
 <p class="text-slate-600 mb-4 text-lg leading-relaxed">
-    تُستخدم القيود لضمان سلامة البيانات وترابط الجداول. يفضل دائماً إعطاء اسم مميز للقيد (<bdi dir="ltr">CONSTRAINT name</bdi>) ليسهل حذفه لاحقاً.
+    تُستخدم <bdi dir="ltr" class="font-mono font-bold">CHANGE</bdi> لتغيير اسم العمود، أو نوع البيانات، أو كليهما معاً (تتطلب كتابة الاسم القديم ثم الجديد).
 </p>
 
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees CHANGE Age Employee_Age INT;</code></pre>
+</div>
+
+<!-- 5 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+        <span class="text-2xl font-bold">5</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">قيد <bdi dir="ltr">UNIQUE</bdi> (فريد)</h2>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">الإضافة (بدون تحديد اسم للقيد - يقوم النظام بتسميته تلقائياً)</h4>
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees ADD UNIQUE (Email);</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">الإضافة (مع تحديد اسم مخصص للقيد باستخدام <bdi dir="ltr">CONSTRAINT</bdi>)</h4>
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees ADD CONSTRAINT UQ_Email UNIQUE (Email);</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">حذف قيد <bdi dir="ltr">UNIQUE</bdi> (في إصدارات <bdi dir="ltr">MySQL</bdi> الحديثة)</h4>
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees DROP CONSTRAINT UQ_Email;</code></pre>
+</div>
+
+<!-- 6 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
+        <span class="text-2xl font-bold">6</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">قيد <bdi dir="ltr">CHECK</bdi> (التحقق من شرط)</h2>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">الإضافة (بدون تحديد اسم للقيد)</h4>
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees ADD CHECK (Age &gt;= 18);</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">الإضافة (مع تحديد اسم مخصص للقيد)</h4>
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees ADD CONSTRAINT CHK_Age CHECK (Age &gt;= 18);</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">حذف قيد <bdi dir="ltr">CHECK</bdi></h4>
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees DROP CONSTRAINT CHK_Age;</code></pre>
+</div>
+
+<!-- 7 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
+        <span class="text-2xl font-bold">7</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">قيد <bdi dir="ltr">DEFAULT</bdi> (القيمة الافتراضية)</h2>
+</div>
+
+<div class="mb-6 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
+    <span class="text-2xl">💡</span>
+    <p class="text-amber-800 m-0 leading-relaxed">
+        <strong>ملاحظة:</strong> كلمة <bdi dir="ltr" class="font-mono font-bold">COLUMN</bdi> بعد <bdi dir="ltr" class="font-mono font-bold">ALTER</bdi> الثانية هي اختيارية، ويمكنك كتابتها أو حذفها.
+    </p>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">إضافة القيد</h4>
+    <pre dir="ltr"><code class="language-sql">
+ALTER TABLE Employees ALTER COLUMN City SET DEFAULT 'Amman';
+
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees ALTER City SET DEFAULT 'Amman';
+</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">حذف قيد <bdi dir="ltr">DEFAULT</bdi></h4>
+    <pre dir="ltr"><code class="language-sql">
+ALTER TABLE Employees ALTER COLUMN City DROP DEFAULT;
+
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees ALTER City DROP DEFAULT;
+</code></pre>
+</div>
+
+<!-- 8 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm">
+        <span class="text-2xl font-bold">8</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">الاستعلام عن القيود في الجدول (قراءة هيكل القيود)</h2>
+</div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">
+    لمعرفة القيود التي قمت بإضافتها على جدول معين، استخدم هذا الأمر:
+</p>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <pre dir="ltr"><code class="language-sql">
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE
+FROM information_schema.TABLE_CONSTRAINTS
+WHERE TABLE_NAME = 'Employees'
+  AND TABLE_SCHEMA = 'اسم_قاعدة_البيانات_هنا';
+</code></pre>
+</div>
+
+<p class="text-slate-600 my-4 text-lg font-bold">شرح الأمر:</p>
+
 <div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
-    <table class="w-full min-w-[760px] text-right border-collapse bg-white">
+    <table class="w-full min-w-[640px] text-right border-collapse bg-white">
         <thead class="bg-slate-100 text-slate-700">
             <tr>
-                <th class="p-4 border-b border-slate-200 font-bold">نوع القيد</th>
-                <th class="p-4 border-b border-slate-200 font-bold">أمر الإضافة (<bdi dir="ltr">ADD</bdi>)</th>
-                <th class="p-4 border-b border-slate-200 font-bold">أمر الحذف (<bdi dir="ltr">DROP</bdi>)</th>
+                <th class="p-4 border-b border-slate-200 font-bold w-2/5">الجزء</th>
+                <th class="p-4 border-b border-slate-200 font-bold">الشرح</th>
             </tr>
         </thead>
         <tbody class="text-slate-600 text-base">
             <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-bold text-slate-800">المفتاح الأساسي (<bdi dir="ltr">Primary Key</bdi>)</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left text-teal-700">ADD PRIMARY KEY (ID);</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left text-red-600">DROP PRIMARY KEY;</td>
+                <td dir="ltr" class="p-4 font-mono text-sm font-bold text-teal-600 text-left">information_schema.TABLE_CONSTRAINTS</td>
+                <td class="p-4">هو "دليل نظام" داخل الخادم يحتوي على بيانات لجميع القيود (<bdi dir="ltr">Metadata</bdi>).</td>
             </tr>
             <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-bold text-slate-800">المفتاح الأجنبي (<bdi dir="ltr">Foreign Key</bdi>)</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left text-teal-700">ADD CONSTRAINT fk_dept FOREIGN KEY (DeptID) REFERENCES Depts(ID);</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left text-red-600">DROP FOREIGN KEY fk_dept;</td>
+                <td dir="ltr" class="p-4 font-mono text-sm font-bold text-teal-600 text-left">CONSTRAINT_NAME</td>
+                <td class="p-4">يعرض اسم القيد (سواء الاسم المخصص مثل <bdi dir="ltr" class="font-mono">UQ_Email</bdi> أو التلقائي).</td>
             </tr>
             <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-bold text-slate-800">عدم التكرار (<bdi dir="ltr">Unique</bdi>)</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left text-teal-700">ADD CONSTRAINT uq_phone UNIQUE (Phone);</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left text-red-600">DROP INDEX uq_phone;</td>
+                <td dir="ltr" class="p-4 font-mono text-sm font-bold text-teal-600 text-left">CONSTRAINT_TYPE</td>
+                <td class="p-4">يعرض نوع القيد (<bdi dir="ltr">UNIQUE, CHECK</bdi>، إلخ).</td>
             </tr>
             <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-bold text-slate-800">الشرط المنطقي (<bdi dir="ltr">Check</bdi>)</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left text-teal-700">ADD CONSTRAINT chk_age CHECK (Age &gt;= 18);</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left text-red-600">DROP CONSTRAINT chk_age;</td>
+                <td dir="ltr" class="p-4 font-mono text-sm font-bold text-teal-600 text-left">WHERE TABLE_NAME = 'Employees'</td>
+                <td class="p-4">يفلتر النتائج ليعرض فقط القيود الخاصة بجدول الموظفين.</td>
             </tr>
             <tr class="hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-bold text-slate-800">الفهارس (<bdi dir="ltr">Indexes</bdi> - لتسريع البحث)</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left text-teal-700">ADD INDEX idx_name (Name);</td>
-                <td dir="ltr" class="p-4 font-mono text-sm text-left text-red-600">DROP INDEX idx_name;</td>
+                <td dir="ltr" class="p-4 font-mono text-sm font-bold text-teal-600 text-left">AND TABLE_SCHEMA = '...'</td>
+                <td class="p-4">شرط في غاية الأهمية؛ فهو يحدد "اسم قاعدة البيانات".</td>
             </tr>
         </tbody>
     </table>
 </div>
 
 <div class="mb-6 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
-    <span class="text-2xl">💡</span>
+    <span class="text-2xl">⚠️</span>
     <p class="text-amber-800 m-0 leading-relaxed">
-        <strong>خيارات الربط المتقدمة للمفتاح الأجنبي:</strong> يمكن إلحاق جملة <bdi dir="ltr" class="font-mono font-bold">ON DELETE CASCADE</bdi> أو <bdi dir="ltr" class="font-mono font-bold">ON UPDATE CASCADE</bdi> عند تعريف المفتاح الأجنبي لضمان حذف أو تحديث السجلات المرتبطة تلقائياً عند حذف أو تحديث السجل الأب.
+        <strong>لماذا شرط <bdi dir="ltr" class="font-mono">TABLE_SCHEMA</bdi> مهم؟</strong> بدون هذا الشرط، إذا كان لديك جدول باسم <bdi dir="ltr" class="font-mono font-bold">Employees</bdi> في قواعد بيانات أخرى على نفس الخادم (مثل قاعدة اختبار وقاعدة إنتاج)، ستظهر لك قيودها جميعاً وتختلط النتائج. تحديده يضمن الحصول على قيود الجدول في القاعدة الحالية فقط.
     </p>
 </div>
 
-<!-- خامساً -->
+<!-- 9 -->
 <div class="flex items-center gap-3 mt-12 mb-5">
     <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
-        <span class="text-2xl font-bold">5</span>
+        <span class="text-2xl font-bold">9</span>
     </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">خامساً: كيف تكتشف اسم القيد لحذفه؟</h2>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">إضافة وحذف المفتاح الأساسي (<bdi dir="ltr">PRIMARY KEY</bdi>)</h2>
 </div>
 <p class="text-slate-600 mb-6 text-lg leading-relaxed">
-    إذا نسيت اسم القيد (مثل اسم الـ <bdi dir="ltr">Foreign Key</bdi>) وتريد حذفه، يمكنك استخراجه بطريقتين:
+    تتم إضافة وحذف المفتاح الأساسي باستخدام <bdi dir="ltr" class="font-mono font-bold">ALTER TABLE</bdi> في <bdi dir="ltr">MySQL</bdi> بالصيغ التالية:
 </p>
 
 <div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">الطريقة السريعة (عرض كود إنشاء الجدول)</h4>
-    <pre dir="ltr"><code class="language-sql">SHOW CREATE TABLE Employees;</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">الطريقة المنهجية (الاستعلام من قاموس البيانات)</h4>
-    <pre dir="ltr"><code class="language-sql">
-SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE 
-FROM information_schema.TABLE_CONSTRAINTS 
-WHERE TABLE_NAME = 'Employees';
-</code></pre>
-</div>
-
-<!-- سادساً -->
-<div class="flex items-center gap-3 mt-12 mb-5">
-    <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
-        <span class="text-2xl font-bold">6</span>
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">إضافة قيد <bdi dir="ltr">PRIMARY KEY</bdi></h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        إذا كان العمود موجوداً بالفعل وتريد تعيينه كمفتاح أساسي:
+    </p>
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees ADD PRIMARY KEY (ID);</code></pre>
+    <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
+        <span class="text-2xl">💡</span>
+        <p class="text-amber-800 m-0 leading-relaxed">
+            <strong>ملاحظة:</strong> إذا أردت جعل المفتاح الأساسي مركباً من أكثر من عمود (<bdi dir="ltr">Composite Key</bdi>)، تفصل بينها بفاصلة:
+            <bdi dir="ltr" class="font-mono font-bold">ADD PRIMARY KEY (ID, Department_ID)</bdi>
+        </p>
     </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">سادساً: أوامر متقدمة وإعدادات الجدول</h2>
-</div>
-<p class="text-slate-600 mb-6 text-lg leading-relaxed">
-    مهارات إضافية تميز الطالب المتقدم ومهندس قواعد البيانات:
-</p>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">تغيير اسم الجدول بالكامل</h4>
-    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees RENAME TO Staff;</code></pre>
 </div>
 
 <div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">تعديل بداية الترقيم التلقائي</h4>
-    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees AUTO_INCREMENT = 1000;</code></pre>
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">إضافة قيد <bdi dir="ltr">PRIMARY KEY</bdi> مع كتابة اسم للقيد (<bdi dir="ltr">CONSTRAINT</bdi>)</h4>
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees ADD CONSTRAINT PK_Employee PRIMARY KEY (ID);</code></pre>
+    <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
+        <span class="text-2xl">💡</span>
+        <p class="text-amber-800 m-0 leading-relaxed">
+            <strong>معلومة خاصة بـ <bdi dir="ltr">MySQL</bdi>:</strong> حتى إذا قمت بكتابة اسم مخصص للمفتاح الأساسي مثل <bdi dir="ltr" class="font-mono font-bold">PK_Employee</bdi>، فإن النظام سيتجاهل هذا الاسم ويحفظه دائماً باسم <bdi dir="ltr" class="font-mono font-bold">PRIMARY</bdi> في الكواليس.
+        </p>
+    </div>
 </div>
 
 <div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">توحيد ترميز الحروف (لدعم العربية والرموز)</h4>
-    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees CONVERT TO CHARACTER SET utf8mb4;</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">الأعمدة المحسوبة تلقائياً (<bdi dir="ltr">Generated Columns</bdi>)</h4>
-    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees ADD AnnualSalary DECIMAL(10,2) AS (Salary * 12) VIRTUAL;</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">تعديل الجداول الضخمة دون إيقاف النظام (<bdi dir="ltr">Zero Downtime</bdi>)</h4>
-    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees ADD Phone VARCHAR(20), ALGORITHM = INPLACE, LOCK = NONE;</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">دمج عدة أوامر معاً (لتقليل الحمل على الخادم)</h4>
-    <pre dir="ltr"><code class="language-sql">
-ALTER TABLE Employees
-ADD Age INT,
-MODIFY Name VARCHAR(120) NOT NULL,
-DROP COLUMN TempColumn;
-</code></pre>
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">حذف قيد <bdi dir="ltr">PRIMARY KEY</bdi></h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        نظراً لأن أي جدول لا يمكنه احتواء أكثر من مفتاح أساسي واحد، فإنك لا تحتاج إلى تحديد اسمه عند الحذف، بل يكفي كتابة الأمر التالي مباشرة:
+    </p>
+    <pre dir="ltr"><code class="language-sql">ALTER TABLE Employees DROP PRIMARY KEY;</code></pre>
+    <div class="mt-4 bg-red-50 border border-red-200 p-4 rounded-xl flex items-start gap-3">
+        <span class="text-2xl">⚠️</span>
+        <p class="text-red-800 m-0 leading-relaxed">
+            <strong>ملاحظة هامة قبل الحذف:</strong> إذا كان عمود المفتاح الأساسي يحتوي على خاصية الترقيم التلقائي (<bdi dir="ltr" class="font-mono font-bold">AUTO_INCREMENT</bdi>)، يجب عليك أولاً إزالة هذه الخاصية باستخدام <bdi dir="ltr" class="font-mono font-bold">MODIFY</bdi> أو <bdi dir="ltr" class="font-mono font-bold">CHANGE</bdi>، وإلا سيرفض النظام حذف المفتاح الأساسي.
+        </p>
+    </div>
 </div>
 
 </div>
@@ -451,7 +431,7 @@ DROP COLUMN TempColumn;
     window.__lessonHandlersBound = true;
 
     var PDF_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-    var PDF_FILENAME = 'ALTER-TABLE-Summary.pdf';
+    var PDF_FILENAME = 'ALTER-TABLE-Commands.pdf';
 
     // إشعار Toast أعلى يمين الشاشة
     function showToast(title, text, icon) {
