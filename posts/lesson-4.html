@@ -52,7 +52,7 @@
       <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
         <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
         <time datetime="2026-10-16">16 أكتوبر 2026</time>
-        <span>قراءة 7 د</span>
+        <span>قراءة 8 د</span>
         <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
       </p>
       <div class="article mt-6">
@@ -60,7 +60,7 @@
 <code><!-- استدعاء مكتبة SweetAlert لتعمل داخل صفحة الدرس -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- تنسيقات الإشعار ودعم RTL -->
+<!-- تنسيقات الإشعار ودعم RTL + وضع التصدير إلى PDF -->
 <style>
     .copy-toast-container {
         direction: ltr !important;
@@ -101,6 +101,39 @@
     .lesson-rtl pre code {
         direction: ltr;
         text-align: left;
+    }
+
+    /* ===== يُطبَّق فقط على النسخة المستنسخة أثناء التصدير إلى PDF ===== */
+    .pdf-mode,
+    .pdf-mode * {
+        box-sizing: border-box !important;
+    }
+    .pdf-mode {
+        width: 760px;
+        padding: 20px;              /* مساحة تمنع قصّ الحواف */
+        background: #fff;
+        direction: rtl;
+        text-align: right;
+        -webkit-font-smoothing: antialiased;
+    }
+    .pdf-mode * {
+        max-width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        letter-spacing: normal !important;   /* تباعد الأحرف يكسر اتصال الحروف العربية */
+        box-shadow: none !important;         /* الظلال تُقصّ عند حواف الكانفاس */
+        backdrop-filter: none !important;
+        transition: none !important;
+        animation: none !important;
+    }
+    .pdf-mode .overflow-x-auto { overflow: visible !important; }
+    .pdf-mode table { width: 100%; min-width: 0 !important; }
+    .pdf-mode td, .pdf-mode th { word-break: break-word; }
+    .pdf-mode pre,
+    .pdf-mode pre code {
+        white-space: pre-wrap !important;
+        overflow-wrap: anywhere;
+        overflow: visible !important;
     }
 </style>
 
@@ -423,7 +456,7 @@ WHERE TABLE_NAME = 'Employees'
 
 </div>
 
-<!-- سكربت تفاعلي: إشعار النسخ + تحميل PDF -->
+<!-- سكربت تفاعلي: إشعار النسخ + تحميل PDF بجودة عالية -->
 <script>
 (function () {
     // منع تكرار ربط الأحداث إذا أُعيد تنفيذ السكربت
@@ -432,6 +465,7 @@ WHERE TABLE_NAME = 'Employees'
 
     var PDF_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
     var PDF_FILENAME = 'ALTER-TABLE-Commands.pdf';
+    var CONTENT_W = 760; // يجب أن يطابق عرض .pdf-mode في CSS
 
     // إشعار Toast أعلى يمين الشاشة
     function showToast(title, text, icon) {
@@ -474,6 +508,16 @@ WHERE TABLE_NAME = 'Employees'
 
     var SPINNER = '<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
 
+    // اختيار أعلى scale (حتى 4) تسمح به حدود الكانفاس في المتصفح
+    function pickScale(el, wanted) {
+        var isIOS = /iP(hone|ad|od)/i.test(navigator.userAgent);
+        var MAX_AREA = isIOS ? 16e6 : 60e6;   // متصفح iOS يحدّ الكانفاس عند ~16.7 مليون بكسل
+        var MAX_SIDE = 30000;
+        var w = el.offsetWidth, h = el.offsetHeight, s = wanted;
+        while (s > 1.5 && (w * s * h * s > MAX_AREA || h * s > MAX_SIDE)) s -= 0.5;
+        return s;
+    }
+
     async function downloadPdf(btn) {
         var iconEl = btn.querySelector('.js-pdf-icon');
         var labelEl = btn.querySelector('.js-pdf-label');
@@ -487,38 +531,46 @@ WHERE TABLE_NAME = 'Employees'
 
         try {
             await loadScript(PDF_LIB);
+            // انتظار تحميل الخطوط لتجنّب تغيّر التخطيط أثناء الرسم
+            if (document.fonts && document.fonts.ready) await document.fonts.ready;
 
-            var source = document.getElementById('lesson-content');
-            var clone = source.cloneNode(true);
+            var clone = document.getElementById('lesson-content').cloneNode(true);
             clone.removeAttribute('id');
-            clone.classList.add('lesson-rtl');
-            clone.setAttribute('dir', 'rtl');
+            clone.classList.add('pdf-mode');
 
             // إزالة العناصر التي لا يجب أن تظهر في الملف
             clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function (el) { el.remove(); });
 
-            // تهيئة العناصر لتظهر كاملة داخل الصفحة
-            clone.querySelectorAll('.overflow-x-auto, pre').forEach(function (el) { el.style.overflow = 'visible'; });
-            clone.querySelectorAll('table').forEach(function (el) { el.style.minWidth = '0'; });
-            clone.querySelectorAll('pre').forEach(function (el) { el.style.whiteSpace = 'pre-wrap'; });
+            // منع فصل العنوان عن بطاقته بين صفحتين
             clone.querySelectorAll('h2').forEach(function (h) {
                 if (h.parentElement) h.parentElement.classList.add('pdf-avoid');
             });
-            clone.style.cssText += ';width:778px;padding:8px;background:#ffffff;';
 
             // حاوية مؤقتة بعرض ثابت لضمان تنسيق موحد على الجوال والكمبيوتر
             holder = document.createElement('div');
-            holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:794px;background:#ffffff;';
+            holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:' + CONTENT_W + 'px;background:#fff;';
             holder.appendChild(clone);
             document.body.appendChild(holder);
 
+            var scale = pickScale(clone, 4);
+
             await window.html2pdf().set({
-                margin: [10, 8, 10, 8],
+                margin: [12, 10, 12, 10],                    // مم: أعلى، يسار، أسفل، يمين
                 filename: PDF_FILENAME,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', scrollX: 0, scrollY: 0 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: ['css', 'legacy'], avoid: ['.pdf-avoid', 'pre', 'tr', '.rounded-xl', '.rounded-2xl'] }
+                image: { type: 'png', quality: 1 },          // بدون ضغط مفقِد: حواف نص أوضح
+                html2canvas: {
+                    scale: scale,
+                    windowWidth: CONTENT_W,                  // تخطيط بعرض ثابت بدل عرض الجوال
+                    width: CONTENT_W,
+                    scrollX: 0,
+                    scrollY: 0,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    letterRendering: true,                   // تتجاهله html2canvas 1.x دون ضرر
+                    logging: false
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
+                pagebreak: { mode: ['css', 'legacy'], avoid: ['.pdf-avoid', 'pre', 'tr', 'h4'] }
             }).from(clone).save();
 
             showToast('تم تجهيز الملف! 📄', 'بدأ تحميل ملخص المحاضرة', 'success');
