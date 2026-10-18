@@ -52,7 +52,7 @@
       <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
         <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
         <time datetime="2026-10-16">16 أكتوبر 2026</time>
-        <span>قراءة 9 د</span>
+        <span>قراءة 10 د</span>
         <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
       </p>
       <div class="article mt-6">
@@ -103,30 +103,27 @@
         text-align: left;
     }
 
-    /* طبقة html2pdf لا تحجب النقرات أبداً (حتى لو تعطل التصدير) */
-    .html2pdf__overlay {
-        pointer-events: none !important;
-    }
-
-    /* ===== يُطبَّق فقط على النسخة المستنسخة أثناء التصدير إلى PDF ===== */
+    /* ===== يُطبَّق فقط على النسخة المؤقتة أثناء التصدير إلى PDF ===== */
     .pdf-mode,
     .pdf-mode * {
         box-sizing: border-box !important;
     }
     .pdf-mode {
         width: 760px;
-        padding: 20px;              /* مساحة تمنع قصّ الحواف */
+        padding: 2px;
         background: #fff;
         direction: rtl;
         text-align: right;
-        -webkit-font-smoothing: antialiased;
     }
     .pdf-mode * {
-        max-width: 100%;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        letter-spacing: normal !important;   /* تباعد الأحرف يكسر اتصال الحروف العربية */
-        box-shadow: none !important;         /* الظلال تُقصّ عند حواف الكانفاس */
+        /* مهم جداً: أي تباعد أحرف أو كسر للكلمات يجعل html2canvas يرسم كل حرف وحده فتتفكك الحروف العربية */
+        letter-spacing: normal !important;
+        word-spacing: normal !important;
+        overflow-wrap: normal !important;
+        word-wrap: normal !important;
+        word-break: normal !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
         backdrop-filter: none !important;
         filter: none !important;
         transition: none !important;
@@ -134,11 +131,9 @@
     }
     .pdf-mode .overflow-x-auto { overflow: visible !important; }
     .pdf-mode table { width: 100%; min-width: 0 !important; }
-    .pdf-mode td, .pdf-mode th { word-break: break-word; }
     .pdf-mode pre,
     .pdf-mode pre code {
         white-space: pre-wrap !important;
-        overflow-wrap: anywhere;
         overflow: visible !important;
     }
 </style>
@@ -462,22 +457,36 @@ WHERE TABLE_NAME = 'Employees'
 
 </div>
 
-<!-- سكربت تفاعلي: إشعار النسخ + تحميل PDF -->
+<!-- سكربت تفاعلي: إشعار النسخ + تصدير PDF احترافي -->
 <script>
 (function () {
     // منع تكرار ربط الأحداث إذا أُعيد تنفيذ السكربت
     if (window.__lessonHandlersBound) return;
     window.__lessonHandlersBound = true;
 
-    var PDF_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-    var PDF_FILENAME = 'ALTER-TABLE-Commands.pdf';
-    var CONTENT_W = 760;          // يجب أن يطابق عرض .pdf-mode في CSS
-    var TIMEOUT_MS = 120000;      // مهلة قصوى للتصدير (دقيقتان)
-    var busy = false;             // يمنع تشغيل تصديرين معاً
+    /* ================= الإعدادات (عدّلها بحرية) ================= */
+    var CFG = {
+        filename:   'ALTER-TABLE-Commands.pdf',
+        pdfTitle:   'ALTER TABLE Commands - MySQL Summary',
+        headerText: 'أوامر ALTER TABLE في MySQL',   // يظهر أعلى الصفحات من الثانية
+        headerSub:  'ملخص المحاضرة',
+        siteName:   location.hostname,               // يظهر في تذييل كل صفحة
+        contentW:   760,                             // عرض الرسم بالبكسل (يطابق .pdf-mode في CSS)
+        timeoutMs:  120000                           // مهلة قصوى للتصدير
+    };
+    var LIB_H2C = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    var LIB_PDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
 
+    // أبعاد الصفحة بالمليمتر
+    var PAGE_W = 210, PAGE_H = 297, MX = 12, TOP = 16, BOTTOM = 15;
+    var CONTENT_MM = PAGE_W - MX * 2;                              // عرض المحتوى
+    var MM_PER_PX = CONTENT_MM / CFG.contentW;                     // مليمتر لكل بكسل CSS
+    var PAGE_CONTENT_PX = (PAGE_H - TOP - BOTTOM) / MM_PER_PX;     // أقصى ارتفاع محتوى للصفحة (بكسل CSS)
+
+    var busy = false;
     var SPINNER = '<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
 
-    // إشعار Toast أعلى يمين الشاشة
+    /* ================= أدوات مساعدة ================= */
     function showToast(title, text, icon) {
         Swal.fire({
             title: title,
@@ -504,44 +513,81 @@ WHERE TABLE_NAME = 'Employees'
         });
     }
 
-    // تحميل مكتبة PDF عند أول ضغطة فقط (مع مهلة)
-    function loadScript(src) {
+    function loadScript(src, isReady) {
         return new Promise(function (resolve, reject) {
-            if (window.html2pdf) return resolve();
+            if (isReady()) return resolve();
             var s = document.createElement('script');
-            var t = setTimeout(function () { reject(new Error('PDF library timeout')); }, 20000);
+            var t = setTimeout(function () { reject(new Error('Library timeout: ' + src)); }, 20000);
             s.src = src;
             s.onload = function () { clearTimeout(t); resolve(); };
-            s.onerror = function () { clearTimeout(t); reject(new Error('Failed to load PDF library')); };
+            s.onerror = function () { clearTimeout(t); reject(new Error('Failed to load: ' + src)); };
             document.head.appendChild(s);
         });
     }
 
-    // إزالة أي عناصر مؤقتة تركها التصدير (خصوصاً طبقة html2pdf التي تحجب الصفحة عند الأخطاء)
-    function cleanupPdfArtifacts() {
-        document.querySelectorAll('.html2pdf__overlay, .html2pdf__container, [data-pdf-holder]').forEach(function (el) {
-            if (el.parentNode) el.parentNode.removeChild(el);
-        });
-    }
-
-    // انتظار رسم إطار واحد حتى يظهر مؤشر التحميل قبل بدء العمل الثقيل
-    function nextFrame() {
+    // إفساح المجال للمتصفح لرسم الواجهة (يمنع تجمّد الصفحة)
+    function tick() {
         return new Promise(function (resolve) {
-            requestAnimationFrame(function () { setTimeout(resolve, 30); });
+            requestAnimationFrame(function () { setTimeout(resolve, 0); });
         });
     }
 
-    // اختيار scale آمن حسب الجهاز وحجم الصفحة (تجنّب كانفاس ضخم يجمّد المتصفح)
-    function pickScale(el) {
-        var isMobile = /iP(hone|ad|od)|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
-        var wanted = isMobile ? 2 : 3;
-        var MAX_AREA = isMobile ? 12e6 : 40e6;   // أقصى عدد بكسلات للكانفاس
-        var MAX_SIDE = 16000;                    // أقصى ارتفاع (Safari يحدّ عند 16384)
-        var w = el.offsetWidth, h = el.offsetHeight, s = wanted;
+    // اختيار دقة آمنة حسب الجهاز وحجم الصفحة (تجنّب كانفاس ضخم)
+    function pickScale(w, h) {
+        var ua = navigator.userAgent;
+        var isIOS = /iP(hone|ad|od)/i.test(ua);
+        var isMobile = isIOS || /Android/i.test(ua) || window.innerWidth < 768;
+        var s = isMobile ? 2 : 3;
+        var MAX_AREA = isIOS ? 14e6 : (isMobile ? 40e6 : 60e6);
+        var MAX_SIDE = isIOS ? 16000 : 30000;
         while (s > 1 && (w * s * h * s > MAX_AREA || h * s > MAX_SIDE)) s -= 0.25;
         return Math.max(s, 1);
     }
 
+    // تحديد أماكن قطع الصفحات عند حدود العناصر (لا يُقطع كود أو جدول أو بطاقة في المنتصف)
+    function computeBreaks(clone, pageH) {
+        var base = clone.getBoundingClientRect().top;
+        var total = clone.getBoundingClientRect().height;
+        var kids = Array.prototype.slice.call(clone.children);
+        var candidates = [];
+
+        kids.forEach(function (k, i) {
+            if (i === 0) return;
+            var prev = kids[i - 1];
+            // العنوان والفقرة التمهيدية يجب ألا يُتركا وحدهما في آخر الصفحة
+            var keepWithNext = prev.querySelector('h2') || prev.tagName === 'P';
+            if (keepWithNext) return;
+            candidates.push(k.getBoundingClientRect().top - base);
+        });
+
+        var breaks = [0], start = 0;
+        while (total - start > pageH + 1) {
+            var limit = start + pageH, best = -1;
+            for (var i = 0; i < candidates.length; i++) {
+                if (candidates[i] > start + 40 && candidates[i] <= limit) best = candidates[i];
+            }
+            if (best < 0) best = limit;      // عنصر أطول من صفحة كاملة: قطع اضطراري
+            breaks.push(best);
+            start = best;
+        }
+        breaks.push(total);
+        return breaks;
+    }
+
+    // رسم شريط نصي (رأس/تذييل) بخط الصفحة نفسه لضمان صحة العربية
+    function makeStrip(wMm, hMm, draw) {
+        var K = 12; // بكسل لكل مم
+        var c = document.createElement('canvas');
+        c.width = Math.round(wMm * K);
+        c.height = Math.round(hMm * K);
+        var ctx = c.getContext('2d');
+        draw(ctx, c.width, c.height);
+        var url = c.toDataURL('image/png');
+        c.width = c.height = 0;
+        return url;
+    }
+
+    /* ================= التصدير ================= */
     async function downloadPdf(btn) {
         if (busy) return;
         busy = true;
@@ -550,65 +596,148 @@ WHERE TABLE_NAME = 'Employees'
         var labelEl = btn.querySelector('.js-pdf-label');
         var originalIcon = iconEl.innerHTML;
         var originalLabel = labelEl.innerHTML;
-        var holder = null;
-        var timer = null;
+        var holder = null, timer = null, bigCanvas = null;
+
+        function progress(p) { labelEl.textContent = 'جارٍ التجهيز… ' + Math.round(p) + '%'; }
 
         btn.disabled = true;
         iconEl.innerHTML = SPINNER;
-        labelEl.textContent = 'جارٍ تجهيز الملف...';
+        progress(2);
 
         try {
-            await loadScript(PDF_LIB);
-            if (document.fonts && document.fonts.ready) await document.fonts.ready;
+            var job = (async function () {
+                await tick();
+                await loadScript(LIB_H2C, function () { return !!window.html2canvas; });
+                await loadScript(LIB_PDF, function () { return !!(window.jspdf && window.jspdf.jsPDF); });
+                if (document.fonts && document.fonts.ready) await document.fonts.ready;
+                progress(12);
 
-            var clone = document.getElementById('lesson-content').cloneNode(true);
-            clone.removeAttribute('id');
-            clone.classList.add('pdf-mode');
+                var source = document.getElementById('lesson-content');
+                var fontFamily = getComputedStyle(source).fontFamily || 'Tahoma, Arial, sans-serif';
 
-            // إزالة العناصر التي لا يجب أن تظهر في الملف
-            clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function (el) { el.remove(); });
+                // نسخة مؤقتة خارج الشاشة بعرض ثابت
+                var clone = source.cloneNode(true);
+                clone.removeAttribute('id');
+                clone.classList.add('pdf-mode');
+                clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function (el) { el.remove(); });
 
-            // منع فصل العنوان عن بطاقته بين صفحتين
-            clone.querySelectorAll('h2').forEach(function (h) {
-                if (h.parentElement) h.parentElement.classList.add('pdf-avoid');
-            });
+                holder = document.createElement('div');
+                holder.setAttribute('data-pdf-holder', '');
+                holder.setAttribute('aria-hidden', 'true');
+                holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:' + CFG.contentW + 'px;background:#fff;pointer-events:none;';
+                holder.appendChild(clone);
+                document.body.appendChild(holder);
+                await tick();
 
-            // حاوية مؤقتة خارج الشاشة بعرض ثابت لضمان تنسيق موحد على كل الأجهزة
-            holder = document.createElement('div');
-            holder.setAttribute('data-pdf-holder', '');
-            holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:' + CONTENT_W + 'px;background:#fff;pointer-events:none;';
-            holder.appendChild(clone);
-            document.body.appendChild(holder);
+                var cloneH = Math.ceil(clone.getBoundingClientRect().height);
+                var breaks = computeBreaks(clone, PAGE_CONTENT_PX);
+                var scale = pickScale(CFG.contentW, cloneH);
+                progress(20);
 
-            await nextFrame();
-            var scale = pickScale(clone);
-
-            var work = window.html2pdf().set({
-                margin: [12, 10, 12, 10],                    // مم: أعلى، يسار، أسفل، يمين
-                filename: PDF_FILENAME,
-                image: { type: 'jpeg', quality: 0.98 },      // أسرع وأخف بكثير من PNG مع جودة ممتازة
-                html2canvas: {
+                // رسم المحتوى كاملاً مرة واحدة
+                bigCanvas = await window.html2canvas(clone, {
                     scale: scale,
-                    windowWidth: CONTENT_W,                  // تخطيط بعرض ثابت بدل عرض الجوال
-                    width: CONTENT_W,
+                    width: CFG.contentW,
+                    height: cloneH,
+                    windowWidth: CFG.contentW,
+                    windowHeight: cloneH,
                     scrollX: 0,
                     scrollY: 0,
                     useCORS: true,
                     backgroundColor: '#ffffff',
                     logging: false
-                },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-                // قواعد فصل صفحات مبسّطة (القواعد المتداخلة تُبطئ html2pdf كثيراً)
-                pagebreak: { mode: ['css', 'legacy'], avoid: ['.pdf-avoid', 'pre', 'tr'] }
-            }).from(clone).save();
+                });
+                progress(60);
 
-            // مهلة قصوى حتى لا تبقى الصفحة معلّقة إلى الأبد
+                // تجهيز المستند
+                var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+                pdf.setProperties({ title: CFG.pdfTitle, subject: 'MySQL ALTER TABLE', creator: CFG.siteName });
+
+                var pages = breaks.length - 1;
+                var sc = bigCanvas.width / CFG.contentW;   // الدقة الفعلية للكانفاس
+
+                // شرائط الرأس والتذييل (تُرسم بخط الصفحة لضمان صحة العربية)
+                var headerImg = makeStrip(CONTENT_MM, 7, function (ctx, w, h) {
+                    ctx.textBaseline = 'middle';
+                    ctx.direction = 'rtl';
+                    ctx.font = '700 38px ' + fontFamily;
+                    ctx.fillStyle = '#0f766e';
+                    ctx.textAlign = 'right';
+                    ctx.fillText(CFG.headerText, w - 4, h / 2);
+                    ctx.font = '500 34px ' + fontFamily;
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(CFG.headerSub, 4, h / 2);
+                });
+
+                for (var i = 0; i < pages; i++) {
+                    if (i > 0) pdf.addPage();
+
+                    var b0 = breaks[i], b1 = breaks[i + 1];
+                    var sy = Math.round(b0 * sc);
+                    var sh = Math.max(1, Math.min(bigCanvas.height - sy, Math.round((b1 - b0) * sc)));
+
+                    var slice = document.createElement('canvas');
+                    slice.width = bigCanvas.width;
+                    slice.height = sh;
+                    var sctx = slice.getContext('2d');
+                    sctx.fillStyle = '#ffffff';
+                    sctx.fillRect(0, 0, slice.width, slice.height);
+                    sctx.drawImage(bigCanvas, 0, sy, bigCanvas.width, sh, 0, 0, bigCanvas.width, sh);
+
+                    var imgData = slice.toDataURL('image/jpeg', 0.93);
+                    slice.width = slice.height = 0;
+
+                    var hMm = (sh / sc) * MM_PER_PX;
+                    pdf.addImage(imgData, 'JPEG', MX, TOP, CONTENT_MM, hMm, undefined, 'FAST');
+
+                    // شريط علوي ملوّن
+                    pdf.setFillColor(13, 148, 136);
+                    pdf.rect(0, 0, PAGE_W, 2.4, 'F');
+                    pdf.setFillColor(52, 211, 153);
+                    pdf.rect(PAGE_W - 70, 0, 70, 2.4, 'F');
+
+                    // رأس الصفحة (من الصفحة الثانية)
+                    pdf.setDrawColor(226, 232, 240);
+                    pdf.setLineWidth(0.3);
+                    if (i > 0) {
+                        pdf.addImage(headerImg, 'PNG', MX, 5, CONTENT_MM, 7);
+                        pdf.line(MX, 13, PAGE_W - MX, 13);
+                    }
+
+                    // تذييل الصفحة
+                    var pageNo = i + 1;
+                    var footerImg = makeStrip(CONTENT_MM, 7, function (ctx, w, h) {
+                        ctx.textBaseline = 'middle';
+                        ctx.font = '500 34px ' + fontFamily;
+                        ctx.fillStyle = '#64748b';
+                        ctx.direction = 'rtl';
+                        ctx.textAlign = 'right';
+                        ctx.fillText('صفحة ' + pageNo + ' من ' + pages, w - 4, h / 2);
+                        ctx.direction = 'ltr';
+                        ctx.textAlign = 'left';
+                        ctx.fillText(CFG.siteName, 4, h / 2);
+                    });
+                    pdf.line(MX, PAGE_H - 12, PAGE_W - MX, PAGE_H - 12);
+                    pdf.addImage(footerImg, 'PNG', MX, PAGE_H - 11, CONTENT_MM, 7);
+
+                    progress(60 + ((i + 1) / pages) * 35);
+                    await tick();   // يعيد التحكم للمتصفح بين الصفحات
+                }
+
+                bigCanvas.width = bigCanvas.height = 0;
+                bigCanvas = null;
+                progress(98);
+                await tick();
+                pdf.save(CFG.filename);
+            })();
+
+            // مهلة قصوى حتى لا تبقى الصفحة معلّقة
             var timeout = new Promise(function (_, reject) {
-                timer = setTimeout(function () { reject(new Error('PDF export timeout')); }, TIMEOUT_MS);
+                timer = setTimeout(function () { reject(new Error('PDF export timeout')); }, CFG.timeoutMs);
             });
-            if (work && work.catch) work.catch(function () {}); // تجنّب تحذير promise غير معالج بعد المهلة
-
-            await Promise.race([work, timeout]);
+            job.catch(function () {});
+            await Promise.race([job, timeout]);
 
             showToast('تم تجهيز الملف! 📄', 'بدأ تحميل ملخص المحاضرة', 'success');
         } catch (err) {
@@ -616,8 +745,10 @@ WHERE TABLE_NAME = 'Employees'
             showToast('تعذّر إنشاء الملف', 'حاول مجدداً، وإن تكرر الأمر جرّب من متصفح الكمبيوتر', 'error');
         } finally {
             clearTimeout(timer);
-            cleanupPdfArtifacts();        // يحرّر الصفحة دائماً حتى عند الفشل
-            holder = null;
+            if (bigCanvas) { bigCanvas.width = bigCanvas.height = 0; }
+            document.querySelectorAll('[data-pdf-holder], .html2pdf__overlay, .html2pdf__container').forEach(function (el) {
+                if (el.parentNode) el.parentNode.removeChild(el);
+            });
             busy = false;
             btn.disabled = false;
             iconEl.innerHTML = originalIcon;
@@ -625,6 +756,7 @@ WHERE TABLE_NAME = 'Employees'
         }
     }
 
+    /* ================= الأحداث ================= */
     document.addEventListener('click', function (e) {
         // زر تحميل PDF
         var pdfBtn = e.target.closest('.js-pdf-btn');
