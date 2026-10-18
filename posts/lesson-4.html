@@ -52,7 +52,7 @@
       <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
         <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
         <time datetime="2026-10-16">16 أكتوبر 2026</time>
-        <span>قراءة 8 د</span>
+        <span>قراءة 9 د</span>
         <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
       </p>
       <div class="article mt-6">
@@ -103,6 +103,11 @@
         text-align: left;
     }
 
+    /* طبقة html2pdf لا تحجب النقرات أبداً (حتى لو تعطل التصدير) */
+    .html2pdf__overlay {
+        pointer-events: none !important;
+    }
+
     /* ===== يُطبَّق فقط على النسخة المستنسخة أثناء التصدير إلى PDF ===== */
     .pdf-mode,
     .pdf-mode * {
@@ -123,6 +128,7 @@
         letter-spacing: normal !important;   /* تباعد الأحرف يكسر اتصال الحروف العربية */
         box-shadow: none !important;         /* الظلال تُقصّ عند حواف الكانفاس */
         backdrop-filter: none !important;
+        filter: none !important;
         transition: none !important;
         animation: none !important;
     }
@@ -456,7 +462,7 @@ WHERE TABLE_NAME = 'Employees'
 
 </div>
 
-<!-- سكربت تفاعلي: إشعار النسخ + تحميل PDF بجودة عالية -->
+<!-- سكربت تفاعلي: إشعار النسخ + تحميل PDF -->
 <script>
 (function () {
     // منع تكرار ربط الأحداث إذا أُعيد تنفيذ السكربت
@@ -465,7 +471,11 @@ WHERE TABLE_NAME = 'Employees'
 
     var PDF_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
     var PDF_FILENAME = 'ALTER-TABLE-Commands.pdf';
-    var CONTENT_W = 760; // يجب أن يطابق عرض .pdf-mode في CSS
+    var CONTENT_W = 760;          // يجب أن يطابق عرض .pdf-mode في CSS
+    var TIMEOUT_MS = 120000;      // مهلة قصوى للتصدير (دقيقتان)
+    var busy = false;             // يمنع تشغيل تصديرين معاً
+
+    var SPINNER = '<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
 
     // إشعار Toast أعلى يمين الشاشة
     function showToast(title, text, icon) {
@@ -494,36 +504,54 @@ WHERE TABLE_NAME = 'Employees'
         });
     }
 
-    // تحميل مكتبة PDF عند أول ضغطة فقط
+    // تحميل مكتبة PDF عند أول ضغطة فقط (مع مهلة)
     function loadScript(src) {
         return new Promise(function (resolve, reject) {
             if (window.html2pdf) return resolve();
             var s = document.createElement('script');
+            var t = setTimeout(function () { reject(new Error('PDF library timeout')); }, 20000);
             s.src = src;
-            s.onload = resolve;
-            s.onerror = function () { reject(new Error('Failed to load PDF library')); };
+            s.onload = function () { clearTimeout(t); resolve(); };
+            s.onerror = function () { clearTimeout(t); reject(new Error('Failed to load PDF library')); };
             document.head.appendChild(s);
         });
     }
 
-    var SPINNER = '<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+    // إزالة أي عناصر مؤقتة تركها التصدير (خصوصاً طبقة html2pdf التي تحجب الصفحة عند الأخطاء)
+    function cleanupPdfArtifacts() {
+        document.querySelectorAll('.html2pdf__overlay, .html2pdf__container, [data-pdf-holder]').forEach(function (el) {
+            if (el.parentNode) el.parentNode.removeChild(el);
+        });
+    }
 
-    // اختيار أعلى scale (حتى 4) تسمح به حدود الكانفاس في المتصفح
-    function pickScale(el, wanted) {
-        var isIOS = /iP(hone|ad|od)/i.test(navigator.userAgent);
-        var MAX_AREA = isIOS ? 16e6 : 60e6;   // متصفح iOS يحدّ الكانفاس عند ~16.7 مليون بكسل
-        var MAX_SIDE = 30000;
+    // انتظار رسم إطار واحد حتى يظهر مؤشر التحميل قبل بدء العمل الثقيل
+    function nextFrame() {
+        return new Promise(function (resolve) {
+            requestAnimationFrame(function () { setTimeout(resolve, 30); });
+        });
+    }
+
+    // اختيار scale آمن حسب الجهاز وحجم الصفحة (تجنّب كانفاس ضخم يجمّد المتصفح)
+    function pickScale(el) {
+        var isMobile = /iP(hone|ad|od)|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+        var wanted = isMobile ? 2 : 3;
+        var MAX_AREA = isMobile ? 12e6 : 40e6;   // أقصى عدد بكسلات للكانفاس
+        var MAX_SIDE = 16000;                    // أقصى ارتفاع (Safari يحدّ عند 16384)
         var w = el.offsetWidth, h = el.offsetHeight, s = wanted;
-        while (s > 1.5 && (w * s * h * s > MAX_AREA || h * s > MAX_SIDE)) s -= 0.5;
-        return s;
+        while (s > 1 && (w * s * h * s > MAX_AREA || h * s > MAX_SIDE)) s -= 0.25;
+        return Math.max(s, 1);
     }
 
     async function downloadPdf(btn) {
+        if (busy) return;
+        busy = true;
+
         var iconEl = btn.querySelector('.js-pdf-icon');
         var labelEl = btn.querySelector('.js-pdf-label');
         var originalIcon = iconEl.innerHTML;
         var originalLabel = labelEl.innerHTML;
         var holder = null;
+        var timer = null;
 
         btn.disabled = true;
         iconEl.innerHTML = SPINNER;
@@ -531,7 +559,6 @@ WHERE TABLE_NAME = 'Employees'
 
         try {
             await loadScript(PDF_LIB);
-            // انتظار تحميل الخطوط لتجنّب تغيّر التخطيط أثناء الرسم
             if (document.fonts && document.fonts.ready) await document.fonts.ready;
 
             var clone = document.getElementById('lesson-content').cloneNode(true);
@@ -546,18 +573,20 @@ WHERE TABLE_NAME = 'Employees'
                 if (h.parentElement) h.parentElement.classList.add('pdf-avoid');
             });
 
-            // حاوية مؤقتة بعرض ثابت لضمان تنسيق موحد على الجوال والكمبيوتر
+            // حاوية مؤقتة خارج الشاشة بعرض ثابت لضمان تنسيق موحد على كل الأجهزة
             holder = document.createElement('div');
-            holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:' + CONTENT_W + 'px;background:#fff;';
+            holder.setAttribute('data-pdf-holder', '');
+            holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:' + CONTENT_W + 'px;background:#fff;pointer-events:none;';
             holder.appendChild(clone);
             document.body.appendChild(holder);
 
-            var scale = pickScale(clone, 4);
+            await nextFrame();
+            var scale = pickScale(clone);
 
-            await window.html2pdf().set({
+            var work = window.html2pdf().set({
                 margin: [12, 10, 12, 10],                    // مم: أعلى، يسار، أسفل، يمين
                 filename: PDF_FILENAME,
-                image: { type: 'png', quality: 1 },          // بدون ضغط مفقِد: حواف نص أوضح
+                image: { type: 'jpeg', quality: 0.98 },      // أسرع وأخف بكثير من PNG مع جودة ممتازة
                 html2canvas: {
                     scale: scale,
                     windowWidth: CONTENT_W,                  // تخطيط بعرض ثابت بدل عرض الجوال
@@ -566,19 +595,30 @@ WHERE TABLE_NAME = 'Employees'
                     scrollY: 0,
                     useCORS: true,
                     backgroundColor: '#ffffff',
-                    letterRendering: true,                   // تتجاهله html2canvas 1.x دون ضرر
                     logging: false
                 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-                pagebreak: { mode: ['css', 'legacy'], avoid: ['.pdf-avoid', 'pre', 'tr', 'h4'] }
+                // قواعد فصل صفحات مبسّطة (القواعد المتداخلة تُبطئ html2pdf كثيراً)
+                pagebreak: { mode: ['css', 'legacy'], avoid: ['.pdf-avoid', 'pre', 'tr'] }
             }).from(clone).save();
+
+            // مهلة قصوى حتى لا تبقى الصفحة معلّقة إلى الأبد
+            var timeout = new Promise(function (_, reject) {
+                timer = setTimeout(function () { reject(new Error('PDF export timeout')); }, TIMEOUT_MS);
+            });
+            if (work && work.catch) work.catch(function () {}); // تجنّب تحذير promise غير معالج بعد المهلة
+
+            await Promise.race([work, timeout]);
 
             showToast('تم تجهيز الملف! 📄', 'بدأ تحميل ملخص المحاضرة', 'success');
         } catch (err) {
             console.error(err);
-            showToast('تعذّر إنشاء الملف', 'تأكد من اتصالك بالإنترنت وحاول مجدداً', 'error');
+            showToast('تعذّر إنشاء الملف', 'حاول مجدداً، وإن تكرر الأمر جرّب من متصفح الكمبيوتر', 'error');
         } finally {
-            if (holder && holder.parentNode) holder.parentNode.removeChild(holder);
+            clearTimeout(timer);
+            cleanupPdfArtifacts();        // يحرّر الصفحة دائماً حتى عند الفشل
+            holder = null;
+            busy = false;
             btn.disabled = false;
             iconEl.innerHTML = originalIcon;
             labelEl.innerHTML = originalLabel;
