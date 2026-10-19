@@ -868,7 +868,9 @@ WHERE TABLE_NAME = 'Employees'
 
 /* ---------- Misc ---------- */
 .lx .rv{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}.lx .rv.in{opacity:1;transform:none}
-.lx .top{position:fixed;right:18px;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:var(--brand);box-shadow:0 8px 16px -4px rgba(13,148,136,.55);opacity:0;pointer-events:none;transition:opacity .25s}
+/* Back-to-top: bottom-LEFT */
+.lx .top{position:fixed;left:18px;right:auto;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:var(--brand);box-shadow:0 8px 16px -4px rgba(13,148,136,.55);display:flex;align-items:center;justify-content:center;padding:0;opacity:0;pointer-events:none;transition:opacity .25s,transform .2s}
+.lx .top:hover{transform:translateY(-2px)}
 .lx .top.show{opacity:1;pointer-events:auto}
 .lx-toast{position:fixed;top:16px;right:16px;z-index:99999;max-width:320px;padding:12px 16px;border-radius:14px;border-left:6px solid #5eead4;background:#0f766e;color:#fff;font:600 .9rem/1.4 system-ui,sans-serif;box-shadow:0 20px 25px -5px rgba(15,118,110,.35);opacity:0;transform:translateY(-16px);transition:all .3s}
 .lx-toast.show{opacity:1;transform:none}.lx-toast.err{background:#b91c1c}.lx-toast small{display:block;font-weight:400;opacity:.9}
@@ -1065,21 +1067,32 @@ function pickScale(w,h){var ua=navigator.userAgent,ios=/iP(hone|ad|od)/i.test(ua
 var s=mob?2:3,A=ios?14e6:(mob?40e6:60e6),S=ios?16000:30000;
 while(s>1&&(w*s*h*s>A||h*s>S))s-=.25;return Math.max(s,1);}
 
-/* Page-break candidates: every section, and every example/table/note inside a section
-   (never right after the section header, so a title is never left alone at a page bottom) */
-function computeBreaks(clone,pageH){
-var base=clone.getBoundingClientRect().top,total=clone.getBoundingClientRect().height,cand=[];
+/* Page-break candidates (CSS px, measured on the layout html2canvas actually renders):
+   every section, and every example/note inside a section (never right after the section header) */
+function getCands(clone){
+var base=clone.getBoundingClientRect().top,cand=[];
 [].slice.call(clone.querySelectorAll('.sec, .sec > .ex, .sec > .note')).forEach(function(el){
 if(el.classList.contains('sec')){cand.push(el.getBoundingClientRect().top-base);return;}
 var p=el.previousElementSibling;
 if(!p||p.classList.contains('sec-head')||p.classList.contains('sec-lead'))return;
 cand.push(el.getBoundingClientRect().top-base);});
-cand.sort(function(a,b){return a-b;});
-var br=[0],st=0;
-while(total-st>pageH+1){var lim=st+pageH,best=-1;
-for(var i=0;i<cand.length;i++)if(cand[i]>st+40&&cand[i]<=lim)best=cand[i];
-if(best<0)best=lim;br.push(best);st=best;}
-br.push(total);return br;}
+return cand.sort(function(a,b){return a-b;});}
+
+/* Final break positions: start from the preferred candidate, then move UP to the nearest
+   fully blank pixel row of the rendered image, so a page can never cut through text or code */
+function computeBreaks(big,cands,sc){
+var ctx=big.getContext('2d'),W=big.width,Hc=big.height,P=PCPX*sc,band=Math.ceil(sc*1.5),
+c=cands.map(function(v){return Math.round(v*sc);}),br=[0],st=0;
+function blank(y){var d=ctx.getImageData(0,y,W,band).data;
+for(var i=0;i<d.length;i+=4)if(d[i]<235||d[i+1]<235||d[i+2]<235)return false;return true;}
+while(Hc-st>P+1){
+var lim=Math.floor(st+P-band),best=-1;
+for(var i=0;i<c.length;i++)if(c[i]>st+40*sc&&c[i]<=lim)best=c[i];
+var t=best<0?lim:best,y=t,min=st+P*.4;
+while(y>min&&!blank(y))y--;
+if(y<=min)y=t;
+br.push(y/sc);st=y;}
+br.push(Hc/sc);return br;}
 function strip(w,h,draw){var c=document.createElement('canvas');c.width=Math.round(w*12);c.height=Math.round(h*12);draw(c.getContext('2d'),c.width,c.height);var u=c.toDataURL('image/png');c.width=c.height=0;return u;}
 
 /* Light SQL syntax highlighting (display only; copy still reads plain text) */
@@ -1121,19 +1134,21 @@ clone.querySelectorAll('[data-pdf-ignore],button,script').forEach(function(e){e.
 holder=document.createElement('div');holder.setAttribute('data-pdf-holder','');holder.setAttribute('aria-hidden','true');
 holder.style.cssText='position:fixed;left:-10000px;top:0;width:'+CFG.contentW+'px;background:#fff;pointer-events:none;';
 holder.appendChild(clone);document.body.appendChild(holder);await tick();
-var H=Math.ceil(clone.getBoundingClientRect().height),breaks=computeBreaks(clone,PCPX),scale=pickScale(CFG.contentW,H);
+var H=Math.ceil(clone.getBoundingClientRect().height),scale=pickScale(CFG.contentW,H),cands=[];
 prog(20);
-big=await html2canvas(clone,{scale:scale,width:CFG.contentW,height:H,windowWidth:CFG.contentW,windowHeight:H,scrollX:0,scrollY:0,useCORS:true,backgroundColor:'#fff',logging:false});
+big=await html2canvas(clone,{scale:scale,width:CFG.contentW,height:H,windowWidth:CFG.contentW,windowHeight:H,scrollX:0,scrollY:0,useCORS:true,backgroundColor:'#fff',logging:false,
+onclone:function(d,el){cands=getCands(el);}});
 prog(60);
+var sc=big.width/CFG.contentW,breaks=computeBreaks(big,cands,sc);
 var pdf=new jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
 pdf.setProperties({title:CFG.pdfTitle,subject:'MySQL ALTER TABLE',creator:CFG.siteName});
-var pages=breaks.length-1,sc=big.width/CFG.contentW;
+var pages=breaks.length-1;
 var hdr=strip(CMM,7,function(x,w,h){x.textBaseline='middle';
 x.font='700 38px '+font;x.fillStyle='#0f766e';x.textAlign='left';x.fillText(CFG.headerText,4,h/2);
 x.font='500 34px '+font;x.fillStyle='#94a3b8';x.textAlign='right';x.fillText(CFG.headerSub,w-4,h/2);});
 for(var i=0;i<pages;i++){
 if(i)pdf.addPage();
-var b0=breaks[i],b1=breaks[i+1],sy=Math.round(b0*sc),sh=Math.max(1,Math.min(big.height-sy,Math.round((b1-b0)*sc)));
+var b0=breaks[i],b1=breaks[i+1],sy=Math.round(b0*sc),sh=Math.max(1,Math.min(big.height-sy,Math.round(b1*sc)-sy));
 var sl=document.createElement('canvas');sl.width=big.width;sl.height=sh;
 var cx=sl.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,sl.width,sl.height);cx.drawImage(big,0,sy,big.width,sh,0,0,big.width,sh);
 var img=sl.toDataURL('image/jpeg',.93);sl.width=sl.height=0;
