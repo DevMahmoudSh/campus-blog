@@ -789,68 +789,107 @@ WHERE TABLE_NAME = 'Employees'
       <div class="article mt-6">
 <!--en-start-->
 <code><style>
-.lx{--ink:#1e293b;--mut:#475569;max-width:860px;margin:0 auto;color:var(--ink);line-height:1.65;font-size:17px;direction:ltr;text-align:left}
+.lx{--ink:#0f172a;--mut:#475569;--line:#e2e8f0;--soft:#f8fafc;--brand:#0d9488;--brand2:#14b8a6;--brand-soft:#f0fdfa;--brand-bd:#99f6e4;max-width:860px;margin:0 auto;color:var(--ink);line-height:1.7;font-size:16.5px;direction:ltr;text-align:left}
 .lx *{box-sizing:border-box}
-.lx .hero{position:relative;overflow:hidden;border-radius:20px;padding:28px;margin-bottom:20px;color:#fff;background:linear-gradient(135deg,#14b8a6,#34d399);box-shadow:0 10px 25px -8px rgba(13,148,136,.5)}
-.lx .hero::after{content:"";position:absolute;right:-30px;top:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.14)}
+.lx h1,.lx h2,.lx h3,.lx h4,.lx p{font-family:inherit}
+
+/* ---------- Hero ---------- */
+.lx .hero{position:relative;overflow:hidden;border-radius:22px;padding:30px 28px;margin-bottom:18px;color:#fff;background:linear-gradient(135deg,#0f766e 0%,#14b8a6 55%,#34d399 100%);box-shadow:0 14px 30px -14px rgba(13,148,136,.65)}
+.lx .hero::before{content:"";position:absolute;left:-40px;bottom:-70px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
+.lx .hero::after{content:"";position:absolute;right:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.14)}
 .lx .hero-in{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start}
-.lx .hero-ic{font-size:2.6rem;line-height:1}
-.lx .hero h1{margin:0 0 8px;font-size:1.8rem;font-weight:800;color:#fff;line-height:1.25}
-.lx .hero p{margin:0 0 14px;color:#f0fdfa;font-size:1.05rem}
+.lx .hero-ic{font-size:2.4rem;line-height:1;flex:none}
+.lx .hero h1{margin:0 0 8px;font-size:1.8rem;font-weight:800;color:#fff;line-height:1.25;letter-spacing:-.01em}
+.lx .hero p{margin:0 0 14px;color:#ecfdf5;font-size:1.02rem;line-height:1.6}
 .lx .chips{display:flex;flex-wrap:wrap;gap:8px}
-.lx .chips span{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);padding:3px 12px;border-radius:999px;font-size:.8rem;font-weight:700}
-.lx .nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);margin:0 0 26px;padding-top:10px;border-bottom:1px solid #e2e8f0}
+.lx .chips span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:700}
+
+/* ---------- Nav ---------- */
+.lx .nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);margin:0 0 22px;padding-top:10px;border-bottom:1px solid var(--line)}
 .lx .nav-s{display:flex;gap:8px;overflow-x:auto;padding:0 2px 10px;scrollbar-width:none}
 .lx .nav-s::-webkit-scrollbar{display:none}
-.lx .nav a{flex:none;padding:6px 13px;border-radius:999px;font-size:.84rem;font-weight:700;color:#475569;background:#f1f5f9;text-decoration:none;border:1px solid #e2e8f0;transition:all .2s}
+.lx .nav a{flex:none;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--mut);background:#f1f5f9;text-decoration:none;border:1px solid var(--line);transition:background .2s,color .2s,border-color .2s}
 .lx .nav a:hover{background:#ccfbf1;color:#0f766e}
-.lx .nav a.on{background:#0d9488;border-color:#0d9488;color:#fff}
-.lx .bar{height:3px;background:#e2e8f0}.lx .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#14b8a6,#34d399)}
-.lx .dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:18px;border:1px solid #e2e8f0;border-radius:16px;background:#fff;margin-bottom:8px;box-shadow:0 1px 2px rgba(15,23,42,.05)}
-.lx .dl-i{width:52px;height:52px;border-radius:12px;background:#fef2f2;border:1px solid #fee2e2;display:flex;align-items:center;justify-content:center;flex:none;color:#ef4444}
-.lx .dl-t{flex:1;min-width:200px}.lx .dl-t h4{margin:0;font-size:1.05rem;font-weight:800}.lx .dl-t p{margin:2px 0 0;font-size:.88rem;color:#64748b}
-.lx .lx-pdf{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border:0;border-radius:12px;cursor:pointer;color:#fff;font:700 1rem inherit;font-family:inherit;background:linear-gradient(90deg,#14b8a6,#34d399);box-shadow:0 8px 16px -6px rgba(13,148,136,.5);transition:transform .2s,box-shadow .2s}
-.lx .lx-pdf:hover{transform:translateY(-2px)}.lx .lx-pdf:disabled{opacity:.7;cursor:wait;transform:none}
-.lx .lx-pdf svg{width:20px;height:20px}
+.lx .nav a.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.lx .bar{height:3px;background:var(--line)}.lx .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand2),#34d399)}
+
+/* ---------- Download strip ---------- */
+.lx .dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:28px}
+.lx .dl-i{width:48px;height:48px;border-radius:12px;background:#fef2f2;border:1px solid #fee2e2;display:flex;align-items:center;justify-content:center;flex:none;color:#ef4444}
+.lx .dl-t{flex:1;min-width:200px}.lx .dl-t h4{margin:0;font-size:1rem;font-weight:800}.lx .dl-t p{margin:2px 0 0;font-size:.86rem;color:#64748b;line-height:1.5}
+.lx .lx-pdf{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:12px;cursor:pointer;color:#fff;font:700 .95rem inherit;font-family:inherit;background:linear-gradient(90deg,var(--brand),var(--brand2));box-shadow:0 8px 16px -8px rgba(13,148,136,.7);transition:transform .2s}
+.lx .lx-pdf:hover{transform:translateY(-1px)}.lx .lx-pdf:disabled{opacity:.7;cursor:wait;transform:none}
+.lx .lx-pdf svg{width:18px;height:18px}
 .lx .spin{animation:lxs 1s linear infinite}@keyframes lxs{to{transform:rotate(360deg)}}
-.lx .sec-h{display:flex;align-items:center;gap:12px;margin:46px 0 18px;scroll-margin-top:84px}
-.lx .num{flex:none;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.4rem;background:var(--bg);color:var(--c);border:1px solid var(--bd)}
-.lx .sec-h h2{margin:0;font-size:1.45rem;font-weight:700;line-height:1.3}
-.lx .i{--c:#4f46e5;--bg:#eef2ff;--bd:#c7d2fe;--t:#4338ca}.lx .t{--c:#0d9488;--bg:#f0fdfa;--bd:#99f6e4;--t:#0f766e}
-.lx .a{--c:#d97706;--bg:#fffbeb;--bd:#fde68a;--t:#b45309}.lx .r{--c:#dc2626;--bg:#fef2f2;--bd:#fecaca;--t:#b91c1c}
-.lx .card{background:#fff;border:1px solid #e2e8f0;border-top:3px solid var(--c);border-radius:14px;padding:18px;margin-bottom:18px;box-shadow:0 1px 2px rgba(15,23,42,.05);transition:box-shadow .2s,transform .2s}
-.lx .card:hover{box-shadow:0 10px 20px -8px rgba(15,23,42,.18);transform:translateY(-1px)}
-.lx .card h4{margin:0 0 8px;font-size:1.05rem;font-weight:700;color:var(--t)}
-.lx .card p,.lx .lead{margin:0 0 12px;color:var(--mut)}.lx .lead{margin-bottom:16px}
-.lx .k{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.9em;background:#f1f5f9;padding:1px 6px;border-radius:6px;color:#0f172a}
-.lx .code{border-radius:12px;overflow:hidden;background:#0f172a}
-.lx .code-bar{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 6px 14px;background:#1e293b;color:#94a3b8;font:700 .72rem ui-monospace,monospace;letter-spacing:.1em}
-.lx .cp{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;cursor:pointer;font:600 .76rem system-ui,sans-serif;transition:all .2s}
+
+/* ---------- Section card (one consistent structure for every topic) ---------- */
+.lx .sec{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin:0 0 24px;box-shadow:0 1px 3px rgba(15,23,42,.05),0 12px 24px -18px rgba(15,23,42,.18);scroll-margin-top:84px}
+.lx .sec-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.lx .num{flex:none;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 6px 12px -6px rgba(13,148,136,.7)}
+.lx .sec-head h2{margin:0;font-size:1.35rem;font-weight:800;line-height:1.3;letter-spacing:-.01em;color:var(--ink)}
+.lx .sec-lead{margin:10px 0 0;color:var(--mut);font-size:.98rem}
+.lx .sec-lead:empty{display:none}
+.lx .k{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.86em;background:#f1f5f9;border:1px solid #e5e9f0;padding:1px 6px;border-radius:6px;color:#0f766e;white-space:nowrap}
+
+/* ---------- Example blocks inside a section ---------- */
+.lx .ex{margin-top:22px;padding-top:20px;border-top:1px dashed var(--line)}
+.lx .sec-head+.ex,.lx .sec-lead+.ex{margin-top:18px;padding-top:0;border-top:0}
+.lx .ex-t{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:.98rem;font-weight:700;color:var(--ink)}
+.lx .ex-t::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--brand2)}
+.lx .ex-d{margin:0 0 10px;color:var(--mut);font-size:.94rem}
+.lx .ex-t+.code{margin-top:10px}
+
+/* ---------- Code ---------- */
+.lx .code{border-radius:12px;overflow:hidden;background:#0f172a;border:1px solid #1e293b}
+.lx .code-bar{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 6px 14px;background:#1e293b;color:#94a3b8;font:700 .7rem ui-monospace,monospace;letter-spacing:.12em}
+.lx .cp{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;cursor:pointer;font:600 .76rem system-ui,sans-serif;transition:background .2s,color .2s,border-color .2s}
 .lx .cp svg{width:14px;height:14px}.lx .cp::after{content:attr(data-label)}
 .lx .cp:hover{background:#334155}.lx .cp.ok{color:#34d399;border-color:#34d399}
-.lx .code .pre{display:block;margin:0;padding:14px 16px;overflow-x:auto;white-space:pre;color:#e2e8f0;background:none;border:0;border-radius:0;font:.9rem/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:left}
+.lx .code .pre{display:block;margin:0;padding:14px 16px;overflow-x:auto;white-space:pre;color:#e2e8f0;background:none;border:0;border-radius:0;font:.88rem/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:left}
 .lx .code .pre code{background:none;color:inherit;padding:0;font:inherit}
 .lx .code .pre button,.lx .code>button:not(.cp),.lx .code [class*="copy"]:not(.cp){display:none!important}
-.lx .note{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin:16px 0 0;border-radius:12px;border:1px solid}
-.lx .note.sa{margin:0 0 18px}.lx .note .ic{font-size:1.4rem;line-height:1.3}.lx .note p{margin:0!important;color:inherit!important}
-.lx .tip{background:#fffbeb;border-color:#fde68a;color:#92400e}.lx .warn{background:#fef2f2;border-color:#fecaca;color:#991b1b}
-.lx .tw{overflow-x:auto;border:1px solid #e2e8f0;border-radius:12px;margin:16px 0;background:#fff}
+.lx .tk{color:#7dd3fc;font-weight:600}.lx .ts{color:#fcd34d}.lx .tn{color:#f0abfc}.lx .tc{color:#64748b;font-style:italic}
+
+/* ---------- Notes ---------- */
+.lx .note{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;margin:14px 0 0;border-radius:12px;border:1px solid;border-left-width:4px;font-size:.93rem;line-height:1.6}
+.lx .note .ic{font-size:1.15rem;line-height:1.5;flex:none}.lx .note p{margin:0!important;color:inherit!important}
+.lx .note .k{background:rgba(255,255,255,.7);color:inherit;border-color:rgba(0,0,0,.08)}
+.lx .tip{background:#fffbeb;border-color:#fde68a;border-left-color:#f59e0b;color:#92400e}
+.lx .warn{background:#fef2f2;border-color:#fecaca;border-left-color:#ef4444;color:#991b1b}
+.lx .sec-head~.note:first-of-type{margin-top:16px}
+
+/* ---------- Table ---------- */
+.lx .tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0;background:#fff}
 .lx table{width:100%;min-width:560px;border-collapse:collapse;text-align:left}
-.lx th{padding:12px 14px;background:#f1f5f9;color:#334155;font-weight:700;border-bottom:1px solid #e2e8f0}
-.lx td{padding:12px 14px;border-bottom:1px solid #f1f5f9;color:#475569;font-size:.95rem}
-.lx td:first-child{width:38%;font:700 .82rem ui-monospace,monospace;color:#0f766e}
-.lx tr:last-child td{border-bottom:0}.lx tr:hover td{background:#f8fafc}
-.lx .rv{opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s}.lx .rv.in{opacity:1;transform:none}
-.lx .top{position:fixed;right:18px;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:#0d9488;box-shadow:0 8px 16px -4px rgba(13,148,136,.55);opacity:0;pointer-events:none;transition:opacity .25s}
+.lx th{padding:11px 14px;background:#f1f5f9;color:#334155;font-weight:700;font-size:.88rem;border-bottom:1px solid var(--line)}
+.lx td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:var(--mut);font-size:.92rem;vertical-align:top}
+.lx td:first-child{width:38%;font:700 .8rem ui-monospace,monospace;color:#0f766e;word-break:break-word}
+.lx tr:last-child td{border-bottom:0}.lx tr:hover td{background:var(--soft)}
+
+/* ---------- Misc ---------- */
+.lx .rv{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}.lx .rv.in{opacity:1;transform:none}
+.lx .top{position:fixed;right:18px;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:var(--brand);box-shadow:0 8px 16px -4px rgba(13,148,136,.55);opacity:0;pointer-events:none;transition:opacity .25s}
 .lx .top.show{opacity:1;pointer-events:auto}
 .lx-toast{position:fixed;top:16px;right:16px;z-index:99999;max-width:320px;padding:12px 16px;border-radius:14px;border-left:6px solid #5eead4;background:#0f766e;color:#fff;font:600 .9rem/1.4 system-ui,sans-serif;box-shadow:0 20px 25px -5px rgba(15,118,110,.35);opacity:0;transform:translateY(-16px);transition:all .3s}
 .lx-toast.show{opacity:1;transform:none}.lx-toast.err{background:#b91c1c}.lx-toast small{display:block;font-weight:400;opacity:.9}
 .lx a:focus-visible,.lx button:focus-visible{outline:3px solid #5eead4;outline-offset:2px}
-@media(max-width:560px){.lx .hero h1{font-size:1.45rem}.lx .sec-h h2{font-size:1.2rem}.lx .lx-pdf{width:100%}}
+
+@media(max-width:560px){
+.lx{font-size:16px}
+.lx .hero{padding:24px 20px}.lx .hero h1{font-size:1.45rem}
+.lx .sec{padding:20px 16px;border-radius:16px}
+.lx .sec-head h2{font-size:1.15rem}.lx .num{width:38px;height:38px;font-size:1.05rem}
+.lx .lx-pdf{width:100%}
+.lx .code .pre{font-size:.82rem;padding:12px 14px}
+}
 @media(prefers-reduced-motion:reduce){.lx *{transition:none!important;animation:none!important}.lx .rv{opacity:1;transform:none}}
+
+/* ---------- PDF mode ---------- */
 .lx.pdf-mode{width:760px;max-width:none;margin:0;padding:2px;background:#fff}
 .lx.pdf-mode *{letter-spacing:normal!important;word-spacing:normal!important;word-break:normal!important;overflow-wrap:normal!important;box-shadow:none!important;backdrop-filter:none!important;transition:none!important;animation:none!important;transform:none!important}
-.lx.pdf-mode .rv{opacity:1!important}.lx.pdf-mode .tw{overflow:visible}.lx.pdf-mode table{min-width:0}
+.lx.pdf-mode .rv{opacity:1!important}
+.lx.pdf-mode .sec{border:0;border-top:2px solid var(--line);border-radius:0;padding:22px 0 4px;margin:0}
+.lx.pdf-mode .tw{overflow:visible}.lx.pdf-mode table{min-width:0}
 .lx.pdf-mode .code .pre{white-space:pre-wrap;overflow:visible}
 </style>
 
@@ -872,81 +911,106 @@ WHERE TABLE_NAME = 'Employees'
 <button type="button" class="lx-pdf"><span class="pi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></span><span class="pl">Download Summary (PDF)</span></button>
 </div>
 
-<p class="lead rv" style="margin-top:24px"><strong>General syntax of the ALTER statement in MySQL:</strong></p>
-<div class="code rv"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE table_name action;</code></div></div>
+<!-- Syntax -->
+<section class="sec rv" id="lx-syntax">
+<div class="sec-head"><div class="num">⌘</div><h2>General Syntax</h2></div>
+<p class="sec-lead">The general syntax of the ALTER statement in MySQL:</p>
+<div class="ex"><div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE table_name action;</code></div></div></div>
+</section>
 
 <!-- 1 -->
-<div class="sec-h i rv" id="lx-s1"><div class="num">1</div><h2>Adding and Dropping a Column</h2></div>
-<div class="card i rv"><h4>Add a column</h4><p>The word <span class="k">COLUMN</span> is optional. You can include it or leave it out.</p>
+<section class="sec rv" id="lx-s1">
+<div class="sec-head"><div class="num">1</div><h2>Adding and Dropping a Column</h2></div>
+<p class="sec-lead">The word <span class="k">COLUMN</span> is optional. You can include it or leave it out.</p>
+<div class="ex"><h3 class="ex-t">Add a column</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD COLUMN Salary DECIMAL(10,2);
 
 -- Or simply:
 ALTER TABLE Employees ADD Salary DECIMAL(10,2);</code></div></div></div>
-<div class="card i rv"><h4>Drop a column</h4>
+<div class="ex"><h3 class="ex-t">Drop a column</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP COLUMN Salary;
 
 -- Or simply:
 ALTER TABLE Employees DROP Salary;</code></div></div></div>
+</section>
 
 <!-- 2 -->
-<div class="sec-h t rv" id="lx-s2"><div class="num">2</div><h2>Renaming a Table</h2></div>
-<p class="lead rv">To change the name of an existing table:</p>
-<div class="card t rv"><div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees RENAME TO Staff;</code></div></div></div>
+<section class="sec rv" id="lx-s2">
+<div class="sec-head"><div class="num">2</div><h2>Renaming a Table</h2></div>
+<p class="sec-lead">To change the name of an existing table:</p>
+<div class="ex"><h3 class="ex-t">Rename a table</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees RENAME TO Staff;</code></div></div></div>
+</section>
 
 <!-- 3 -->
-<div class="sec-h a rv" id="lx-s3"><div class="num">3</div><h2>Modifying Data Types and NOT NULL (Using MODIFY)</h2></div>
-<p class="lead rv">The <span class="k">MODIFY</span> clause is used to change a column's data type or add/remove the <span class="k">NOT NULL</span> constraint without changing the column's name.</p>
-<div class="card a rv"><h4>Modify data type and add NOT NULL</h4>
+<section class="sec rv" id="lx-s3">
+<div class="sec-head"><div class="num">3</div><h2>Modifying Data Types and NOT NULL (MODIFY)</h2></div>
+<p class="sec-lead">The <span class="k">MODIFY</span> clause is used to change a column's data type or add/remove the <span class="k">NOT NULL</span> constraint without changing the column's name.</p>
+<div class="ex"><h3 class="ex-t">Modify data type and add NOT NULL</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees MODIFY Age INT NOT NULL;</code></div></div></div>
-<div class="card a rv"><h4>Remove NOT NULL (allowing NULL values again)</h4>
+<div class="ex"><h3 class="ex-t">Remove NOT NULL (allow NULL values again)</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees MODIFY Age INT NULL;</code></div></div></div>
+</section>
 
 <!-- 4 -->
-<div class="sec-h r rv" id="lx-s4"><div class="num">4</div><h2>Changing Column Names or Data Types (Using CHANGE)</h2></div>
-<p class="lead rv">The <span class="k">CHANGE</span> clause lets you rename a column, change its data type, or do both at the same time. (It requires you to write both the old name and the new name.)</p>
-<div class="card r rv"><div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees CHANGE Age Employee_Age INT;</code></div></div></div>
+<section class="sec rv" id="lx-s4">
+<div class="sec-head"><div class="num">4</div><h2>Changing Column Names or Types (CHANGE)</h2></div>
+<p class="sec-lead">The <span class="k">CHANGE</span> clause lets you rename a column, change its data type, or do both at the same time. It requires you to write both the old name and the new name.</p>
+<div class="ex"><h3 class="ex-t">Rename a column and set its data type</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees CHANGE Age Employee_Age INT;</code></div></div></div>
+</section>
 
 <!-- 5 -->
-<div class="sec-h i rv" id="lx-s5"><div class="num">5</div><h2>The UNIQUE Constraint</h2></div>
-<div class="card i rv"><h4>Add (auto-named by the system)</h4>
+<section class="sec rv" id="lx-s5">
+<div class="sec-head"><div class="num">5</div><h2>The UNIQUE Constraint</h2></div>
+<p class="sec-lead">Make sure every value in a column (or a group of columns) is different.</p>
+<div class="ex"><h3 class="ex-t">Add (auto-named by the system)</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD UNIQUE (Email);</code></div></div></div>
-<div class="card i rv"><h4>Add (with a custom name using CONSTRAINT)</h4>
+<div class="ex"><h3 class="ex-t">Add (with a custom name using CONSTRAINT)</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CONSTRAINT UQ_Email UNIQUE (Email);</code></div></div></div>
-<div class="card i rv"><h4>Drop a UNIQUE constraint (in modern MySQL versions)</h4>
+<div class="ex"><h3 class="ex-t">Drop a UNIQUE constraint (modern MySQL versions)</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP CONSTRAINT UQ_Email;</code></div></div></div>
+</section>
 
 <!-- 6 -->
-<div class="sec-h t rv" id="lx-s6"><div class="num">6</div><h2>The CHECK Constraint</h2></div>
-<div class="card t rv"><h4>Add (auto-named by the system)</h4>
+<section class="sec rv" id="lx-s6">
+<div class="sec-head"><div class="num">6</div><h2>The CHECK Constraint</h2></div>
+<p class="sec-lead">Limit the values a column can accept using a condition.</p>
+<div class="ex"><h3 class="ex-t">Add (auto-named by the system)</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CHECK (Age &gt;= 18);</code></div></div></div>
-<div class="card t rv"><h4>Add (with a custom name)</h4>
+<div class="ex"><h3 class="ex-t">Add (with a custom name)</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CONSTRAINT CHK_Age CHECK (Age &gt;= 18);</code></div></div></div>
-<div class="card t rv"><h4>Drop a CHECK constraint</h4>
+<div class="ex"><h3 class="ex-t">Drop a CHECK constraint</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP CONSTRAINT CHK_Age;</code></div></div></div>
+</section>
 
 <!-- 7 -->
-<div class="sec-h a rv" id="lx-s7"><div class="num">7</div><h2>The DEFAULT Constraint</h2></div>
-<div class="note tip sa rv"><span class="ic">💡</span><p><strong>Note:</strong> The word <span class="k">COLUMN</span> after the second <span class="k">ALTER</span> is optional.</p></div>
-<div class="card a rv"><h4>Add a default value</h4>
+<section class="sec rv" id="lx-s7">
+<div class="sec-head"><div class="num">7</div><h2>The DEFAULT Constraint</h2></div>
+<div class="note tip"><span class="ic">💡</span><p><strong>Note:</strong> The word <span class="k">COLUMN</span> after the second <span class="k">ALTER</span> is optional.</p></div>
+<div class="ex"><h3 class="ex-t">Add a default value</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ALTER COLUMN City SET DEFAULT 'Amman';
 
 -- Or without the word COLUMN:
 ALTER TABLE Employees ALTER City SET DEFAULT 'Amman';</code></div></div></div>
-<div class="card a rv"><h4>Drop a default value</h4>
+<div class="ex"><h3 class="ex-t">Drop a default value</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ALTER COLUMN City DROP DEFAULT;
 
 -- Or without the word COLUMN:
 ALTER TABLE Employees ALTER City DROP DEFAULT;</code></div></div></div>
+</section>
 
 <!-- 8 -->
-<div class="sec-h r rv" id="lx-s8"><div class="num">8</div><h2>Querying Table Constraints (Viewing Constraint Metadata)</h2></div>
-<p class="lead rv">To check the constraints you have added to a specific table, query the system catalog with this command:</p>
-<div class="card r rv"><div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE
+<section class="sec rv" id="lx-s8">
+<div class="sec-head"><div class="num">8</div><h2>Querying Table Constraints</h2></div>
+<p class="sec-lead">To check the constraints you have added to a specific table, query the system catalog (constraint metadata) with this command:</p>
+<div class="ex"><h3 class="ex-t">List the constraints of a table</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE
 FROM information_schema.TABLE_CONSTRAINTS
 WHERE TABLE_NAME = 'Employees'
   AND TABLE_SCHEMA = 'your_database_name_here';</code></div></div></div>
-<p class="lead rv"><strong>Quick breakdown of how this works:</strong></p>
-<div class="tw rv"><table>
+<div class="ex"><h3 class="ex-t">Quick breakdown of how this works</h3>
+<div class="tw"><table>
 <thead><tr><th>Part</th><th>Explanation</th></tr></thead>
 <tbody>
 <tr><td>information_schema.TABLE_CONSTRAINTS</td><td>A built-in system dictionary inside the database server that stores metadata about all constraints.</td></tr>
@@ -955,19 +1019,25 @@ WHERE TABLE_NAME = 'Employees'
 <tr><td>WHERE TABLE_NAME = 'Employees'</td><td>Filters the results to show only constraints belonging to the Employees table.</td></tr>
 <tr><td>AND TABLE_SCHEMA = '...'</td><td>Crucial condition that specifies the database name.</td></tr>
 </tbody></table></div>
-<div class="note warn sa rv"><span class="ic">⚠️</span><p><strong>Why does <span class="k">TABLE_SCHEMA</span> matter?</strong> Without it, if you have a table named <span class="k">Employees</span> in multiple databases on the same server (like a test database and a production database), their constraints will mix together. Specifying it ensures you only see results for your current database.</p></div>
+<div class="note warn"><span class="ic">⚠️</span><p><strong>Why does <span class="k">TABLE_SCHEMA</span> matter?</strong> Without it, if you have a table named <span class="k">Employees</span> in multiple databases on the same server (like a test database and a production database), their constraints will mix together. Specifying it ensures you only see results for your current database.</p></div></div>
+</section>
 
 <!-- 9 -->
-<div class="sec-h i rv" id="lx-s9"><div class="num">9</div><h2>Managing Primary Keys (PRIMARY KEY)</h2></div>
-<div class="card i rv"><h4>Add a PRIMARY KEY</h4><p>If the column already exists and you want to turn it into a primary key:</p>
+<section class="sec rv" id="lx-s9">
+<div class="sec-head"><div class="num">9</div><h2>Managing Primary Keys</h2></div>
+<p class="sec-lead">A table can have only one primary key, and it can span one or more columns.</p>
+<div class="ex"><h3 class="ex-t">Add a PRIMARY KEY</h3>
+<p class="ex-d">If the column already exists and you want to turn it into a primary key:</p>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD PRIMARY KEY (ID);</code></div></div>
 <div class="note tip"><span class="ic">💡</span><p><strong>Note:</strong> For a composite primary key made of multiple columns, separate them with a comma: <span class="k">ADD PRIMARY KEY (ID, Department_ID)</span></p></div></div>
-<div class="card i rv"><h4>Add a PRIMARY KEY with a custom name (CONSTRAINT)</h4>
+<div class="ex"><h3 class="ex-t">Add a PRIMARY KEY with a custom name (CONSTRAINT)</h3>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CONSTRAINT PK_Employee PRIMARY KEY (ID);</code></div></div>
 <div class="note tip"><span class="ic">💡</span><p><strong>MySQL note:</strong> Even if you give the primary key a custom name like <span class="k">PK_Employee</span>, MySQL ignores that name behind the scenes and always stores it as <span class="k">PRIMARY</span>.</p></div></div>
-<div class="card i rv"><h4>Drop a PRIMARY KEY</h4><p>Because a table can only have one primary key, you do not need to specify its name when dropping it. Simply run:</p>
+<div class="ex"><h3 class="ex-t">Drop a PRIMARY KEY</h3>
+<p class="ex-d">Because a table can only have one primary key, you do not need to specify its name when dropping it. Simply run:</p>
 <div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP PRIMARY KEY;</code></div></div>
 <div class="note warn"><span class="ic">⚠️</span><p><strong>Important note before dropping:</strong> If your primary key column has the <span class="k">AUTO_INCREMENT</span> property, MySQL will reject the drop. You must first remove that property using <span class="k">MODIFY</span> or <span class="k">CHANGE</span>.</p></div></div>
+</section>
 
 <button type="button" class="top" data-pdf-ignore aria-label="Back to top"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg></button>
 </div>
@@ -994,11 +1064,17 @@ function tick(){return new Promise(function(r){requestAnimationFrame(function(){
 function pickScale(w,h){var ua=navigator.userAgent,ios=/iP(hone|ad|od)/i.test(ua),mob=ios||/Android/i.test(ua)||innerWidth<768;
 var s=mob?2:3,A=ios?14e6:(mob?40e6:60e6),S=ios?16000:30000;
 while(s>1&&(w*s*h*s>A||h*s>S))s-=.25;return Math.max(s,1);}
+
+/* Page-break candidates: every section, and every example/table/note inside a section
+   (never right after the section header, so a title is never left alone at a page bottom) */
 function computeBreaks(clone,pageH){
-var base=clone.getBoundingClientRect().top,total=clone.getBoundingClientRect().height,kids=[].slice.call(clone.children),cand=[];
-kids.forEach(function(k,i){if(!i)return;var p=kids[i-1];
-if(p.classList.contains('sec-h')||p.classList.contains('lead'))return; // keep headings with what follows
-cand.push(k.getBoundingClientRect().top-base);});
+var base=clone.getBoundingClientRect().top,total=clone.getBoundingClientRect().height,cand=[];
+[].slice.call(clone.querySelectorAll('.sec, .sec > .ex, .sec > .note')).forEach(function(el){
+if(el.classList.contains('sec')){cand.push(el.getBoundingClientRect().top-base);return;}
+var p=el.previousElementSibling;
+if(!p||p.classList.contains('sec-head')||p.classList.contains('sec-lead'))return;
+cand.push(el.getBoundingClientRect().top-base);});
+cand.sort(function(a,b){return a-b;});
 var br=[0],st=0;
 while(total-st>pageH+1){var lim=st+pageH,best=-1;
 for(var i=0;i<cand.length;i++)if(cand[i]>st+40&&cand[i]<=lim)best=cand[i];
@@ -1006,12 +1082,26 @@ if(best<0)best=lim;br.push(best);st=best;}
 br.push(total);return br;}
 function strip(w,h,draw){var c=document.createElement('canvas');c.width=Math.round(w*12);c.height=Math.round(h*12);draw(c.getContext('2d'),c.width,c.height);var u=c.toDataURL('image/png');c.width=c.height=0;return u;}
 
+/* Light SQL syntax highlighting (display only; copy still reads plain text) */
+var KW='ALTER|TABLE|ADD|DROP|COLUMN|MODIFY|CHANGE|RENAME|TO|CONSTRAINT|UNIQUE|CHECK|DEFAULT|SET|PRIMARY|KEY|NOT|NULL|SELECT|FROM|WHERE|AND|INT|DECIMAL';
+var HL=new RegExp("(--[^\\n]*)|('[^'\\n]*')|\\b(\\d+)\\b|\\b("+KW+")\\b","gi");
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function highlight(root){
+[].slice.call(root.querySelectorAll('.code .pre code')).forEach(function(c){
+if(c.getAttribute('data-hl'))return;c.setAttribute('data-hl','1');
+c.innerHTML=esc(c.textContent).replace(HL,function(m,cm,st,nu,kw){
+if(cm)return '<span class="tc">'+cm+'</span>';
+if(st)return '<span class="ts">'+st+'</span>';
+if(nu)return '<span class="tn">'+nu+'</span>';
+return '<span class="tk">'+kw+'</span>';});});}
+
 function init(root){
 if(root.getAttribute('data-bound'))return;root.setAttribute('data-bound','1');
+highlight(root);
 var busy=false,bar=root.querySelector('.bar i'),topBtn=root.querySelector('.top');
 var chips=[].slice.call(root.querySelectorAll('.nav a')),navS=root.querySelector('.nav-s');
 
-/* ---- PDF (reads THIS lesson only, in English) ---- */
+/* ---- PDF ---- */
 async function pdfExport(btn){
 if(busy)return;busy=true;
 var pi=btn.querySelector('.pi'),pl=btn.querySelector('.pl'),oi=pi.innerHTML,ol=pl.textContent,holder=null,timer=null,big=null;
@@ -1095,11 +1185,11 @@ addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onS
 /* ---- reveal + active section ---- */
 var rv=[].slice.call(root.querySelectorAll('.rv'));
 if('IntersectionObserver' in window){
-var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.08});
+var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.02});
 rv.forEach(function(el){io.observe(el);});
-var heads=[].slice.call(root.querySelectorAll('.sec-h'));
+var heads=[].slice.call(root.querySelectorAll('.sec-head'));
 var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;
-var id=en.target.id.replace('lx-','');
+var id=en.target.closest('.sec').id.replace('lx-','');
 chips.forEach(function(c){var on=c.getAttribute('data-t')===id;c.classList.toggle('on',on);
 if(on)navS.scrollTo({left:c.offsetLeft-navS.clientWidth/2+c.clientWidth/2,behavior:'smooth'});});});},{rootMargin:'-90px 0px -65% 0px'});
 heads.forEach(function(h){io2.observe(h);});
