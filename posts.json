@@ -3,8 +3,11 @@
     "id": "lesson-4",
     "title": "الدليل الشامل لأوامر ALTER TABLE في MySQL: من الأساسيات إلى الاحتراف (مع الأمثلة)",
     "excerpt": "شرح كيفية تعديل هيكلة الجداول في قواعد بيانات MySQL خطوة بخطوة دون المساس بالبيانات المخزنة. يغطي المقال إدارة الأعمدة (إضافة، تعديل، حذف)، والفرق الدقيق بين أوامر التغيير (MODIFY, CHANGE, RENAME)، وكيفية التحكم في القيود (NOT NULL, DEFAULT)، بالإضافة إلى ربط الجداول بالمفاتيح الأجنبية (Foreign Key",
+    "title_en": "Comprehensive Guide to MySQL ALTER TABLE Statement",
+    "excerpt_en": "reference guide explaining how to use the MySQL ALTER TABLE statement. It covers essential database operations including adding, dropping, and modifying columns, renaming tables, managing constraints (UNIQUE, CHECK, DEFAULT, PRIMARY KEY), and querying table metadata.",
     "langs": [
-      "ar"
+      "ar",
+      "en"
     ],
     "url": "/posts/lesson-4.html",
     "category": "mysql",

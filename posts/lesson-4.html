@@ -7,6 +7,7 @@
   <meta name="description" content="شرح كيفية تعديل هيكلة الجداول في قواعد بيانات MySQL خطوة بخطوة دون المساس بالبيانات المخزنة. يغطي المقال إدارة الأعمدة (إضافة، تعديل، حذف)، والفرق الدقيق بين أوامر التغيير (MODIFY, CHANGE, RENAME)، وكيفية التحكم في القيود (NOT NULL, DEFAULT)، بالإضافة إلى ربط الجداول بالمفاتيح الأجنبية (Foreign Key">
   <meta property="og:title" content="الدليل الشامل لأوامر ALTER TABLE في MySQL: من الأساسيات إلى الاحتراف (مع الأمثلة)">
   <meta property="og:description" content="شرح كيفية تعديل هيكلة الجداول في قواعد بيانات MySQL خطوة بخطوة دون المساس بالبيانات المخزنة. يغطي المقال إدارة الأعمدة (إضافة، تعديل، حذف)، والفرق الدقيق بين أوامر التغيير (MODIFY, CHANGE, RENAME)، وكيفية التحكم في القيود (NOT NULL, DEFAULT)، بالإضافة إلى ربط الجداول بالمفاتيح الأجنبية (Foreign Key">
+  <script>try{if(localStorage.getItem('lang')==='en'){var h=document.documentElement;h.lang='en';h.dir='ltr'}}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
@@ -43,6 +44,7 @@
   <header class="bg-ink text-white">
     <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
       <a href="/" class="heading font-extrabold text-xl" data-ar="دفتر الدروس" data-en="Lessons Notebook">دفتر الدروس</a>
+      <button id="lang-toggle" type="button" class="h-10 px-4 rounded-full border border-white/40 text-sm font-bold hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white" aria-label="Switch to English" lang="en">English</button>
     </div>
   </header>
   <main class="max-w-3xl mx-auto px-4 py-8">
@@ -776,10 +778,349 @@ WHERE TABLE_NAME = 'Employees'
 <!--ar-end-->
       </div>
     </section>
+    <section id="lang-en" lang="en" dir="ltr">
+      <h1 class="heading font-extrabold text-3xl leading-snug">Comprehensive Guide to MySQL ALTER TABLE Statement</h1>
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
+        <span class="rounded-md bg-brand/10 text-brand font-medium px-2 py-0.5">mysql</span>
+        <time datetime="2026-10-16">October 16, 2026</time>
+        <span>10 min read</span>
+        <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>views</span></span>
+      </p>
+      <div class="article mt-6">
+<!--en-start-->
+<code><script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+.copy-toast-container{padding:1.25rem!important}
+.copy-toast-popup{font-family:inherit!important;border-radius:1rem!important;padding:.9rem 1.1rem!important;border-left:6px solid #5eead4!important;box-shadow:0 20px 25px -5px rgba(15,118,110,.35)!important}
+.copy-toast-title{font-size:1rem!important;font-weight:800!important;margin:0 0 2px!important;text-align:left!important}
+.copy-toast-text{font-size:.85rem!important;opacity:.9;margin:0!important;text-align:left!important}
+.lesson-ltr pre{direction:ltr;text-align:left;overflow-x:auto}
+.pdf-mode,.pdf-mode *{box-sizing:border-box!important}
+.pdf-mode{width:760px;padding:2px;background:#fff;direction:ltr;text-align:left}
+.pdf-mode *{letter-spacing:normal!important;word-spacing:normal!important;overflow-wrap:normal!important;word-break:normal!important;text-shadow:none!important;box-shadow:none!important;backdrop-filter:none!important;filter:none!important;transition:none!important;animation:none!important}
+.pdf-mode .overflow-x-auto{overflow:visible!important}
+.pdf-mode table{width:100%;min-width:0!important}
+.pdf-mode pre,.pdf-mode pre code{white-space:pre-wrap!important;overflow:visible!important}
+</style>
+
+<div dir="ltr" class="lesson-ltr text-left" id="lesson-content">
+
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-teal-500 to-emerald-400 p-6 shadow-lg mb-8 text-white">
+  <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+  <div class="flex items-start gap-4 relative z-10">
+    <span class="text-4xl">🛠️</span>
+    <div>
+      <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">ALTER TABLE Commands in MySQL</h3>
+      <p class="text-teal-50 leading-relaxed m-0 text-lg">A practical guide to MySQL ALTER commands: general syntax, managing columns and constraints, and querying constraints, with copy-ready examples.</p>
+    </div>
+  </div>
+</div>
+
+<div data-pdf-ignore class="mb-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+  <div class="flex items-center gap-4 flex-1">
+    <div class="w-14 h-14 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+    </div>
+    <div>
+      <h4 class="text-lg font-extrabold text-slate-800 m-0">Download the lecture summary</h4>
+      <p class="text-slate-500 text-sm m-0 mt-1 leading-relaxed">A formatted PDF, ready for review and printing offline</p>
+    </div>
+  </div>
+  <button type="button" class="js-pdf-btn inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-400 text-white font-bold text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 border-0 cursor-pointer">
+    <span class="js-pdf-icon inline-flex"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></span>
+    <span class="js-pdf-label">Download Summary (PDF)</span>
+  </button>
+</div>
+
+<p class="text-slate-600 mb-3 text-lg font-bold">General syntax of the ALTER statement in MySQL:</p>
+<pre><code class="language-sql">ALTER TABLE table_name action;</code></pre>
+
+<!-- 1 -->
+<div class="flex items-center gap-3 mt-12 mb-5"><div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm"><span class="text-2xl font-bold">1</span></div><h2 class="text-2xl font-bold text-slate-800 m-0">Adding and Dropping a Column</h2></div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">Add a column</h4>
+  <p class="text-slate-600 mb-3 text-lg leading-relaxed">The word <span class="font-mono font-bold">COLUMN</span> is optional. You can include it or leave it out.</p>
+  <pre><code class="language-sql">
+ALTER TABLE Employees ADD COLUMN Salary DECIMAL(10,2);
+
+-- Or simply:
+ALTER TABLE Employees ADD Salary DECIMAL(10,2);
+</code></pre>
+</div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">Drop a column</h4>
+  <pre><code class="language-sql">
+ALTER TABLE Employees DROP COLUMN Salary;
+
+-- Or simply:
+ALTER TABLE Employees DROP Salary;
+</code></pre>
+</div>
+
+<!-- 2 -->
+<div class="flex items-center gap-3 mt-12 mb-5"><div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm"><span class="text-2xl font-bold">2</span></div><h2 class="text-2xl font-bold text-slate-800 m-0">Renaming a Table</h2></div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">To change the name of an existing table:</p>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <pre><code class="language-sql">ALTER TABLE Employees RENAME TO Staff;</code></pre>
+</div>
+
+<!-- 3 -->
+<div class="flex items-center gap-3 mt-12 mb-5"><div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm"><span class="text-2xl font-bold">3</span></div><h2 class="text-2xl font-bold text-slate-800 m-0">Modifying Data Types and NOT NULL (Using MODIFY)</h2></div>
+<p class="text-slate-600 mb-6 text-lg leading-relaxed">The <span class="font-mono font-bold">MODIFY</span> clause is used to change a column's data type or add/remove the <span class="font-mono">NOT NULL</span> constraint without changing the column's name.</p>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">Modify data type and add NOT NULL</h4>
+  <pre><code class="language-sql">ALTER TABLE Employees MODIFY Age INT NOT NULL;</code></pre>
+</div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">Remove NOT NULL (allowing NULL values again)</h4>
+  <pre><code class="language-sql">ALTER TABLE Employees MODIFY Age INT NULL;</code></pre>
+</div>
+
+<!-- 4 -->
+<div class="flex items-center gap-3 mt-12 mb-5"><div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm"><span class="text-2xl font-bold">4</span></div><h2 class="text-2xl font-bold text-slate-800 m-0">Changing Column Names or Data Types (Using CHANGE)</h2></div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">The <span class="font-mono font-bold">CHANGE</span> clause lets you rename a column, change its data type, or do both at the same time. (It requires you to write both the old name and the new name.)</p>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <pre><code class="language-sql">ALTER TABLE Employees CHANGE Age Employee_Age INT;</code></pre>
+</div>
+
+<!-- 5 -->
+<div class="flex items-center gap-3 mt-12 mb-5"><div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm"><span class="text-2xl font-bold">5</span></div><h2 class="text-2xl font-bold text-slate-800 m-0">The UNIQUE Constraint</h2></div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">Add (auto-named by the system)</h4>
+  <pre><code class="language-sql">ALTER TABLE Employees ADD UNIQUE (Email);</code></pre>
+</div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">Add (with a custom name using CONSTRAINT)</h4>
+  <pre><code class="language-sql">ALTER TABLE Employees ADD CONSTRAINT UQ_Email UNIQUE (Email);</code></pre>
+</div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">Drop a UNIQUE constraint (in modern MySQL versions)</h4>
+  <pre><code class="language-sql">ALTER TABLE Employees DROP CONSTRAINT UQ_Email;</code></pre>
+</div>
+
+<!-- 6 -->
+<div class="flex items-center gap-3 mt-12 mb-5"><div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm"><span class="text-2xl font-bold">6</span></div><h2 class="text-2xl font-bold text-slate-800 m-0">The CHECK Constraint</h2></div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">Add (auto-named by the system)</h4>
+  <pre><code class="language-sql">ALTER TABLE Employees ADD CHECK (Age &gt;= 18);</code></pre>
+</div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">Add (with a custom name)</h4>
+  <pre><code class="language-sql">ALTER TABLE Employees ADD CONSTRAINT CHK_Age CHECK (Age &gt;= 18);</code></pre>
+</div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-teal-700 text-lg mt-0 mb-2">Drop a CHECK constraint</h4>
+  <pre><code class="language-sql">ALTER TABLE Employees DROP CONSTRAINT CHK_Age;</code></pre>
+</div>
+
+<!-- 7 -->
+<div class="flex items-center gap-3 mt-12 mb-5"><div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm"><span class="text-2xl font-bold">7</span></div><h2 class="text-2xl font-bold text-slate-800 m-0">The DEFAULT Constraint</h2></div>
+<div class="mb-6 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3"><span class="text-2xl">💡</span><p class="text-amber-800 m-0 leading-relaxed"><strong>Note:</strong> The word <span class="font-mono font-bold">COLUMN</span> after the second <span class="font-mono font-bold">ALTER</span> is optional.</p></div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">Add a default value</h4>
+  <pre><code class="language-sql">
+ALTER TABLE Employees ALTER COLUMN City SET DEFAULT 'Amman';
+
+-- Or without the word COLUMN:
+ALTER TABLE Employees ALTER City SET DEFAULT 'Amman';
+</code></pre>
+</div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-amber-700 text-lg mt-0 mb-2">Drop a default value</h4>
+  <pre><code class="language-sql">
+ALTER TABLE Employees ALTER COLUMN City DROP DEFAULT;
+
+-- Or without the word COLUMN:
+ALTER TABLE Employees ALTER City DROP DEFAULT;
+</code></pre>
+</div>
+
+<!-- 8 -->
+<div class="flex items-center gap-3 mt-12 mb-5"><div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm"><span class="text-2xl font-bold">8</span></div><h2 class="text-2xl font-bold text-slate-800 m-0">Querying Table Constraints (Viewing Constraint Metadata)</h2></div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">To check the constraints you have added to a specific table, query the system catalog with this command:</p>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <pre><code class="language-sql">
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE
+FROM information_schema.TABLE_CONSTRAINTS
+WHERE TABLE_NAME = 'Employees'
+  AND TABLE_SCHEMA = 'your_database_name_here';
+</code></pre>
+</div>
+<p class="text-slate-600 my-4 text-lg font-bold">Quick breakdown of how this works:</p>
+<div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
+  <table class="w-full min-w-[640px] text-left border-collapse bg-white">
+    <thead class="bg-slate-100 text-slate-700"><tr><th class="p-4 border-b border-slate-200 font-bold w-2/5">Part</th><th class="p-4 border-b border-slate-200 font-bold">Explanation</th></tr></thead>
+    <tbody class="text-slate-600 text-base">
+      <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors"><td class="p-4 font-mono text-sm font-bold text-teal-600">information_schema.TABLE_CONSTRAINTS</td><td class="p-4">A built-in system dictionary inside the database server that stores metadata about all constraints.</td></tr>
+      <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors"><td class="p-4 font-mono text-sm font-bold text-teal-600">CONSTRAINT_NAME</td><td class="p-4">Displays the name of the constraint (whether custom like <span class="font-mono">UQ_Email</span> or auto-generated).</td></tr>
+      <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors"><td class="p-4 font-mono text-sm font-bold text-teal-600">CONSTRAINT_TYPE</td><td class="p-4">Shows the type of constraint (e.g., UNIQUE, CHECK, PRIMARY KEY).</td></tr>
+      <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors"><td class="p-4 font-mono text-sm font-bold text-teal-600">WHERE TABLE_NAME = 'Employees'</td><td class="p-4">Filters the results to show only constraints belonging to the Employees table.</td></tr>
+      <tr class="hover:bg-slate-50 transition-colors"><td class="p-4 font-mono text-sm font-bold text-teal-600">AND TABLE_SCHEMA = '...'</td><td class="p-4">Crucial condition that specifies the database name.</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="mb-6 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3"><span class="text-2xl">⚠️</span><p class="text-amber-800 m-0 leading-relaxed"><strong>Why does <span class="font-mono">TABLE_SCHEMA</span> matter?</strong> Without it, if you have a table named <span class="font-mono font-bold">Employees</span> in multiple databases on the same server (like a test database and a production database), their constraints will mix together. Specifying it ensures you only see results for your current database.</p></div>
+
+<!-- 9 -->
+<div class="flex items-center gap-3 mt-12 mb-5"><div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm"><span class="text-2xl font-bold">9</span></div><h2 class="text-2xl font-bold text-slate-800 m-0">Managing Primary Keys (PRIMARY KEY)</h2></div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">Add a PRIMARY KEY</h4>
+  <p class="text-slate-600 mb-3 text-lg leading-relaxed">If the column already exists and you want to turn it into a primary key:</p>
+  <pre><code class="language-sql">ALTER TABLE Employees ADD PRIMARY KEY (ID);</code></pre>
+  <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3"><span class="text-2xl">💡</span><p class="text-amber-800 m-0 leading-relaxed"><strong>Note:</strong> For a composite primary key made of multiple columns, separate them with a comma: <span class="font-mono font-bold">ADD PRIMARY KEY (ID, Department_ID)</span></p></div>
+</div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">Add a PRIMARY KEY with a custom name (CONSTRAINT)</h4>
+  <pre><code class="language-sql">ALTER TABLE Employees ADD CONSTRAINT PK_Employee PRIMARY KEY (ID);</code></pre>
+  <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3"><span class="text-2xl">💡</span><p class="text-amber-800 m-0 leading-relaxed"><strong>MySQL note:</strong> Even if you give the primary key a custom name like <span class="font-mono font-bold">PK_Employee</span>, MySQL ignores that name behind the scenes and always stores it as <span class="font-mono font-bold">PRIMARY</span>.</p></div>
+</div>
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+  <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">Drop a PRIMARY KEY</h4>
+  <p class="text-slate-600 mb-3 text-lg leading-relaxed">Because a table can only have one primary key, you do not need to specify its name when dropping it. Simply run:</p>
+  <pre><code class="language-sql">ALTER TABLE Employees DROP PRIMARY KEY;</code></pre>
+  <div class="mt-4 bg-red-50 border border-red-200 p-4 rounded-xl flex items-start gap-3"><span class="text-2xl">⚠️</span><p class="text-red-800 m-0 leading-relaxed"><strong>Important note before dropping:</strong> If your primary key column has the <span class="font-mono font-bold">AUTO_INCREMENT</span> property, MySQL will reject the drop. You must first remove that property using <span class="font-mono font-bold">MODIFY</span> or <span class="font-mono font-bold">CHANGE</span>.</p></div>
+</div>
+
+</div>
+
+<script>
+(function(){
+if(window.__lessonHandlersBound)return;window.__lessonHandlersBound=true;
+var CFG={filename:'ALTER-TABLE-Commands.pdf',pdfTitle:'ALTER TABLE Commands - MySQL Summary',headerText:'ALTER TABLE Commands in MySQL',headerSub:'Lecture Summary',siteName:location.hostname,contentW:760,timeoutMs:120000};
+var LIB_H2C='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+var LIB_PDF='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+var PAGE_W=210,PAGE_H=297,MX=12,TOP=16,BOTTOM=15;
+var CONTENT_MM=PAGE_W-MX*2,MM_PER_PX=CONTENT_MM/CFG.contentW,PAGE_CONTENT_PX=(PAGE_H-TOP-BOTTOM)/MM_PER_PX;
+var busy=false;
+var SPINNER='<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+
+function showToast(title,text,icon){
+Swal.fire({title:title,text:text,icon:icon||'success',toast:true,position:'top-end',timer:2500,timerProgressBar:true,showConfirmButton:false,background:icon==='error'?'#B91C1C':'#0F766E',color:'#fff',iconColor:'#fff',
+customClass:{container:'copy-toast-container',popup:'copy-toast-popup',title:'copy-toast-title',htmlContainer:'copy-toast-text'},
+didOpen:function(t){t.addEventListener('mouseenter',Swal.stopTimer);t.addEventListener('mouseleave',Swal.resumeTimer);}});
+}
+function loadScript(src,isReady){return new Promise(function(res,rej){
+if(isReady())return res();
+var s=document.createElement('script'),t=setTimeout(function(){rej(new Error('Library timeout: '+src));},20000);
+s.src=src;s.onload=function(){clearTimeout(t);res();};s.onerror=function(){clearTimeout(t);rej(new Error('Failed to load: '+src));};
+document.head.appendChild(s);});}
+function tick(){return new Promise(function(r){requestAnimationFrame(function(){setTimeout(r,0);});});}
+function pickScale(w,h){
+var ua=navigator.userAgent,ios=/iP(hone|ad|od)/i.test(ua),mob=ios||/Android/i.test(ua)||window.innerWidth<768;
+var s=mob?2:3,A=ios?14e6:(mob?40e6:60e6),S=ios?16000:30000;
+while(s>1&&(w*s*h*s>A||h*s>S))s-=.25;
+return Math.max(s,1);}
+// Page breaks fall on element boundaries so code blocks, tables and cards are never split
+function computeBreaks(clone,pageH){
+var base=clone.getBoundingClientRect().top,total=clone.getBoundingClientRect().height;
+var kids=Array.prototype.slice.call(clone.children),cand=[];
+kids.forEach(function(k,i){
+if(i===0)return;
+var prev=kids[i-1];
+if(prev.querySelector('h2')||prev.tagName==='P')return; // keep headings with what follows
+cand.push(k.getBoundingClientRect().top-base);});
+var br=[0],start=0;
+while(total-start>pageH+1){
+var limit=start+pageH,best=-1;
+for(var i=0;i<cand.length;i++){if(cand[i]>start+40&&cand[i]<=limit)best=cand[i];}
+if(best<0)best=limit;
+br.push(best);start=best;}
+br.push(total);return br;}
+function makeStrip(wMm,hMm,draw){
+var K=12,c=document.createElement('canvas');
+c.width=Math.round(wMm*K);c.height=Math.round(hMm*K);
+draw(c.getContext('2d'),c.width,c.height);
+var url=c.toDataURL('image/png');c.width=c.height=0;return url;}
+
+async function downloadPdf(btn){
+if(busy)return;busy=true;
+var iconEl=btn.querySelector('.js-pdf-icon'),labelEl=btn.querySelector('.js-pdf-label');
+var oIcon=iconEl.innerHTML,oLabel=labelEl.innerHTML,holder=null,timer=null,big=null;
+function progress(p){labelEl.textContent='Preparing… '+Math.round(p)+'%';}
+btn.disabled=true;iconEl.innerHTML=SPINNER;progress(2);
+try{
+var job=(async function(){
+await tick();
+await loadScript(LIB_H2C,function(){return !!window.html2canvas;});
+await loadScript(LIB_PDF,function(){return !!(window.jspdf&&window.jspdf.jsPDF);});
+if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+progress(12);
+var source=document.getElementById('lesson-content');
+var font=getComputedStyle(source).fontFamily||'Arial, sans-serif';
+var clone=source.cloneNode(true);
+clone.removeAttribute('id');clone.classList.add('pdf-mode');
+clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function(el){el.remove();});
+holder=document.createElement('div');
+holder.setAttribute('data-pdf-holder','');holder.setAttribute('aria-hidden','true');
+holder.style.cssText='position:fixed;left:-10000px;top:0;width:'+CFG.contentW+'px;background:#fff;pointer-events:none;';
+holder.appendChild(clone);document.body.appendChild(holder);
+await tick();
+var cloneH=Math.ceil(clone.getBoundingClientRect().height);
+var breaks=computeBreaks(clone,PAGE_CONTENT_PX),scale=pickScale(CFG.contentW,cloneH);
+progress(20);
+big=await window.html2canvas(clone,{scale:scale,width:CFG.contentW,height:cloneH,windowWidth:CFG.contentW,windowHeight:cloneH,scrollX:0,scrollY:0,useCORS:true,backgroundColor:'#fff',logging:false});
+progress(60);
+var pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
+pdf.setProperties({title:CFG.pdfTitle,subject:'MySQL ALTER TABLE',creator:CFG.siteName});
+var pages=breaks.length-1,sc=big.width/CFG.contentW;
+var headerImg=makeStrip(CONTENT_MM,7,function(ctx,w,h){
+ctx.textBaseline='middle';
+ctx.font='700 38px '+font;ctx.fillStyle='#0f766e';ctx.textAlign='left';ctx.fillText(CFG.headerText,4,h/2);
+ctx.font='500 34px '+font;ctx.fillStyle='#94a3b8';ctx.textAlign='right';ctx.fillText(CFG.headerSub,w-4,h/2);});
+for(var i=0;i<pages;i++){
+if(i>0)pdf.addPage();
+var b0=breaks[i],b1=breaks[i+1],sy=Math.round(b0*sc);
+var sh=Math.max(1,Math.min(big.height-sy,Math.round((b1-b0)*sc)));
+var slice=document.createElement('canvas');slice.width=big.width;slice.height=sh;
+var sctx=slice.getContext('2d');sctx.fillStyle='#fff';sctx.fillRect(0,0,slice.width,slice.height);
+sctx.drawImage(big,0,sy,big.width,sh,0,0,big.width,sh);
+var img=slice.toDataURL('image/jpeg',.93);slice.width=slice.height=0;
+pdf.addImage(img,'JPEG',MX,TOP,CONTENT_MM,(sh/sc)*MM_PER_PX,undefined,'FAST');
+pdf.setFillColor(13,148,136);pdf.rect(0,0,PAGE_W,2.4,'F');
+pdf.setFillColor(52,211,153);pdf.rect(PAGE_W-70,0,70,2.4,'F');
+pdf.setDrawColor(226,232,240);pdf.setLineWidth(.3);
+if(i>0){pdf.addImage(headerImg,'PNG',MX,5,CONTENT_MM,7);pdf.line(MX,13,PAGE_W-MX,13);}
+var n=i+1;
+var footerImg=makeStrip(CONTENT_MM,7,function(ctx,w,h){
+ctx.textBaseline='middle';ctx.font='500 34px '+font;ctx.fillStyle='#64748b';
+ctx.textAlign='left';ctx.fillText('Page '+n+' of '+pages,4,h/2);
+ctx.textAlign='right';ctx.fillText(CFG.siteName,w-4,h/2);});
+pdf.line(MX,PAGE_H-12,PAGE_W-MX,PAGE_H-12);
+pdf.addImage(footerImg,'PNG',MX,PAGE_H-11,CONTENT_MM,7);
+progress(60+((i+1)/pages)*35);await tick();}
+big.width=big.height=0;big=null;progress(98);await tick();
+pdf.save(CFG.filename);
+})();
+var timeout=new Promise(function(_,rej){timer=setTimeout(function(){rej(new Error('PDF export timeout'));},CFG.timeoutMs);});
+job.catch(function(){});
+await Promise.race([job,timeout]);
+showToast('File ready! 📄','Your lecture summary is downloading','success');
+}catch(err){
+console.error(err);
+showToast('Could not create the file','Please try again, or use a desktop browser','error');
+}finally{
+clearTimeout(timer);
+if(big){big.width=big.height=0;}
+document.querySelectorAll('[data-pdf-holder], .html2pdf__overlay, .html2pdf__container').forEach(function(el){if(el.parentNode)el.parentNode.removeChild(el);});
+busy=false;btn.disabled=false;iconEl.innerHTML=oIcon;labelEl.innerHTML=oLabel;}
+}
+
+document.addEventListener('click',function(e){
+var p=e.target.closest('.js-pdf-btn');
+if(p){if(!p.disabled)downloadPdf(p);return;}
+var b=e.target.closest('button');
+if(b&&/copy/i.test(b.innerText||'')){showToast('Copied! 🚀','The code is ready to paste','success');}
+});
+})();
+</script>
+</code>
+<!--en-end-->
+      </div>
+    </section>
     </article>
     <a href="/" class="inline-block mt-10 text-brand font-bold underline" data-ar="العودة إلى كل الدروس" data-en="Back to all lessons">العودة إلى كل الدروس</a>
   </main>
-  <script type="application/json" id="post-meta">{"slug":"lesson-4","hasEn":false,"default":"ar","site":{"ar":"دفتر الدروس","en":"Lessons Notebook"},"ar":{"title":"الدليل الشامل لأوامر ALTER TABLE في MySQL: من الأساسيات إلى الاحتراف (مع الأمثلة)","description":"شرح كيفية تعديل هيكلة الجداول في قواعد بيانات MySQL خطوة بخطوة دون المساس بالبيانات المخزنة. يغطي المقال إدارة الأعمدة (إضافة، تعديل، حذف)، والفرق الدقيق بين أوامر التغيير (MODIFY, CHANGE, RENAME)، وكيفية التحكم في القيود (NOT NULL, DEFAULT)، بالإضافة إلى ربط الجداول بالمفاتيح الأجنبية (Foreign Key"},"en":null}</script>
+  <script type="application/json" id="post-meta">{"slug":"lesson-4","hasEn":true,"default":"ar","site":{"ar":"دفتر الدروس","en":"Lessons Notebook"},"ar":{"title":"الدليل الشامل لأوامر ALTER TABLE في MySQL: من الأساسيات إلى الاحتراف (مع الأمثلة)","description":"شرح كيفية تعديل هيكلة الجداول في قواعد بيانات MySQL خطوة بخطوة دون المساس بالبيانات المخزنة. يغطي المقال إدارة الأعمدة (إضافة، تعديل، حذف)، والفرق الدقيق بين أوامر التغيير (MODIFY, CHANGE, RENAME)، وكيفية التحكم في القيود (NOT NULL, DEFAULT)، بالإضافة إلى ربط الجداول بالمفاتيح الأجنبية (Foreign Key"},"en":{"title":"Comprehensive Guide to MySQL ALTER TABLE Statement","description":"reference guide explaining how to use the MySQL ALTER TABLE statement. It covers essential database operations including adding, dropping, and modifying columns, renaming tables, managing constraints (UNIQUE, CHECK, DEFAULT, PRIMARY KEY), and querying table metadata."}}</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="/assets/post.js"></script>
 </body>
