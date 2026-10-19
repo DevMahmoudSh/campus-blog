@@ -887,7 +887,7 @@ WHERE TABLE_NAME = 'Employees'
 @media(prefers-reduced-motion:reduce){.lx *{transition:none!important;animation:none!important}.lx .rv{opacity:1;transform:none}}
 
 /* ---------- PDF mode ---------- */
-.lx.pdf-mode{width:760px;max-width:none;margin:0;padding:2px;background:#fff}
+.lx.pdf-mode{width:760px;max-width:none;margin:0;padding:2px 2px 28px;background:#fff}
 .lx.pdf-mode *{letter-spacing:normal!important;word-spacing:normal!important;word-break:normal!important;overflow-wrap:normal!important;box-shadow:none!important;backdrop-filter:none!important;transition:none!important;animation:none!important;transform:none!important}
 .lx.pdf-mode .rv{opacity:1!important}
 .lx.pdf-mode .sec{border:0;border-top:2px solid var(--line);border-radius:0;padding:22px 0 4px;margin:0}
@@ -1134,9 +1134,9 @@ clone.querySelectorAll('[data-pdf-ignore],button,script').forEach(function(e){e.
 holder=document.createElement('div');holder.setAttribute('data-pdf-holder','');holder.setAttribute('aria-hidden','true');
 holder.style.cssText='position:fixed;left:-10000px;top:0;width:'+CFG.contentW+'px;background:#fff;pointer-events:none;';
 holder.appendChild(clone);document.body.appendChild(holder);await tick();
-var H=Math.ceil(clone.getBoundingClientRect().height),scale=pickScale(CFG.contentW,H),cands=[];
+var H=Math.ceil(clone.getBoundingClientRect().height),scale=pickScale(CFG.contentW,Math.ceil(H*1.25)),cands=[];
 prog(20);
-big=await html2canvas(clone,{scale:scale,width:CFG.contentW,height:H,windowWidth:CFG.contentW,windowHeight:H,scrollX:0,scrollY:0,useCORS:true,backgroundColor:'#fff',logging:false,
+big=await html2canvas(clone,{scale:scale,width:CFG.contentW,windowWidth:CFG.contentW,windowHeight:Math.ceil(H*1.5)+400,scrollX:0,scrollY:0,useCORS:true,backgroundColor:'#fff',logging:false,
 onclone:function(d,el){cands=getCands(el);}});
 prog(60);
 var sc=big.width/CFG.contentW,breaks=computeBreaks(big,cands,sc);
