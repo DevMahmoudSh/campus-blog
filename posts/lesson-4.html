@@ -59,133 +59,136 @@
       </p>
       <div class="article mt-6">
 <!--ar-start-->
-<code><style>
-/* ============ Arabic lesson (RTL) — every selector is scoped to .lxa so it never clashes with the English file ============ */
-.lxa{--ink:#0f172a;--mut:#475569;--line:#e2e8f0;--soft:#f8fafc;--brand:#0d9488;--brand2:#14b8a6;max-width:860px;margin:0 auto;color:var(--ink);line-height:1.8;font-size:16.5px;direction:rtl;text-align:right}
-.lxa *{box-sizing:border-box}
-.lxa h1,.lxa h2,.lxa h3,.lxa h4,.lxa p{font-family:inherit}
+<code><code><style>
+.lx{--ink:#0f172a;--mut:#475569;--line:#e2e8f0;--soft:#f8fafc;--brand:#0d9488;--brand2:#14b8a6;--brand-soft:#f0fdfa;--brand-bd:#99f6e4;max-width:860px;margin:0 auto;color:var(--ink);line-height:1.8;font-size:16.5px;direction:rtl;text-align:right}
+.lx *{box-sizing:border-box}
+.lx h1,.lx h2,.lx h3,.lx h4,.lx p{font-family:inherit}
 
 /* ---------- Hero ---------- */
-.lxa .hero{position:relative;overflow:hidden;border-radius:22px;padding:30px 28px;margin-bottom:18px;color:#fff;background:linear-gradient(225deg,#0f766e 0%,#14b8a6 55%,#34d399 100%);box-shadow:0 14px 30px -14px rgba(13,148,136,.65)}
-.lxa .hero::before{content:"";position:absolute;right:-40px;bottom:-70px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
-.lxa .hero::after{content:"";position:absolute;left:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.14)}
-.lxa .hero-in{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start}
-.lxa .hero-ic{font-size:2.4rem;line-height:1;flex:none}
-.lxa .hero h1{margin:0 0 8px;font-size:1.8rem;font-weight:800;color:#fff;line-height:1.4}
-.lxa .hero p{margin:0 0 14px;color:#ecfdf5;font-size:1.02rem;line-height:1.7}
-.lxa .chips{display:flex;flex-wrap:wrap;gap:8px}
-.lxa .chips span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:700}
+.lx .hero{position:relative;overflow:hidden;border-radius:22px;padding:30px 28px;margin-bottom:18px;color:#fff;background:linear-gradient(225deg,#0f766e 0%,#14b8a6 55%,#34d399 100%);box-shadow:0 14px 30px -14px rgba(13,148,136,.65)}
+.lx .hero::before{content:"";position:absolute;right:-40px;bottom:-70px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
+.lx .hero::after{content:"";position:absolute;left:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.14)}
+.lx .hero-in{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start}
+.lx .hero-ic{font-size:2.4rem;line-height:1;flex:none}
+.lx .hero h1{margin:0 0 8px;font-size:1.8rem;font-weight:800;color:#fff;line-height:1.045;line-height:1.4}
+.lx .hero p{margin:0 0 14px;color:#ecfdf5;font-size:1.02rem;line-height:1.7}
+.lx .chips{display:flex;flex-wrap:wrap;gap:8px}
+.lx .chips span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:700}
 
 /* ---------- Nav ---------- */
-.lxa .nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);margin:0 0 22px;padding-top:10px;border-bottom:1px solid var(--line)}
-.lxa .nav-s{display:flex;gap:8px;overflow-x:auto;padding:0 2px 10px;scrollbar-width:none}
-.lxa .nav-s::-webkit-scrollbar{display:none}
-.lxa .nav a{flex:none;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--mut);background:#f1f5f9;text-decoration:none;border:1px solid var(--line);transition:background .2s,color .2s,border-color .2s}
-.lxa .nav a:hover{background:#ccfbf1;color:#0f766e}
-.lxa .nav a.on{background:var(--brand);border-color:var(--brand);color:#fff}
-.lxa .bar{height:3px;background:var(--line)}.lxa .bar i{display:block;height:100%;width:0;background:linear-gradient(270deg,var(--brand2),#34d399)}
+.lx .nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);margin:0 0 22px;padding-top:10px;border-bottom:1px solid var(--line)}
+.lx .nav-s{display:flex;gap:8px;overflow-x:auto;padding:0 2px 10px;scrollbar-width:none}
+.lx .nav-s::-webkit-scrollbar{display:none}
+.lx .nav a{flex:none;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--mut);background:#f1f5f9;text-decoration:none;border:1px solid var(--line);transition:background .2s,color .2s,border-color .2s}
+.lx .nav a:hover{background:#ccfbf1;color:#0f766e}
+.lx .nav a.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.lx .bar{height:3px;background:var(--line)}.lx .bar i{display:block;height:100%;width:0;background:linear-gradient(270deg,var(--brand2),#34d399)}
 
 /* ---------- Download strip ---------- */
-.lxa .dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:28px}
-.lxa .dl-i{width:48px;height:48px;border-radius:12px;background:#fef2f2;border:1px solid #fee2e2;display:flex;align-items:center;justify-content:center;flex:none;color:#ef4444}
-.lxa .dl-t{flex:1;min-width:200px}.lxa .dl-t h4{margin:0;font-size:1rem;font-weight:800}.lxa .dl-t p{margin:2px 0 0;font-size:.86rem;color:#64748b;line-height:1.6}
-.lxa .lx-pdf{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:12px;cursor:pointer;color:#fff;font-weight:700;font-size:.95rem;font-family:inherit;background:linear-gradient(270deg,var(--brand),var(--brand2));box-shadow:0 8px 16px -8px rgba(13,148,136,.7);transition:transform .2s}
-.lxa .lx-pdf:hover{transform:translateY(-1px)}.lxa .lx-pdf:disabled{opacity:.7;cursor:wait;transform:none}
-.lxa .lx-pdf svg{width:18px;height:18px}
-.lxa .spin{animation:lxas 1s linear infinite}@keyframes lxas{to{transform:rotate(360deg)}}
+.lx .dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:28px}
+.lx .dl-i{width:48px;height:48px;border-radius:12px;background:#fef2f2;border:1px solid #fee2e2;display:flex;align-items:center;justify-content:center;flex:none;color:#ef4444}
+.lx .dl-t{flex:1;min-width:200px}.lx .dl-t h4{margin:0;font-size:1rem;font-weight:800}.lx .dl-t p{margin:2px 0 0;font-size:.86rem;color:#64748b;line-height:1.6}
+.lx .lx-pdf{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:12px;cursor:pointer;color:#fff;font:700 .95rem inherit;font-family:inherit;background:linear-gradient(270deg,var(--brand),var(--brand2));box-shadow:0 8px 16px -8px rgba(13,148,136,.7);transition:transform .2s}
+.lx .lx-pdf:hover{transform:translateY(-1px)}.lx .lx-pdf:disabled{opacity:.7;cursor:wait;transform:none}
+.lx .lx-pdf svg{width:18px;height:18px}
+.lx .spin{animation:lxs 1s linear infinite}@keyframes lxs{to{transform:rotate(360deg)}}
 
 /* ---------- Section card ---------- */
-.lxa .sec{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin:0 0 24px;box-shadow:0 1px 3px rgba(15,23,42,.05),0 12px 24px -18px rgba(15,23,42,.18);scroll-margin-top:84px}
-.lxa .sec-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
-.lxa .num{flex:none;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;background:linear-gradient(225deg,var(--brand),var(--brand2));box-shadow:0 6px 12px -6px rgba(13,148,136,.7)}
-.lxa .sec-head h2{margin:0;font-size:1.35rem;font-weight:800;line-height:1.5;color:var(--ink)}
-.lxa .sec-lead{margin:10px 0 0;color:var(--mut);font-size:.98rem}
-.lxa .sec-lead:empty{display:none}
-.lxa .k{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.86em;background:#f1f5f9;border:1px solid #e5e9f0;padding:1px 6px;border-radius:6px;color:#0f766e;white-space:nowrap;direction:ltr;unicode-bidi:isolate;display:inline-block;line-height:1.5}
+.lx .sec{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin:0 0 24px;box-shadow:0 1px 3px rgba(15,23,42,.05),0 12px 24px -18px rgba(15,23,42,.18);scroll-margin-top:84px}
+.lx .sec-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.lx .num{flex:none;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;background:linear-gradient(225deg,var(--brand),var(--brand2));box-shadow:0 6px 12px -6px rgba(13,148,136,.7)}
+.lx .sec-head h2{margin:0;font-size:1.35rem;font-weight:800;line-height:1.5;color:var(--ink)}
+.lx .sec-lead{margin:10px 0 0;color:var(--mut);font-size:.98rem}
+.lx .sec-lead:empty{display:none}
+.lx .k{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.86em;background:#f1f5f9;border:1px solid #e5e9f0;padding:1px 6px;border-radius:6px;color:#0f766e;white-space:nowrap;direction:ltr;unicode-bidi:isolate;display:inline-block;line-height:1.5}
 
 /* ---------- Example blocks ---------- */
-.lxa .ex{margin-top:22px;padding-top:20px;border-top:1px dashed var(--line)}
-.lxa .sec-head+.ex,.lxa .sec-lead+.ex{margin-top:18px;padding-top:0;border-top:0}
-.lxa .ex-t{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:.98rem;font-weight:700;color:var(--ink);line-height:1.6}
-.lxa .ex-t::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--brand2)}
-.lxa .ex-d{margin:0 0 10px;color:var(--mut);font-size:.94rem}
-.lxa .ex-t+.code{margin-top:10px}
+.lx .ex{margin-top:22px;padding-top:20px;border-top:1px dashed var(--line)}
+.lx .sec-head+.ex,.lx .sec-lead+.ex{margin-top:18px;padding-top:0;border-top:0}
+.lx .ex-t{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:.98rem;font-weight:700;color:var(--ink);line-height:1.6}
+.lx .ex-t::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--brand2)}
+.lx .ex-d{margin:0 0 10px;color:var(--mut);font-size:.94rem}
+.lx .ex-t+.code{margin-top:10px}
 
 /* ---------- Code (always LTR) ---------- */
-.lxa .code{border-radius:12px;overflow:hidden;background:#0f172a;border:1px solid #1e293b;direction:ltr;text-align:left}
-.lxa .code-bar{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 6px 14px;background:#1e293b;color:#94a3b8;font:700 .7rem ui-monospace,monospace;letter-spacing:.12em}
-.lxa .cp{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;cursor:pointer;font:600 .76rem system-ui,sans-serif;transition:background .2s,color .2s,border-color .2s}
-.lxa .cp svg{width:14px;height:14px}.lxa .cp::after{content:attr(data-label)}
-.lxa .cp:hover{background:#334155}.lxa .cp.ok{color:#34d399;border-color:#34d399}
-.lxa .code .pre{display:block;margin:0;padding:14px 16px;overflow-x:auto;white-space:pre;color:#e2e8f0;background:none;border:0;border-radius:0;font:.88rem/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:left}
-.lxa .code .pre code{background:none;color:inherit;padding:0;font:inherit}
-.lxa .code .pre button,.lxa .code>button:not(.cp),.lxa .code [class*="copy"]:not(.cp){display:none!important}
-.lxa .tk{color:#7dd3fc;font-weight:600}.lxa .ts{color:#fcd34d}.lxa .tn{color:#f0abfc}.lxa .tc{color:#64748b;font-style:italic}
+.lx .code{border-radius:12px;overflow:hidden;background:#0f172a;border:1px solid #1e293b;direction:ltr;text-align:left}
+.lx .code-bar{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 6px 14px;background:#1e293b;color:#94a3b8;font:700 .7rem ui-monospace,monospace;letter-spacing:.12em}
+.lx .cp{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;cursor:pointer;font:600 .76rem system-ui,sans-serif;transition:background .2s,color .2s,border-color .2s}
+.lx .cp svg{width:14px;height:14px}.lx .cp::after{content:attr(data-label)}
+.lx .cp:hover{background:#334155}.lx .cp.ok{color:#34d399;border-color:#34d399}
+.lx .code .pre{display:block;margin:0;padding:14px 16px;overflow-x:auto;white-space:pre;color:#e2e8f0;background:none;border:0;border-radius:0;font:.88rem/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:left}
+.lx .code .pre code{background:none;color:inherit;padding:0;font:inherit}
+.lx .code .pre button,.lx .code>button:not(.cp),.lx .code [class*="copy"]:not(.cp){display:none!important}
+.lx .tk{color:#7dd3fc;font-weight:600}.lx .ts{color:#fcd34d}.lx .tn{color:#f0abfc}.lx .tc{color:#64748b;font-style:italic}
 
 /* ---------- Notes ---------- */
-.lxa .note{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;margin:14px 0 0;border-radius:12px;border:1px solid;border-right-width:4px;font-size:.93rem;line-height:1.7}
-.lxa .note .ic{font-size:1.15rem;line-height:1.5;flex:none}.lxa .note p{margin:0!important;color:inherit!important}
-.lxa .note .k{background:rgba(255,255,255,.7);color:inherit;border-color:rgba(0,0,0,.08)}
-.lxa .tip{background:#fffbeb;border-color:#fde68a;border-right-color:#f59e0b;color:#92400e}
-.lxa .warn{background:#fef2f2;border-color:#fecaca;border-right-color:#ef4444;color:#991b1b}
-.lxa .good{background:#ecfdf5;border-color:#a7f3d0;border-right-color:#10b981;color:#065f46}
+.lx .note{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;margin:14px 0 0;border-radius:12px;border:1px solid;border-right-width:4px;font-size:.93rem;line-height:1.7}
+.lx .note .ic{font-size:1.15rem;line-height:1.5;flex:none}.lx .note p{margin:0!important;color:inherit!important}
+.lx .note .k{background:rgba(255,255,255,.7);color:inherit;border-color:rgba(0,0,0,.08)}
+.lx .tip{background:#fffbeb;border-color:#fde68a;border-right-color:#f59e0b;color:#92400e}
+.lx .warn{background:#fef2f2;border-color:#fecaca;border-right-color:#ef4444;color:#991b1b}
+.lx .sec-head~.note:first-of-type{margin-top:16px}
 
 /* ---------- Table ---------- */
-.lxa .tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0;background:#fff}
-.lxa table{width:100%;min-width:560px;border-collapse:collapse;text-align:right}
-.lxa th{padding:11px 14px;background:#f1f5f9;color:#334155;font-weight:700;font-size:.88rem;border-bottom:1px solid var(--line);text-align:right}
-.lxa td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:var(--mut);font-size:.92rem;vertical-align:top;text-align:right}
-.lxa td:first-child{width:30%;font:700 .82rem ui-monospace,monospace;color:#0f766e;word-break:break-word;direction:ltr;text-align:right}
-.lxa td:first-child small{display:block;margin-top:2px;font:600 .8rem system-ui,sans-serif;color:#64748b;direction:rtl}
-.lxa tr:last-child td{border-bottom:0}.lxa tr:hover td{background:var(--soft)}
+.lx .tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0;background:#fff}
+.lx table{width:100%;min-width:560px;border-collapse:collapse;text-align:right}
+.lx th{padding:11px 14px;background:#f1f5f9;color:#334155;font-weight:700;font-size:.88rem;border-bottom:1px solid var(--line);text-align:right}
+.lx td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:var(--mut);font-size:.92rem;vertical-align:top;text-align:right}
+.lx td:first-child{width:38%;font:700 .8rem ui-monospace,monospace;color:#0f766e;word-break:break-word;direction:ltr;text-align:right}
+.lx tr:last-child td{border-bottom:0}.lx tr:hover td{background:var(--soft)}
 
 /* ---------- Misc ---------- */
-.lxa .rv{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}.lxa .rv.in{opacity:1;transform:none}
-.lxa .top{position:fixed;left:18px;right:auto;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:var(--brand);box-shadow:0 8px 16px -4px rgba(13,148,136,.55);display:flex;align-items:center;justify-content:center;padding:0;opacity:0;pointer-events:none;transition:opacity .25s,transform .2s}
-.lxa .top:hover{transform:translateY(-2px)}
-.lxa .top.show{opacity:1;pointer-events:auto}
-.lxa-toast{position:fixed;top:16px;right:16px;z-index:99999;max-width:320px;padding:12px 16px;border-radius:14px;border-right:6px solid #5eead4;background:#0f766e;color:#fff;font:600 .9rem/1.5 system-ui,sans-serif;direction:rtl;text-align:right;box-shadow:0 20px 25px -5px rgba(15,118,110,.35);opacity:0;transform:translateY(-16px);transition:all .3s}
-.lxa-toast.show{opacity:1;transform:none}.lxa-toast.err{background:#b91c1c}.lxa-toast small{display:block;font-weight:400;opacity:.9}
-.lxa a:focus-visible,.lxa button:focus-visible{outline:3px solid #5eead4;outline-offset:2px}
+.lx .rv{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}.lx .rv.in{opacity:1;transform:none}
+/* Back-to-top: bottom-left */
+.lx .top{position:fixed;left:18px;right:auto;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:var(--brand);box-shadow:0 8px 16px -4px rgba(13,148,136,.55);display:flex;align-items:center;justify-content:center;padding:0;opacity:0;pointer-events:none;transition:opacity .25s,transform .2s}
+.lx .top:hover{transform:translateY(-2px)}
+.lx .top.show{opacity:1;pointer-events:auto}
+.lx-toast{position:fixed;top:16px;right:16px;z-index:99999;max-width:320px;padding:12px 16px;border-radius:14px;border-right:6px solid #5eead4;background:#0f766e;color:#fff;font:600 .9rem/1.5 system-ui,sans-serif;direction:rtl;text-align:right;box-shadow:0 20px 25px -5px rgba(15,118,110,.35);opacity:0;transform:translateY(-16px);transition:all .3s}
+.lx-toast.show{opacity:1;transform:none}.lx-toast.err{background:#b91c1c}.lx-toast small{display:block;font-weight:400;opacity:.9}
+.lx a:focus-visible,.lx button:focus-visible{outline:3px solid #5eead4;outline-offset:2px}
 
 @media(max-width:560px){
-.lxa{font-size:16px}
-.lxa .hero{padding:24px 20px}.lxa .hero h1{font-size:1.45rem}
-.lxa .sec{padding:20px 16px;border-radius:16px}
-.lxa .sec-head h2{font-size:1.15rem}.lxa .num{width:38px;height:38px;font-size:1.05rem}
-.lxa .lx-pdf{width:100%}
-.lxa .code .pre{font-size:.82rem;padding:12px 14px}
+.lx{font-size:16px}
+.lx .hero{padding:24px 20px}.lx .hero h1{font-size:1.45rem}
+.lx .sec{padding:20px 16px;border-radius:16px}
+.lx .sec-head h2{font-size:1.15rem}.lx .num{width:38px;height:38px;font-size:1.05rem}
+.lx .lx-pdf{width:100%}
+.lx .code .pre{font-size:.82rem;padding:12px 14px}
 }
-@media(prefers-reduced-motion:reduce){.lxa *{transition:none!important;animation:none!important}.lxa .rv{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.lx *{transition:none!important;animation:none!important}.lx .rv{opacity:1;transform:none}}
 
 /* ---------- PDF mode ---------- */
-.lxa.pdf-mode{width:760px;max-width:none;margin:0;padding:2px 2px 28px;background:#fff}
-.lxa.pdf-mode *{letter-spacing:normal!important;word-spacing:normal!important;word-break:normal!important;overflow-wrap:normal!important;box-shadow:none!important;backdrop-filter:none!important;transition:none!important;animation:none!important;transform:none!important}
-.lxa.pdf-mode .rv{opacity:1!important}
-.lxa.pdf-mode .sec{border:0;border-top:2px solid var(--line);border-radius:0;padding:22px 0 4px;margin:0}
-.lxa.pdf-mode .tw{overflow:visible}.lxa.pdf-mode table{min-width:0}
-.lxa.pdf-mode .code .pre{white-space:pre-wrap;overflow:visible}
+.lx.pdf-mode{width:760px;max-width:none;margin:0;padding:2px 2px 28px;background:#fff}
+.lx.pdf-mode *{letter-spacing:normal!important;word-spacing:normal!important;word-break:normal!important;overflow-wrap:normal!important;box-shadow:none!important;backdrop-filter:none!important;transition:none!important;animation:none!important;transform:none!important}
+.lx.pdf-mode .rv{opacity:1!important}
+.lx.pdf-mode .sec{border:0;border-top:2px solid var(--line);border-radius:0;padding:22px 0 4px;margin:0}
+.lx.pdf-mode .tw{overflow:visible}.lx.pdf-mode table{min-width:0}
+.lx.pdf-mode .code .pre{white-space:pre-wrap;overflow:visible}
 
-/* ---------- Force RTL (beats any theme CSS) ---------- */
-.lxa,.lxa *{direction:rtl}
-.lxa{text-align:right}
-.lxa .code,.lxa .code *{direction:ltr;text-align:left}
-.lxa .code bdi{direction:rtl}
-.lxa .k,.lxa td:first-child{direction:ltr}
-.lxa td:first-child small{direction:rtl}
-.lxa .hero-in,.lxa .sec-head,.lxa .dl,.lxa .note,.lxa .chips,.lxa .nav-s{flex-direction:row}
+/* ---------- Force RTL (design unchanged) ---------- */
+.lx,.lx *{direction:rtl}
+.lx{text-align:right}
+
+/* keep these LTR */
+.lx .code,.lx .code *{direction:ltr;text-align:left}
+.lx .code bdi{direction:rtl}
+.lx .k,.lx td:first-child{direction:ltr}
+.lx td:first-child{text-align:right}
+
+/* keep flex rows starting from the right */
+.lx .hero-in,.lx .sec-head,.lx .dl,.lx .note,.lx .chips,.lx .nav-s{flex-direction:row}
 </style>
 
-<div class="lxa" dir="rtl" lang="ar">
+<div class="lx" dir="rtl" lang="ar">
 
-<div class="hero"><div class="hero-in"><span class="hero-ic">🔗</span><div>
-<h1>العلاقات بين الجداول والمفاتيح الأجنبية في MySQL</h1>
-<p>ملخص تطبيقي يشرح تقسيم الجداول (Normalization)، وأنواع العلاقات، والمفتاح الأجنبي، وسلوك الحذف والتعديل، مع الأكواد العملية.</p>
-<div class="chips"><span>MySQL</span><span>5 مواضيع</span><span>أكواد SQL جاهزة للنسخ</span></div>
+<div class="hero"><div class="hero-in"><span class="hero-ic">🛠️</span><div>
+<h1>أوامر ALTER TABLE في MySQL</h1>
+<p>دليل عملي لأوامر ALTER في MySQL: الصيغة العامة، وإدارة الأعمدة والقيود، والاستعلام عن القيود، مع أمثلة جاهزة للنسخ.</p>
+<div class="chips"><span>MySQL</span><span>9 مواضيع</span><span>أوامر SQL جاهزة للنسخ</span></div>
 </div></div></div>
 
 <div class="nav" data-pdf-ignore><div class="nav-s">
-<a href="#" data-t="s1">1 · العلاقات</a><a href="#" data-t="s2">2 · المفتاح الأجنبي</a><a href="#" data-t="s3">3 · الحذف والتعديل</a><a href="#" data-t="s4">4 · أكواد MySQL</a><a href="#" data-t="s5">5 · ALTER TABLE</a>
+<a href="#" data-t="s1">1 · الأعمدة</a><a href="#" data-t="s2">2 · إعادة التسمية</a><a href="#" data-t="s3">3 · MODIFY</a><a href="#" data-t="s4">4 · CHANGE</a><a href="#" data-t="s5">5 · UNIQUE</a><a href="#" data-t="s6">6 · CHECK</a><a href="#" data-t="s7">7 · DEFAULT</a><a href="#" data-t="s8">8 · الاستعلام</a><a href="#" data-t="s9">9 · PRIMARY KEY</a>
 </div><div class="bar"><i></i></div></div>
 
 <div class="dl" data-pdf-ignore>
@@ -194,119 +197,132 @@
 <button type="button" class="lx-pdf"><span class="pi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></span><span class="pl">تحميل الملخص (PDF)</span></button>
 </div>
 
+<!-- Syntax -->
+<section class="sec rv" id="lx-syntax">
+<div class="sec-head"><div class="num">⌘</div><h2>الصيغة العامة</h2></div>
+<p class="sec-lead">الصيغة العامة لأمر <span class="k">ALTER</span> في MySQL:</p>
+<div class="ex"><div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE table_name action;</code></div></div></div>
+</section>
+
 <!-- 1 -->
-<section class="sec rv" id="lxa-s1">
-<div class="sec-head"><div class="num">1</div><h2>أولاً: ملخص العلاقات وتقسيم الجداول (Normalization)</h2></div>
-<p class="sec-lead">الهدف الأساسي من تصميم قواعد البيانات هو ترتيب البيانات وتقليل التكرار المزعج. إليكم كيف نطبق أنواع العلاقات:</p>
-<div class="ex"><h3 class="ex-t">علاقة واحد لواحد (One-to-One)</h3>
-<p class="ex-d">لتجنب تكرار البيانات، نقوم بتقسيم الجدول الكبير إلى جدولين. على سبيل المثال، تم تقسيم جدول الموظفين إلى جدول للبيانات الشخصية (<span class="k">Employees_Table</span>) وجدول للرواتب (<span class="k">Salaries_Table</span>). وكذلك بالنسبة للطلاب، تم فصل البيانات الشخصية (<span class="k">Students_Table</span>) عن التفاصيل الأكاديمية (<span class="k">Acad_students</span>).</p></div>
-<div class="ex"><h3 class="ex-t">علاقة واحد لمتعدد (One-to-Many)</h3>
-<p class="ex-d">تظهر هذه العلاقة بوضوح بين فصائل الدم (<span class="k">Blood_Types_Table</span>) والمرضى (<span class="k">Patients_Table</span>). الفكرة هنا أن فصيلة الدم الواحدة (مثل <span class="k">O+</span>) يمكن أن يحملها أكثر من مريض، لكن المريض الواحد لا يمتلك سوى فصيلة دم واحدة.</p></div>
-<div class="ex"><h3 class="ex-t">علاقة متعدد لمتعدد (Many-to-Many)</h3>
-<p class="ex-d">مثل العلاقة بين المرضى (<span class="k">Patients_Table</span>) والأمراض (<span class="k">Diseases_Table</span>). المريض قد يُصاب بعدة أمراض، والمرض الواحد قد يُصيب عدة مرضى. لأن قاعدة البيانات لا تستوعب هذه العلاقة مباشرة، نقوم بحلها برمجياً بإنشاء "جدول وسيط" (<span class="k">Patient_Diseases_Table</span>) يكسر هذه العلاقة الكبيرة ويحولها إلى علاقتي "واحد لمتعدد".</p></div>
+<section class="sec rv" id="lx-s1">
+<div class="sec-head"><div class="num">1</div><h2>إضافة وحذف عمود</h2></div>
+<p class="sec-lead">تعتبر كلمة <span class="k">COLUMN</span> اختيارية، يمكنك كتابتها أو تجاهلها.</p>
+<div class="ex"><h3 class="ex-t">إضافة عمود</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD COLUMN Salary DECIMAL(10,2);
+
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees ADD Salary DECIMAL(10,2);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">حذف عمود</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP COLUMN Salary;
+
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees DROP Salary;</code></div></div></div>
 </section>
 
 <!-- 2 -->
-<section class="sec rv" id="lxa-s2">
-<div class="sec-head"><div class="num">2</div><h2>ثانياً: ما هو المفتاح الأجنبي (Foreign Key)؟</h2></div>
-<p class="sec-lead">ببساطة، هو حقل نضعه في جدول (نسميه <strong>الجدول الابن</strong>) ليكون بمثابة "جسر" يربطنا بالمفتاح الأساسي (<span class="k">Primary Key</span>) في جدول آخر (نسميه <strong>الجدول الأب</strong>).</p>
-<div class="note good"><span class="ic">🎯</span><p><strong>وظيفته الأساسية:</strong> الحفاظ على ما يُسمى بـ "التكامل المرجعي"، أي أنه يمنع إدخال بيانات عشوائية ويضمن ألا يحتوي الجدول الابن على سجلات "يتيمة" ليس لها أصل في الجدول الأب.</p></div>
+<section class="sec rv" id="lx-s2">
+<div class="sec-head"><div class="num">2</div><h2>تغيير اسم الجدول</h2></div>
+<p class="sec-lead">لتغيير اسم جدول موجود:</p>
+<div class="ex"><h3 class="ex-t">إعادة تسمية الجدول</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees RENAME TO Staff;</code></div></div></div>
 </section>
 
 <!-- 3 -->
-<section class="sec rv" id="lxa-s3">
-<div class="sec-head"><div class="num">3</div><h2>ثالثاً: ماذا يحدث عند الحذف أو التعديل؟ (ON DELETE &amp; ON UPDATE)</h2></div>
-<p class="sec-lead">هذه الخصائص تخبر قاعدة البيانات بما يجب فعله في الجدول الابن إذا تم حذف أو تعديل بيانات الجدول الأب:</p>
-<div class="tw"><table>
-<thead><tr><th>الخيار</th><th>السلوك</th></tr></thead>
-<tbody>
-<tr><td>CASCADE<small>المتتبع المتسلسل</small></td><td>إذا قمت بحذف أو تعديل السجل الأب، سيتم تلقائياً حذف أو تعديل السجلات المرتبطة به في الجدول الابن.</td></tr>
-<tr><td>RESTRICT<small>المانع الصارم</small></td><td>يمنعك تماماً من حذف أو تعديل السجل الأب طالما توجد سجلات مرتبطة به في الجدول الابن (لحماية البيانات من الضياع).</td></tr>
-<tr><td>SET NULL<small>التفريغ</small></td><td>إذا قمت بحذف أو تعديل السجل الأب، ستبقى بيانات الابن موجودة، ولكن قيمة حقل المفتاح الأجنبي ستصبح فارغة (<span class="k">NULL</span>).</td></tr>
-</tbody></table></div>
+<section class="sec rv" id="lx-s3">
+<div class="sec-head"><div class="num">3</div><h2>تعديل نوع البيانات وإضافة قيد NOT NULL (باستخدام MODIFY)</h2></div>
+<p class="sec-lead">تُستخدم <span class="k">MODIFY</span> لتعديل نوع بيانات العمود أو إضافة/إزالة قيد <span class="k">NOT NULL</span> بدون تغيير اسم العمود.</p>
+<div class="ex"><h3 class="ex-t">التعديل وإضافة القيد</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees MODIFY Age INT NOT NULL;</code></div></div></div>
+<div class="ex"><h3 class="ex-t">إزالة قيد NOT NULL (إرجاعه ليقبل القيم الفارغة NULL)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees MODIFY Age INT NULL;</code></div></div></div>
 </section>
 
 <!-- 4 -->
-<section class="sec rv" id="lxa-s4">
-<div class="sec-head"><div class="num">4</div><h2>رابعاً: أكواد MySQL (التطبيق العملي)</h2></div>
-<div class="ex"><h3 class="ex-t">1. علاقة واحد لواحد (1:1)</h3>
-<p class="ex-d">لضمان أن الموظف له راتب واحد فقط، نضيف قيد <span class="k">UNIQUE</span> بجانب المفتاح الأجنبي:</p>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Salaries_Table (
-    Sala_Id INT PRIMARY KEY,
-    hours_no INT,
-    hours_rate INT
-);
-
-CREATE TABLE Employees_Table (
-    Emp_Id INT PRIMARY KEY,
-    Name VARCHAR(100),
-    Salar_id INT UNIQUE, -- هذا القيد يضمن أن العلاقة 1:1
-    FOREIGN KEY (Salar_id) REFERENCES Salaries_Table(Sala_Id)
-    ON DELETE SET NULL
-    ON UPDATE CASCADE
-);</code></div></div></div>
-<div class="ex"><h3 class="ex-t">2. علاقة واحد لمتعدد (1:M)</h3>
-<p class="ex-d">المريض له فصيلة دم واحدة، وفصيلة الدم لها عدة مرضى:</p>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Blood_Types_Table (
-    Blood_ID INT PRIMARY KEY,
-    Blood_type VARCHAR(10) NOT NULL
-);
-
-CREATE TABLE Patients_Table (
-    Patient_ID INT PRIMARY KEY,
-    Name VARCHAR(100),
-    Blood_Id INT,
-    FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);</code></div></div></div>
-<div class="ex"><h3 class="ex-t">3. علاقة متعدد لمتعدد (M:M)</h3>
-<p class="ex-d">هنا نقوم بإنشاء الجدول الوسيط الذي يحتوي على مفتاحين أجنبيين:</p>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Diseases_Table (
-    Diseases_ID VARCHAR(10) PRIMARY KEY,
-    Disease_name VARCHAR(100)
-);
-
-CREATE TABLE Patient_Diseases_Table (
-    Patient_Id INT,
-    Diseases_Id VARCHAR(10),
-    Diagnosis_Date YEAR,
-
-    -- دمج المفتاحين كـ مفتاح أساسي مركب للجدول الوسيط
-    PRIMARY KEY (Patient_Id, Diseases_Id),
-
-    -- الربط مع جدول المرضى
-    FOREIGN KEY (Patient_Id) REFERENCES Patients_Table(Patient_ID)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-
-    -- الربط مع جدول الأمراض
-    FOREIGN KEY (Diseases_Id) REFERENCES Diseases_Table(Diseases_ID)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);</code></div></div></div>
+<section class="sec rv" id="lx-s4">
+<div class="sec-head"><div class="num">4</div><h2>تعديل اسم العمود أو نوعه (باستخدام CHANGE)</h2></div>
+<p class="sec-lead">تُستخدم <span class="k">CHANGE</span> لتغيير اسم العمود، أو نوع البيانات، أو كليهما معاً (تتطلب كتابة الاسم القديم ثم الجديد).</p>
+<div class="ex"><h3 class="ex-t">تغيير اسم العمود مع تحديد نوع البيانات</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees CHANGE Age Employee_Age INT;</code></div></div></div>
 </section>
 
 <!-- 5 -->
-<section class="sec rv" id="lxa-s5">
-<div class="sec-head"><div class="num">5</div><h2>خامساً: استخدام ALTER TABLE للتعديل على الجداول</h2></div>
-<p class="sec-lead">إذا نسيت إضافة المفتاح الأجنبي عند إنشاء الجدول، لا تقلق! يمكنك إضافته لاحقاً، أو حتى حذفه باستخدام هذه الأوامر:</p>
-<div class="ex"><h3 class="ex-t">1. حذف المفتاح الأجنبي (باستخدام اسم القيد مباشرة)</h3>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
-DROP CONSTRAINT fk_blood_patient;</code></div></div></div>
-<div class="ex"><h3 class="ex-t">2. إضافة مفتاح أجنبي (بدون إعطائه اسماً يدوياً)</h3>
-<p class="ex-d">سيقوم النظام بتوليد اسم تلقائي له.</p>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
-ADD FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
-ON DELETE SET NULL
-ON UPDATE CASCADE;</code></div></div></div>
-<div class="ex"><h3 class="ex-t">3. إضافة مفتاح أجنبي (مع تحديد اسم واضح له)</h3>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
-ADD CONSTRAINT fk_blood_patient
-FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
-ON DELETE SET NULL
-ON UPDATE CASCADE;</code></div></div>
-<div class="note tip"><span class="ic">💡</span><p><strong>نصيحة:</strong> من الأفضل دائماً تسمية القيود ليسهل إدارتها لاحقاً.</p></div></div>
+<section class="sec rv" id="lx-s5">
+<div class="sec-head"><div class="num">5</div><h2>قيد UNIQUE (فريد)</h2></div>
+<p class="sec-lead">يضمن أن تكون كل قيمة في العمود (أو مجموعة أعمدة) مختلفة عن غيرها.</p>
+<div class="ex"><h3 class="ex-t">الإضافة (بدون تحديد اسم للقيد - يقوم النظام بتسميته تلقائياً)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD UNIQUE (Email);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">الإضافة (مع تحديد اسم مخصص للقيد باستخدام CONSTRAINT)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CONSTRAINT UQ_Email UNIQUE (Email);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">حذف قيد UNIQUE (في إصدارات MySQL الحديثة)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP CONSTRAINT UQ_Email;</code></div></div></div>
+</section>
+
+<!-- 6 -->
+<section class="sec rv" id="lx-s6">
+<div class="sec-head"><div class="num">6</div><h2>قيد CHECK (التحقق من شرط)</h2></div>
+<p class="sec-lead">تحديد القيم التي يقبلها العمود باستخدام شرط.</p>
+<div class="ex"><h3 class="ex-t">الإضافة (بدون تحديد اسم للقيد)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CHECK (Age &gt;= 18);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">الإضافة (مع تحديد اسم مخصص للقيد)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CONSTRAINT CHK_Age CHECK (Age &gt;= 18);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">حذف قيد CHECK</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP CONSTRAINT CHK_Age;</code></div></div></div>
+</section>
+
+<!-- 7 -->
+<section class="sec rv" id="lx-s7">
+<div class="sec-head"><div class="num">7</div><h2>قيد DEFAULT (القيمة الافتراضية)</h2></div>
+<div class="note tip"><span class="ic">💡</span><p><strong>ملاحظة:</strong> كلمة <span class="k">COLUMN</span> بعد <span class="k">ALTER</span> الثانية هي اختيارية، ويمكنك كتابتها أو حذفها.</p></div>
+<div class="ex"><h3 class="ex-t">إضافة القيد</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ALTER COLUMN City SET DEFAULT 'Amman';
+
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees ALTER City SET DEFAULT 'Amman';</code></div></div></div>
+<div class="ex"><h3 class="ex-t">حذف قيد DEFAULT</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ALTER COLUMN City DROP DEFAULT;
+
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees ALTER City DROP DEFAULT;</code></div></div></div>
+</section>
+
+<!-- 8 -->
+<section class="sec rv" id="lx-s8">
+<div class="sec-head"><div class="num">8</div><h2>الاستعلام عن القيود في الجدول (قراءة هيكل القيود)</h2></div>
+<p class="sec-lead">لمعرفة القيود التي قمت بإضافتها على جدول معين، استخدم هذا الأمر:</p>
+<div class="ex"><h3 class="ex-t">عرض قيود الجدول</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE
+FROM information_schema.TABLE_CONSTRAINTS
+WHERE TABLE_NAME = 'Employees'
+  AND TABLE_SCHEMA = 'اسم_قاعدة_البيانات_هنا';</code></div></div></div>
+<div class="ex"><h3 class="ex-t">شرح الأمر</h3>
+<div class="tw"><table>
+<thead><tr><th>الجزء</th><th>الشرح</th></tr></thead>
+<tbody>
+<tr><td>information_schema.TABLE_CONSTRAINTS</td><td>هو "دليل نظام" داخل الخادم يحتوي على بيانات لجميع القيود (Metadata).</td></tr>
+<tr><td>CONSTRAINT_NAME</td><td>يعرض اسم القيد (سواء الاسم المخصص مثل <span class="k">UQ_Email</span> أو التلقائي).</td></tr>
+<tr><td>CONSTRAINT_TYPE</td><td>يعرض نوع القيد (UNIQUE, CHECK, PRIMARY KEY, إلخ).</td></tr>
+<tr><td>WHERE TABLE_NAME = 'Employees'</td><td>يفلتر النتائج ليعرض فقط القيود الخاصة بجدول الموظفين.</td></tr>
+<tr><td>AND TABLE_SCHEMA = '...'</td><td>شرط في غاية الأهمية؛ فهو يحدد "اسم قاعدة البيانات".</td></tr>
+</tbody></table></div>
+<div class="note warn"><span class="ic">⚠️</span><p><strong>لماذا يهم الشرط <span class="k">TABLE_SCHEMA</span>؟</strong> بدون هذا الشرط، إذا كان لديك جدول باسم <span class="k">Employees</span> في قواعد بيانات أخرى على نفس الخادم (مثل قاعدة اختبار وقاعدة إنتاج)، ستظهر لك قيودها جميعاً وتختلط النتائج. تحديده يضمن الحصول على قيود الجدول في القاعدة الحالية فقط.</p></div></div>
+</section>
+
+<!-- 9 -->
+<section class="sec rv" id="lx-s9">
+<div class="sec-head"><div class="num">9</div><h2>إضافة وحذف المفتاح الأساسي (PRIMARY KEY)</h2></div>
+<p class="sec-lead">تتم إضافة وحذف المفتاح الأساسي (<span class="k">PRIMARY KEY</span>) باستخدام <span class="k">ALTER TABLE</span> في MySQL بالصيغ التالية:</p>
+<div class="ex"><h3 class="ex-t">إضافة قيد PRIMARY KEY</h3>
+<p class="ex-d">إذا كان العمود موجوداً بالفعل وتريد تعيينه كمفتاح أساسي:</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD PRIMARY KEY (ID);</code></div></div>
+<div class="note tip"><span class="ic">💡</span><p><strong>ملاحظة:</strong> إذا أردت جعل المفتاح الأساسي مركباً من أكثر من عمود (Composite Key)، تفصل بينها بفاصلة: <span class="k">ADD PRIMARY KEY (ID, Department_ID)</span></p></div></div>
+<div class="ex"><h3 class="ex-t">إضافة قيد PRIMARY KEY مع كتابة اسم للقيد (CONSTRAINT)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CONSTRAINT PK_Employee PRIMARY KEY (ID);</code></div></div>
+<div class="note tip"><span class="ic">💡</span><p><strong>معلومة خاصة بـ MySQL:</strong> حتى إذا قمت بكتابة اسم مخصص للمفتاح الأساسي مثل <span class="k">PK_Employee</span>، فإن النظام سيتجاهل هذا الاسم ويحفظه دائماً باسم <span class="k">PRIMARY</span> في الكواليس.</p></div></div>
+<div class="ex"><h3 class="ex-t">حذف قيد PRIMARY KEY</h3>
+<p class="ex-d">نظراً لأن أي جدول لا يمكنه احتواء أكثر من مفتاح أساسي واحد، فإنك لا تحتاج إلى تحديد اسمه عند الحذف، بل يكفي كتابة الأمر التالي مباشرة:</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP PRIMARY KEY;</code></div></div>
+<div class="note warn"><span class="ic">⚠️</span><p><strong>ملاحظة هامة قبل الحذف:</strong> إذا كان عمود المفتاح الأساسي يحتوي على خاصية الترقيم التلقائي (<span class="k">AUTO_INCREMENT</span>)، يجب عليك أولاً إزالة هذه الخاصية باستخدام <span class="k">MODIFY</span> أو <span class="k">CHANGE</span>، وإلا سيرفض النظام حذف المفتاح الأساسي.</p></div></div>
 </section>
 
 <button type="button" class="top" data-pdf-ignore aria-label="العودة للأعلى"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg></button>
@@ -314,31 +330,14 @@ ON UPDATE CASCADE;</code></div></div>
 
 <script>
 (function(){
-/* ================= Settings (Arabic / RTL) ================= */
-var CFG={
-  sel:'.lxa',            /* root selector — unique to this file */
-  idp:'lxa-',            /* section id prefix — unique to this file */
-  toastCls:'lxa-toast',  /* toast class — unique to this file */
-  dir:'rtl',lang:'ar',
-  filename:'Database-Relationships-AR.pdf',
-  pdfTitle:'العلاقات بين الجداول والمفاتيح الأجنبية في MySQL',
-  headerText:'العلاقات والمفاتيح الأجنبية في MySQL',
-  headerSub:'ملخص المحاضرة',
-  siteName:location.hostname,contentW:760,timeoutMs:120000,
-  t:{prep:'جارٍ التحضير… ',page:function(n,p){return 'صفحة '+n+' من '+p;},
-     ok:'الملف جاهز! 📄',okS:'جارٍ تنزيل ملخص المحاضرة',
-     err:'تعذّر إنشاء الملف',errS:'حاول مرة أخرى أو استخدم متصفح الكمبيوتر',
-     copy:'نسخ',copied:'تم النسخ!',cpT:'تم النسخ! 🚀',cpS:'الكود جاهز للصق',
-     cpErr:'فشل النسخ',cpErrS:'حدد الكود وانسخه يدوياً'}
-};
-var RTL=CFG.dir==='rtl';
+var CFG={filename:'ALTER-TABLE-Commands-AR.pdf',pdfTitle:'ALTER TABLE Commands - MySQL Summary',headerText:'أوامر ALTER TABLE في MySQL',headerSub:'ملخص المحاضرة',siteName:location.hostname,contentW:760,timeoutMs:120000};
 var LIB_H2C='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
 var LIB_PDF='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
 var PW=210,PH=297,MX=12,TOP=16,BOT=15,CMM=PW-MX*2,MPP=CMM/CFG.contentW,PCPX=(PH-TOP-BOT)/MPP;
 var SPIN='<svg class="spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle opacity=".25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path opacity=".75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
 
 function toast(t,s,err){
-var el=document.createElement('div');el.className=CFG.toastCls+(err?' err':'');
+var el=document.createElement('div');el.className='lx-toast'+(err?' err':'');
 el.innerHTML='<div></div><small></small>';el.firstChild.textContent=t;el.lastChild.textContent=s||'';
 document.body.appendChild(el);requestAnimationFrame(function(){el.classList.add('show');});
 setTimeout(function(){el.classList.remove('show');setTimeout(function(){el.remove();},350);},2600);}
@@ -352,17 +351,17 @@ function pickScale(w,h){var ua=navigator.userAgent,ios=/iP(hone|ad|od)/i.test(ua
 var s=mob?2:3,A=ios?14e6:(mob?40e6:60e6),S=ios?16000:30000;
 while(s>1&&(w*s*h*s>A||h*s>S))s-=.25;return Math.max(s,1);}
 
-/* Page-break candidates: section tops and example/note blocks */
+/* Page-break candidates (CSS px, measured on the layout html2canvas actually renders) */
 function getCands(clone){
 var base=clone.getBoundingClientRect().top,cand=[];
-[].slice.call(clone.querySelectorAll('.sec, .sec > .ex, .sec > .note, .sec > .tw')).forEach(function(el){
+[].slice.call(clone.querySelectorAll('.sec, .sec > .ex, .sec > .note')).forEach(function(el){
 if(el.classList.contains('sec')){cand.push(el.getBoundingClientRect().top-base);return;}
 var p=el.previousElementSibling;
 if(!p||p.classList.contains('sec-head')||p.classList.contains('sec-lead'))return;
 cand.push(el.getBoundingClientRect().top-base);});
 return cand.sort(function(a,b){return a-b;});}
 
-/* Snap each break up to a fully blank pixel row so a page never cuts through text or code */
+/* Final break positions: snap UP to the nearest fully blank pixel row so a page never cuts through text or code */
 function computeBreaks(big,cands,sc){
 var ctx=big.getContext('2d'),W=big.width,Hc=big.height,P=PCPX*sc,band=Math.ceil(sc*1.5),
 c=cands.map(function(v){return Math.round(v*sc);}),br=[0],st=0;
@@ -376,17 +375,10 @@ while(y>min&&!blank(y))y--;
 if(y<=min)y=t;
 br.push(y/sc);st=y;}
 br.push(Hc/sc);return br;}
+function strip(w,h,draw){var c=document.createElement('canvas');c.width=Math.round(w*12);c.height=Math.round(h*12);var x=c.getContext('2d');x.direction='rtl';draw(x,c.width,c.height);var u=c.toDataURL('image/png');c.width=c.height=0;return u;}
 
-/* Header/footer strip: first text on the reading-start side, second on the end side */
-function strip(w,h,a,fa,ca,b,fb,cb,bDir){
-var c=document.createElement('canvas');c.width=Math.round(w*12);c.height=Math.round(h*12);
-var x=c.getContext('2d'),W=c.width,Hh=c.height;x.textBaseline='middle';
-x.font=fa;x.fillStyle=ca;x.direction=CFG.dir;x.textAlign=RTL?'right':'left';x.fillText(a,RTL?W-4:4,Hh/2);
-x.font=fb;x.fillStyle=cb;x.direction=bDir||CFG.dir;x.textAlign=RTL?'left':'right';x.fillText(b,RTL?4:W-4,Hh/2);
-var u=c.toDataURL('image/png');c.width=c.height=0;return u;}
-
-/* Light SQL syntax highlighting (display only; copy reads plain text) */
-var KW='CREATE|ALTER|TABLE|ADD|DROP|COLUMN|MODIFY|CHANGE|RENAME|TO|CONSTRAINT|UNIQUE|CHECK|DEFAULT|SET|PRIMARY|FOREIGN|KEY|REFERENCES|ON|DELETE|UPDATE|CASCADE|RESTRICT|NOT|NULL|SELECT|FROM|WHERE|AND|INT|VARCHAR|DECIMAL|YEAR';
+/* Light SQL syntax highlighting (display only; copy still reads plain text) */
+var KW='ALTER|TABLE|ADD|DROP|COLUMN|MODIFY|CHANGE|RENAME|TO|CONSTRAINT|UNIQUE|CHECK|DEFAULT|SET|PRIMARY|KEY|NOT|NULL|SELECT|FROM|WHERE|AND|INT|DECIMAL';
 var HL=new RegExp("(--[^\\n]*)|('[^'\\n]*')|\\b(\\d+)\\b|\\b("+KW+")\\b","gi");
 var AR=/[\u0600-\u06FF]/;
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -401,7 +393,6 @@ return '<span class="tk">'+kw+'</span>';});});}
 
 function init(root){
 if(root.getAttribute('data-bound'))return;root.setAttribute('data-bound','1');
-root.setAttribute('dir',CFG.dir);
 highlight(root);
 var busy=false,bar=root.querySelector('.bar i'),topBtn=root.querySelector('.top');
 var chips=[].slice.call(root.querySelectorAll('.nav a')),navS=root.querySelector('.nav-s');
@@ -410,7 +401,7 @@ var chips=[].slice.call(root.querySelectorAll('.nav a')),navS=root.querySelector
 async function pdfExport(btn){
 if(busy)return;busy=true;
 var pi=btn.querySelector('.pi'),pl=btn.querySelector('.pl'),oi=pi.innerHTML,ol=pl.textContent,holder=null,timer=null,big=null;
-function prog(p){pl.textContent=CFG.t.prep+Math.round(p)+'%';}
+function prog(p){pl.textContent='جارٍ التحضير… '+Math.round(p)+'%';}
 btn.disabled=true;pi.innerHTML=SPIN;prog(2);
 try{
 var job=(async function(){
@@ -422,11 +413,9 @@ prog(12);
 var font=getComputedStyle(root).fontFamily||'Arial, sans-serif';
 var clone=root.cloneNode(true);
 clone.removeAttribute('data-bound');clone.classList.add('pdf-mode');
-clone.setAttribute('dir',CFG.dir);clone.setAttribute('lang',CFG.lang);
-clone.style.direction=CFG.dir;clone.style.textAlign=RTL?'right':'left';
 clone.querySelectorAll('[data-pdf-ignore],button,script').forEach(function(e){e.remove();});
-holder=document.createElement('div');holder.setAttribute('data-pdf-holder',CFG.idp);holder.setAttribute('aria-hidden','true');holder.setAttribute('dir',CFG.dir);
-holder.style.cssText='direction:'+CFG.dir+';position:fixed;left:-10000px;top:0;width:'+CFG.contentW+'px;background:#fff;pointer-events:none;';
+holder=document.createElement('div');holder.setAttribute('data-pdf-holder','');holder.setAttribute('aria-hidden','true');
+holder.style.cssText='direction:rtl;position:fixed;left:-10000px;top:0;width:'+CFG.contentW+'px;background:#fff;pointer-events:none;';
 holder.appendChild(clone);document.body.appendChild(holder);await tick();
 var H=Math.ceil(clone.getBoundingClientRect().height),scale=pickScale(CFG.contentW,Math.ceil(H*1.25)),cands=[];
 prog(20);
@@ -435,9 +424,12 @@ onclone:function(d,el){cands=getCands(el);}});
 prog(60);
 var sc=big.width/CFG.contentW,breaks=computeBreaks(big,cands,sc);
 var pdf=new jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
-pdf.setProperties({title:CFG.pdfTitle,subject:CFG.pdfTitle,creator:CFG.siteName});
+pdf.setProperties({title:CFG.pdfTitle,subject:'MySQL ALTER TABLE',creator:CFG.siteName});
 var pages=breaks.length-1;
-var hdr=strip(CMM,7,CFG.headerText,'700 38px '+font,'#0f766e',CFG.headerSub,'500 34px '+font,'#94a3b8');
+/* RTL header: title on the right, subtitle on the left */
+var hdr=strip(CMM,7,function(x,w,h){x.textBaseline='middle';
+x.font='700 38px '+font;x.fillStyle='#0f766e';x.textAlign='right';x.fillText(CFG.headerText,w-4,h/2);
+x.font='500 34px '+font;x.fillStyle='#94a3b8';x.textAlign='left';x.fillText(CFG.headerSub,4,h/2);});
 for(var i=0;i<pages;i++){
 if(i)pdf.addPage();
 var b0=breaks[i],b1=breaks[i+1],sy=Math.round(b0*sc),sh=Math.max(1,Math.min(big.height-sy,Math.round(b1*sc)-sy));
@@ -445,10 +437,11 @@ var sl=document.createElement('canvas');sl.width=big.width;sl.height=sh;
 var cx=sl.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,sl.width,sl.height);cx.drawImage(big,0,sy,big.width,sh,0,0,big.width,sh);
 var img=sl.toDataURL('image/jpeg',.93);sl.width=sl.height=0;
 pdf.addImage(img,'JPEG',MX,TOP,CMM,(sh/sc)*MPP,undefined,'FAST');
-pdf.setFillColor(13,148,136);pdf.rect(0,0,PW,2.4,'F');pdf.setFillColor(52,211,153);pdf.rect(RTL?PW-70:0,0,70,2.4,'F');
+pdf.setFillColor(13,148,136);pdf.rect(0,0,PW,2.4,'F');pdf.setFillColor(52,211,153);pdf.rect(0,0,70,2.4,'F');
 pdf.setDrawColor(226,232,240);pdf.setLineWidth(.3);
 if(i){pdf.addImage(hdr,'PNG',MX,5,CMM,7);pdf.line(MX,13,PW-MX,13);}
-var ftr=strip(CMM,7,CFG.t.page(i+1,pages),'500 34px '+font,'#64748b',CFG.siteName,'500 34px '+font,'#64748b','ltr');
+var n=i+1,ftr=strip(CMM,7,function(x,w,h){x.textBaseline='middle';x.font='500 34px '+font;x.fillStyle='#64748b';
+x.textAlign='right';x.fillText('صفحة '+n+' من '+pages,w-4,h/2);x.textAlign='left';x.fillText(CFG.siteName,4,h/2);});
 pdf.line(MX,PH-12,PW-MX,PH-12);pdf.addImage(ftr,'PNG',MX,PH-11,CMM,7);
 prog(60+((i+1)/pages)*35);await tick();}
 big.width=big.height=0;big=null;prog(98);await tick();
@@ -457,10 +450,10 @@ pdf.save(CFG.filename);
 var to=new Promise(function(_,rej){timer=setTimeout(function(){rej(new Error('PDF export timeout'));},CFG.timeoutMs);});
 job.catch(function(){});
 await Promise.race([job,to]);
-toast(CFG.t.ok,CFG.t.okS);
-}catch(e){console.error(e);toast(CFG.t.err,CFG.t.errS,true);}
+toast('الملف جاهز! 📄','جارٍ تنزيل ملخص المحاضرة');
+}catch(e){console.error(e);toast('تعذّر إنشاء الملف','حاول مرة أخرى أو استخدم متصفح الكمبيوتر',true);}
 finally{clearTimeout(timer);if(big)big.width=big.height=0;
-document.querySelectorAll('[data-pdf-holder="'+CFG.idp+'"]').forEach(function(el){el.remove();});
+document.querySelectorAll('[data-pdf-holder]').forEach(function(el){el.remove();});
 busy=false;btn.disabled=false;pi.innerHTML=oi;pl.textContent=ol;}
 }
 
@@ -473,12 +466,12 @@ try{document.execCommand('copy')?res():rej();}catch(e){rej(e);}a.remove();});}
 root.addEventListener('click',function(e){
 var cp=e.target.closest('.cp');
 if(cp){copyText(cp.closest('.code').querySelector('code').innerText.trim()).then(function(){
-cp.dataset.label=CFG.t.copied;cp.classList.add('ok');toast(CFG.t.cpT,CFG.t.cpS);
-setTimeout(function(){cp.dataset.label=CFG.t.copy;cp.classList.remove('ok');},1800);
-}).catch(function(){toast(CFG.t.cpErr,CFG.t.cpErrS,true);});return;}
+cp.dataset.label='تم النسخ!';cp.classList.add('ok');toast('تم النسخ! 🚀','الكود جاهز للصق');
+setTimeout(function(){cp.dataset.label='نسخ';cp.classList.remove('ok');},1800);
+}).catch(function(){toast('فشل النسخ','حدد الكود وانسخه يدوياً',true);});return;}
 var pb=e.target.closest('.lx-pdf');if(pb){pdfExport(pb);return;}
 var a=e.target.closest('.nav a');
-if(a){e.preventDefault();var t=root.querySelector('#'+CFG.idp+a.getAttribute('data-t'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});return;}
+if(a){e.preventDefault();var t=root.querySelector('#lx-'+a.getAttribute('data-t'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});return;}
 if(e.target.closest('.top'))root.scrollIntoView({behavior:'smooth',block:'start'});
 });
 
@@ -495,17 +488,18 @@ var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isInt
 rv.forEach(function(el){io.observe(el);});
 var heads=[].slice.call(root.querySelectorAll('.sec-head'));
 var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;
-var id=en.target.closest('.sec').id.replace(CFG.idp,'');
+var id=en.target.closest('.sec').id.replace('lx-','');
 chips.forEach(function(c){var on=c.getAttribute('data-t')===id;c.classList.toggle('on',on);
+/* RTL-safe horizontal centering of the active chip */
 if(on){var cr=c.getBoundingClientRect(),nr=navS.getBoundingClientRect();
 navS.scrollBy({left:(cr.left+cr.width/2)-(nr.left+nr.width/2),behavior:'smooth'});}});});},{rootMargin:'-90px 0px -65% 0px'});
 heads.forEach(function(h){io2.observe(h);});
 }else rv.forEach(function(el){el.classList.add('in');});
 }
-[].slice.call(document.querySelectorAll(CFG.sel)).forEach(init);
+[].slice.call(document.querySelectorAll('.lx')).forEach(init);
 })();
 </script>
-</code>
+</code></code>
 <!--ar-end-->
       </div>
     </section>
@@ -519,276 +513,272 @@ heads.forEach(function(h){io2.observe(h);});
       </p>
       <div class="article mt-6">
 <!--en-start-->
-<code><style>
-/* ============ English lesson (LTR) — every selector is scoped to .lxe so it never clashes with the Arabic file ============ */
-.lxe{--ink:#0f172a;--mut:#475569;--line:#e2e8f0;--soft:#f8fafc;--brand:#0d9488;--brand2:#14b8a6;max-width:860px;margin:0 auto;color:var(--ink);line-height:1.8;font-size:16.5px;direction:ltr;text-align:left}
-.lxe *{box-sizing:border-box}
-.lxe h1,.lxe h2,.lxe h3,.lxe h4,.lxe p{font-family:inherit}
+<code><code><style>
+.lx{--ink:#0f172a;--mut:#475569;--line:#e2e8f0;--soft:#f8fafc;--brand:#0d9488;--brand2:#14b8a6;--brand-soft:#f0fdfa;--brand-bd:#99f6e4;max-width:860px;margin:0 auto;color:var(--ink);line-height:1.8;font-size:16.5px;direction:rtl;text-align:right}
+.lx *{box-sizing:border-box}
+.lx h1,.lx h2,.lx h3,.lx h4,.lx p{font-family:inherit}
 
 /* ---------- Hero ---------- */
-.lxe .hero{position:relative;overflow:hidden;border-radius:22px;padding:30px 28px;margin-bottom:18px;color:#fff;background:linear-gradient(135deg,#0f766e 0%,#14b8a6 55%,#34d399 100%);box-shadow:0 14px 30px -14px rgba(13,148,136,.65)}
-.lxe .hero::before{content:"";position:absolute;left:-40px;bottom:-70px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
-.lxe .hero::after{content:"";position:absolute;right:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.14)}
-.lxe .hero-in{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start}
-.lxe .hero-ic{font-size:2.4rem;line-height:1;flex:none}
-.lxe .hero h1{margin:0 0 8px;font-size:1.8rem;font-weight:800;color:#fff;line-height:1.35}
-.lxe .hero p{margin:0 0 14px;color:#ecfdf5;font-size:1.02rem;line-height:1.7}
-.lxe .chips{display:flex;flex-wrap:wrap;gap:8px}
-.lxe .chips span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:700}
+.lx .hero{position:relative;overflow:hidden;border-radius:22px;padding:30px 28px;margin-bottom:18px;color:#fff;background:linear-gradient(225deg,#0f766e 0%,#14b8a6 55%,#34d399 100%);box-shadow:0 14px 30px -14px rgba(13,148,136,.65)}
+.lx .hero::before{content:"";position:absolute;right:-40px;bottom:-70px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
+.lx .hero::after{content:"";position:absolute;left:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.14)}
+.lx .hero-in{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start}
+.lx .hero-ic{font-size:2.4rem;line-height:1;flex:none}
+.lx .hero h1{margin:0 0 8px;font-size:1.8rem;font-weight:800;color:#fff;line-height:1.045;line-height:1.4}
+.lx .hero p{margin:0 0 14px;color:#ecfdf5;font-size:1.02rem;line-height:1.7}
+.lx .chips{display:flex;flex-wrap:wrap;gap:8px}
+.lx .chips span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:700}
 
 /* ---------- Nav ---------- */
-.lxe .nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);margin:0 0 22px;padding-top:10px;border-bottom:1px solid var(--line)}
-.lxe .nav-s{display:flex;gap:8px;overflow-x:auto;padding:0 2px 10px;scrollbar-width:none}
-.lxe .nav-s::-webkit-scrollbar{display:none}
-.lxe .nav a{flex:none;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--mut);background:#f1f5f9;text-decoration:none;border:1px solid var(--line);transition:background .2s,color .2s,border-color .2s}
-.lxe .nav a:hover{background:#ccfbf1;color:#0f766e}
-.lxe .nav a.on{background:var(--brand);border-color:var(--brand);color:#fff}
-.lxe .bar{height:3px;background:var(--line)}.lxe .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand2),#34d399)}
+.lx .nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);margin:0 0 22px;padding-top:10px;border-bottom:1px solid var(--line)}
+.lx .nav-s{display:flex;gap:8px;overflow-x:auto;padding:0 2px 10px;scrollbar-width:none}
+.lx .nav-s::-webkit-scrollbar{display:none}
+.lx .nav a{flex:none;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--mut);background:#f1f5f9;text-decoration:none;border:1px solid var(--line);transition:background .2s,color .2s,border-color .2s}
+.lx .nav a:hover{background:#ccfbf1;color:#0f766e}
+.lx .nav a.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.lx .bar{height:3px;background:var(--line)}.lx .bar i{display:block;height:100%;width:0;background:linear-gradient(270deg,var(--brand2),#34d399)}
 
 /* ---------- Download strip ---------- */
-.lxe .dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:28px}
-.lxe .dl-i{width:48px;height:48px;border-radius:12px;background:#fef2f2;border:1px solid #fee2e2;display:flex;align-items:center;justify-content:center;flex:none;color:#ef4444}
-.lxe .dl-t{flex:1;min-width:200px}.lxe .dl-t h4{margin:0;font-size:1rem;font-weight:800}.lxe .dl-t p{margin:2px 0 0;font-size:.86rem;color:#64748b;line-height:1.6}
-.lxe .lx-pdf{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:12px;cursor:pointer;color:#fff;font-weight:700;font-size:.95rem;font-family:inherit;background:linear-gradient(90deg,var(--brand),var(--brand2));box-shadow:0 8px 16px -8px rgba(13,148,136,.7);transition:transform .2s}
-.lxe .lx-pdf:hover{transform:translateY(-1px)}.lxe .lx-pdf:disabled{opacity:.7;cursor:wait;transform:none}
-.lxe .lx-pdf svg{width:18px;height:18px}
-.lxe .spin{animation:lxes 1s linear infinite}@keyframes lxes{to{transform:rotate(360deg)}}
+.lx .dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:28px}
+.lx .dl-i{width:48px;height:48px;border-radius:12px;background:#fef2f2;border:1px solid #fee2e2;display:flex;align-items:center;justify-content:center;flex:none;color:#ef4444}
+.lx .dl-t{flex:1;min-width:200px}.lx .dl-t h4{margin:0;font-size:1rem;font-weight:800}.lx .dl-t p{margin:2px 0 0;font-size:.86rem;color:#64748b;line-height:1.6}
+.lx .lx-pdf{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:12px;cursor:pointer;color:#fff;font:700 .95rem inherit;font-family:inherit;background:linear-gradient(270deg,var(--brand),var(--brand2));box-shadow:0 8px 16px -8px rgba(13,148,136,.7);transition:transform .2s}
+.lx .lx-pdf:hover{transform:translateY(-1px)}.lx .lx-pdf:disabled{opacity:.7;cursor:wait;transform:none}
+.lx .lx-pdf svg{width:18px;height:18px}
+.lx .spin{animation:lxs 1s linear infinite}@keyframes lxs{to{transform:rotate(360deg)}}
 
 /* ---------- Section card ---------- */
-.lxe .sec{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin:0 0 24px;box-shadow:0 1px 3px rgba(15,23,42,.05),0 12px 24px -18px rgba(15,23,42,.18);scroll-margin-top:84px}
-.lxe .sec-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
-.lxe .num{flex:none;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 6px 12px -6px rgba(13,148,136,.7)}
-.lxe .sec-head h2{margin:0;font-size:1.35rem;font-weight:800;line-height:1.45;color:var(--ink)}
-.lxe .sec-lead{margin:10px 0 0;color:var(--mut);font-size:.98rem}
-.lxe .sec-lead:empty{display:none}
-.lxe .k{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.86em;background:#f1f5f9;border:1px solid #e5e9f0;padding:1px 6px;border-radius:6px;color:#0f766e;white-space:nowrap;direction:ltr;display:inline-block;line-height:1.5}
+.lx .sec{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin:0 0 24px;box-shadow:0 1px 3px rgba(15,23,42,.05),0 12px 24px -18px rgba(15,23,42,.18);scroll-margin-top:84px}
+.lx .sec-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.lx .num{flex:none;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;background:linear-gradient(225deg,var(--brand),var(--brand2));box-shadow:0 6px 12px -6px rgba(13,148,136,.7)}
+.lx .sec-head h2{margin:0;font-size:1.35rem;font-weight:800;line-height:1.5;color:var(--ink)}
+.lx .sec-lead{margin:10px 0 0;color:var(--mut);font-size:.98rem}
+.lx .sec-lead:empty{display:none}
+.lx .k{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.86em;background:#f1f5f9;border:1px solid #e5e9f0;padding:1px 6px;border-radius:6px;color:#0f766e;white-space:nowrap;direction:ltr;unicode-bidi:isolate;display:inline-block;line-height:1.5}
 
 /* ---------- Example blocks ---------- */
-.lxe .ex{margin-top:22px;padding-top:20px;border-top:1px dashed var(--line)}
-.lxe .sec-head+.ex,.lxe .sec-lead+.ex{margin-top:18px;padding-top:0;border-top:0}
-.lxe .ex-t{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:.98rem;font-weight:700;color:var(--ink);line-height:1.6}
-.lxe .ex-t::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--brand2)}
-.lxe .ex-d{margin:0 0 10px;color:var(--mut);font-size:.94rem}
-.lxe .ex-t+.code{margin-top:10px}
+.lx .ex{margin-top:22px;padding-top:20px;border-top:1px dashed var(--line)}
+.lx .sec-head+.ex,.lx .sec-lead+.ex{margin-top:18px;padding-top:0;border-top:0}
+.lx .ex-t{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:.98rem;font-weight:700;color:var(--ink);line-height:1.6}
+.lx .ex-t::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--brand2)}
+.lx .ex-d{margin:0 0 10px;color:var(--mut);font-size:.94rem}
+.lx .ex-t+.code{margin-top:10px}
 
-/* ---------- Code ---------- */
-.lxe .code{border-radius:12px;overflow:hidden;background:#0f172a;border:1px solid #1e293b;direction:ltr;text-align:left}
-.lxe .code-bar{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 6px 14px;background:#1e293b;color:#94a3b8;font:700 .7rem ui-monospace,monospace;letter-spacing:.12em}
-.lxe .cp{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;cursor:pointer;font:600 .76rem system-ui,sans-serif;transition:background .2s,color .2s,border-color .2s}
-.lxe .cp svg{width:14px;height:14px}.lxe .cp::after{content:attr(data-label)}
-.lxe .cp:hover{background:#334155}.lxe .cp.ok{color:#34d399;border-color:#34d399}
-.lxe .code .pre{display:block;margin:0;padding:14px 16px;overflow-x:auto;white-space:pre;color:#e2e8f0;background:none;border:0;border-radius:0;font:.88rem/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:left}
-.lxe .code .pre code{background:none;color:inherit;padding:0;font:inherit}
-.lxe .code .pre button,.lxe .code>button:not(.cp),.lxe .code [class*="copy"]:not(.cp){display:none!important}
-.lxe .tk{color:#7dd3fc;font-weight:600}.lxe .ts{color:#fcd34d}.lxe .tn{color:#f0abfc}.lxe .tc{color:#64748b;font-style:italic}
+/* ---------- Code (always LTR) ---------- */
+.lx .code{border-radius:12px;overflow:hidden;background:#0f172a;border:1px solid #1e293b;direction:ltr;text-align:left}
+.lx .code-bar{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 6px 14px;background:#1e293b;color:#94a3b8;font:700 .7rem ui-monospace,monospace;letter-spacing:.12em}
+.lx .cp{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;cursor:pointer;font:600 .76rem system-ui,sans-serif;transition:background .2s,color .2s,border-color .2s}
+.lx .cp svg{width:14px;height:14px}.lx .cp::after{content:attr(data-label)}
+.lx .cp:hover{background:#334155}.lx .cp.ok{color:#34d399;border-color:#34d399}
+.lx .code .pre{display:block;margin:0;padding:14px 16px;overflow-x:auto;white-space:pre;color:#e2e8f0;background:none;border:0;border-radius:0;font:.88rem/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:left}
+.lx .code .pre code{background:none;color:inherit;padding:0;font:inherit}
+.lx .code .pre button,.lx .code>button:not(.cp),.lx .code [class*="copy"]:not(.cp){display:none!important}
+.lx .tk{color:#7dd3fc;font-weight:600}.lx .ts{color:#fcd34d}.lx .tn{color:#f0abfc}.lx .tc{color:#64748b;font-style:italic}
 
 /* ---------- Notes ---------- */
-.lxe .note{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;margin:14px 0 0;border-radius:12px;border:1px solid;border-left-width:4px;font-size:.93rem;line-height:1.7}
-.lxe .note .ic{font-size:1.15rem;line-height:1.5;flex:none}.lxe .note p{margin:0!important;color:inherit!important}
-.lxe .note .k{background:rgba(255,255,255,.7);color:inherit;border-color:rgba(0,0,0,.08)}
-.lxe .tip{background:#fffbeb;border-color:#fde68a;border-left-color:#f59e0b;color:#92400e}
-.lxe .warn{background:#fef2f2;border-color:#fecaca;border-left-color:#ef4444;color:#991b1b}
-.lxe .good{background:#ecfdf5;border-color:#a7f3d0;border-left-color:#10b981;color:#065f46}
+.lx .note{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;margin:14px 0 0;border-radius:12px;border:1px solid;border-right-width:4px;font-size:.93rem;line-height:1.7}
+.lx .note .ic{font-size:1.15rem;line-height:1.5;flex:none}.lx .note p{margin:0!important;color:inherit!important}
+.lx .note .k{background:rgba(255,255,255,.7);color:inherit;border-color:rgba(0,0,0,.08)}
+.lx .tip{background:#fffbeb;border-color:#fde68a;border-right-color:#f59e0b;color:#92400e}
+.lx .warn{background:#fef2f2;border-color:#fecaca;border-right-color:#ef4444;color:#991b1b}
+.lx .sec-head~.note:first-of-type{margin-top:16px}
 
 /* ---------- Table ---------- */
-.lxe .tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0;background:#fff}
-.lxe table{width:100%;min-width:560px;border-collapse:collapse;text-align:left}
-.lxe th{padding:11px 14px;background:#f1f5f9;color:#334155;font-weight:700;font-size:.88rem;border-bottom:1px solid var(--line);text-align:left}
-.lxe td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:var(--mut);font-size:.92rem;vertical-align:top;text-align:left}
-.lxe td:first-child{width:30%;font:700 .82rem ui-monospace,monospace;color:#0f766e;word-break:break-word}
-.lxe tr:last-child td{border-bottom:0}.lxe tr:hover td{background:var(--soft)}
+.lx .tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0;background:#fff}
+.lx table{width:100%;min-width:560px;border-collapse:collapse;text-align:right}
+.lx th{padding:11px 14px;background:#f1f5f9;color:#334155;font-weight:700;font-size:.88rem;border-bottom:1px solid var(--line);text-align:right}
+.lx td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:var(--mut);font-size:.92rem;vertical-align:top;text-align:right}
+.lx td:first-child{width:38%;font:700 .8rem ui-monospace,monospace;color:#0f766e;word-break:break-word;direction:ltr;text-align:right}
+.lx tr:last-child td{border-bottom:0}.lx tr:hover td{background:var(--soft)}
 
 /* ---------- Misc ---------- */
-.lxe .rv{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}.lxe .rv.in{opacity:1;transform:none}
-.lxe .top{position:fixed;right:18px;left:auto;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:var(--brand);box-shadow:0 8px 16px -4px rgba(13,148,136,.55);display:flex;align-items:center;justify-content:center;padding:0;opacity:0;pointer-events:none;transition:opacity .25s,transform .2s}
-.lxe .top:hover{transform:translateY(-2px)}
-.lxe .top.show{opacity:1;pointer-events:auto}
-.lxe-toast{position:fixed;top:16px;right:16px;z-index:99999;max-width:320px;padding:12px 16px;border-radius:14px;border-left:6px solid #5eead4;background:#0f766e;color:#fff;font:600 .9rem/1.5 system-ui,sans-serif;direction:ltr;text-align:left;box-shadow:0 20px 25px -5px rgba(15,118,110,.35);opacity:0;transform:translateY(-16px);transition:all .3s}
-.lxe-toast.show{opacity:1;transform:none}.lxe-toast.err{background:#b91c1c}.lxe-toast small{display:block;font-weight:400;opacity:.9}
-.lxe a:focus-visible,.lxe button:focus-visible{outline:3px solid #5eead4;outline-offset:2px}
+.lx .rv{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}.lx .rv.in{opacity:1;transform:none}
+/* Back-to-top: bottom-left */
+.lx .top{position:fixed;left:18px;right:auto;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:var(--brand);box-shadow:0 8px 16px -4px rgba(13,148,136,.55);display:flex;align-items:center;justify-content:center;padding:0;opacity:0;pointer-events:none;transition:opacity .25s,transform .2s}
+.lx .top:hover{transform:translateY(-2px)}
+.lx .top.show{opacity:1;pointer-events:auto}
+.lx-toast{position:fixed;top:16px;right:16px;z-index:99999;max-width:320px;padding:12px 16px;border-radius:14px;border-right:6px solid #5eead4;background:#0f766e;color:#fff;font:600 .9rem/1.5 system-ui,sans-serif;direction:rtl;text-align:right;box-shadow:0 20px 25px -5px rgba(15,118,110,.35);opacity:0;transform:translateY(-16px);transition:all .3s}
+.lx-toast.show{opacity:1;transform:none}.lx-toast.err{background:#b91c1c}.lx-toast small{display:block;font-weight:400;opacity:.9}
+.lx a:focus-visible,.lx button:focus-visible{outline:3px solid #5eead4;outline-offset:2px}
 
 @media(max-width:560px){
-.lxe{font-size:16px}
-.lxe .hero{padding:24px 20px}.lxe .hero h1{font-size:1.45rem}
-.lxe .sec{padding:20px 16px;border-radius:16px}
-.lxe .sec-head h2{font-size:1.15rem}.lxe .num{width:38px;height:38px;font-size:1.05rem}
-.lxe .lx-pdf{width:100%}
-.lxe .code .pre{font-size:.82rem;padding:12px 14px}
+.lx{font-size:16px}
+.lx .hero{padding:24px 20px}.lx .hero h1{font-size:1.45rem}
+.lx .sec{padding:20px 16px;border-radius:16px}
+.lx .sec-head h2{font-size:1.15rem}.lx .num{width:38px;height:38px;font-size:1.05rem}
+.lx .lx-pdf{width:100%}
+.lx .code .pre{font-size:.82rem;padding:12px 14px}
 }
-@media(prefers-reduced-motion:reduce){.lxe *{transition:none!important;animation:none!important}.lxe .rv{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.lx *{transition:none!important;animation:none!important}.lx .rv{opacity:1;transform:none}}
 
 /* ---------- PDF mode ---------- */
-.lxe.pdf-mode{width:760px;max-width:none;margin:0;padding:2px 2px 28px;background:#fff}
-.lxe.pdf-mode *{letter-spacing:normal!important;word-spacing:normal!important;box-shadow:none!important;backdrop-filter:none!important;transition:none!important;animation:none!important;transform:none!important}
-.lxe.pdf-mode .rv{opacity:1!important}
-.lxe.pdf-mode .sec{border:0;border-top:2px solid var(--line);border-radius:0;padding:22px 0 4px;margin:0}
-.lxe.pdf-mode .tw{overflow:visible}.lxe.pdf-mode table{min-width:0}
-.lxe.pdf-mode .code .pre{white-space:pre-wrap;overflow:visible}
-
-/* ---------- Force LTR (beats any RTL theme CSS) ---------- */
-.lxe,.lxe *{direction:ltr}
-.lxe{text-align:left}
-.lxe .hero-in,.lxe .sec-head,.lxe .dl,.lxe .note,.lxe .chips,.lxe .nav-s{flex-direction:row}
+.lx.pdf-mode{width:760px;max-width:none;margin:0;padding:2px 2px 28px;background:#fff}
+.lx.pdf-mode *{letter-spacing:normal!important;word-spacing:normal!important;word-break:normal!important;overflow-wrap:normal!important;box-shadow:none!important;backdrop-filter:none!important;transition:none!important;animation:none!important;transform:none!important}
+.lx.pdf-mode .rv{opacity:1!important}
+.lx.pdf-mode .sec{border:0;border-top:2px solid var(--line);border-radius:0;padding:22px 0 4px;margin:0}
+.lx.pdf-mode .tw{overflow:visible}.lx.pdf-mode table{min-width:0}
+.lx.pdf-mode .code .pre{white-space:pre-wrap;overflow:visible}
 </style>
 
-<div class="lxe" dir="ltr" lang="en">
+<div class="lx" dir="rtl" lang="ar">
 
-<div class="hero"><div class="hero-in"><span class="hero-ic">🔗</span><div>
-<h1>Database Normalization and Relationships Summary</h1>
-<p>Database design concepts that reduce redundancy and define how tables relate to each other, from relationship types to foreign keys and their MySQL code.</p>
-<div class="chips"><span>MySQL</span><span>5 topics</span><span>Ready-to-copy SQL</span></div>
+<div class="hero"><div class="hero-in"><span class="hero-ic">🛠️</span><div>
+<h1>أوامر ALTER TABLE في MySQL</h1>
+<p>دليل عملي لأوامر ALTER في MySQL: الصيغة العامة، وإدارة الأعمدة والقيود، والاستعلام عن القيود، مع أمثلة جاهزة للنسخ.</p>
+<div class="chips"><span>MySQL</span><span>9 مواضيع</span><span>أوامر SQL جاهزة للنسخ</span></div>
 </div></div></div>
 
 <div class="nav" data-pdf-ignore><div class="nav-s">
-<a href="#" data-t="s1">1 · Relationships</a><a href="#" data-t="s2">2 · Foreign Key</a><a href="#" data-t="s3">3 · ON DELETE / UPDATE</a><a href="#" data-t="s4">4 · MySQL Codes</a><a href="#" data-t="s5">5 · ALTER TABLE</a>
+<a href="#" data-t="s1">1 · الأعمدة</a><a href="#" data-t="s2">2 · إعادة التسمية</a><a href="#" data-t="s3">3 · MODIFY</a><a href="#" data-t="s4">4 · CHANGE</a><a href="#" data-t="s5">5 · UNIQUE</a><a href="#" data-t="s6">6 · CHECK</a><a href="#" data-t="s7">7 · DEFAULT</a><a href="#" data-t="s8">8 · الاستعلام</a><a href="#" data-t="s9">9 · PRIMARY KEY</a>
 </div><div class="bar"><i></i></div></div>
 
 <div class="dl" data-pdf-ignore>
 <div class="dl-i"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg></div>
-<div class="dl-t"><h4>Download the Lecture Summary</h4><p>A neatly formatted PDF, ready for review and printing offline</p></div>
-<button type="button" class="lx-pdf"><span class="pi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></span><span class="pl">Download Summary (PDF)</span></button>
+<div class="dl-t"><h4>تحميل ملخص المحاضرة</h4><p>ملف PDF منسّق وجاهز للمراجعة والطباعة دون اتصال</p></div>
+<button type="button" class="lx-pdf"><span class="pi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></span><span class="pl">تحميل الملخص (PDF)</span></button>
 </div>
 
+<!-- Syntax -->
+<section class="sec rv" id="lx-syntax">
+<div class="sec-head"><div class="num">⌘</div><h2>الصيغة العامة</h2></div>
+<p class="sec-lead">الصيغة العامة لأمر <span class="k">ALTER</span> في MySQL:</p>
+<div class="ex"><div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE table_name action;</code></div></div></div>
+</section>
+
 <!-- 1 -->
-<section class="sec rv" id="lxe-s1">
-<div class="sec-head"><div class="num">1</div><h2>Types of Table Relationships</h2></div>
-<p class="sec-lead">The provided documents summarize database design concepts to reduce redundancy and define table relationships:</p>
-<div class="ex"><h3 class="ex-t">One-to-One (1:1)</h3>
-<p class="ex-d">Illustrated by splitting the original employees table into two separate tables: <span class="k">Employees_Table</span> and <span class="k">Salaries_Table</span>. It also shows dividing the students table into personal data (<span class="k">Students_Table</span>) and academic data (<span class="k">Acad_students</span>).</p></div>
-<div class="ex"><h3 class="ex-t">One-to-Many (1:M)</h3>
-<p class="ex-d">Shown in the relationship between blood types (<span class="k">Blood_Types_Table</span>) and patients (<span class="k">Patients_Table</span>), where multiple patients can share one blood type.</p></div>
-<div class="ex"><h3 class="ex-t">Many-to-Many (M:M)</h3>
-<p class="ex-d">Displayed between patients (<span class="k">Patients_Table</span>) and diseases (<span class="k">Diseases_Table</span>). This is resolved programmatically by creating a junction table (<span class="k">Patient_Diseases_Table</span>) that breaks the many-to-many relationship into two one-to-many relationships.</p></div>
+<section class="sec rv" id="lx-s1">
+<div class="sec-head"><div class="num">1</div><h2>إضافة وحذف عمود</h2></div>
+<p class="sec-lead">تعتبر كلمة <span class="k">COLUMN</span> اختيارية، يمكنك كتابتها أو تجاهلها.</p>
+<div class="ex"><h3 class="ex-t">إضافة عمود</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD COLUMN Salary DECIMAL(10,2);
+
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees ADD Salary DECIMAL(10,2);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">حذف عمود</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP COLUMN Salary;
+
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees DROP Salary;</code></div></div></div>
 </section>
 
 <!-- 2 -->
-<section class="sec rv" id="lxe-s2">
-<div class="sec-head"><div class="num">2</div><h2>Foreign Key Definition</h2></div>
-<p class="sec-lead">A <strong>Foreign Key</strong> is a field (or collection of fields) in one table that uniquely identifies a row of another table (usually pointing to a <span class="k">Primary Key</span>).</p>
-<div class="note good"><span class="ic">🎯</span><p><strong>Main purpose:</strong> to maintain referential integrity, ensuring that the relationship between tables remains valid and preventing orphaned records.</p></div>
+<section class="sec rv" id="lx-s2">
+<div class="sec-head"><div class="num">2</div><h2>تغيير اسم الجدول</h2></div>
+<p class="sec-lead">لتغيير اسم جدول موجود:</p>
+<div class="ex"><h3 class="ex-t">إعادة تسمية الجدول</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees RENAME TO Staff;</code></div></div></div>
 </section>
 
 <!-- 3 -->
-<section class="sec rv" id="lxe-s3">
-<div class="sec-head"><div class="num">3</div><h2>ON DELETE and ON UPDATE</h2></div>
-<p class="sec-lead">These properties define the automatic action taken on the "child" table when the referenced record in the "parent" table is deleted or updated:</p>
-<div class="tw"><table>
-<thead><tr><th>Action</th><th>Behavior</th></tr></thead>
-<tbody>
-<tr><td>CASCADE</td><td>Automatically deletes or updates the matching records in the child table when the parent record is deleted or updated.</td></tr>
-<tr><td>RESTRICT / NO ACTION</td><td>Prevents the deletion or update of the parent record if there are matching records in the child table.</td></tr>
-<tr><td>SET NULL</td><td>Sets the foreign key column values in the child table to <span class="k">NULL</span> when the parent record is deleted or updated.</td></tr>
-</tbody></table></div>
+<section class="sec rv" id="lx-s3">
+<div class="sec-head"><div class="num">3</div><h2>تعديل نوع البيانات وإضافة قيد NOT NULL (باستخدام MODIFY)</h2></div>
+<p class="sec-lead">تُستخدم <span class="k">MODIFY</span> لتعديل نوع بيانات العمود أو إضافة/إزالة قيد <span class="k">NOT NULL</span> بدون تغيير اسم العمود.</p>
+<div class="ex"><h3 class="ex-t">التعديل وإضافة القيد</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees MODIFY Age INT NOT NULL;</code></div></div></div>
+<div class="ex"><h3 class="ex-t">إزالة قيد NOT NULL (إرجاعه ليقبل القيم الفارغة NULL)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees MODIFY Age INT NULL;</code></div></div></div>
 </section>
 
 <!-- 4 -->
-<section class="sec rv" id="lxe-s4">
-<div class="sec-head"><div class="num">4</div><h2>MySQL Codes</h2></div>
-<div class="ex"><h3 class="ex-t">1. One-to-One Relationship (1:1)</h3>
-<p class="ex-d">To ensure a strictly 1:1 relationship, a <span class="k">UNIQUE</span> constraint is added to the foreign key:</p>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Salaries_Table (
-    Sala_Id INT PRIMARY KEY,
-    hours_no INT,
-    hours_rate INT
-);
-
-CREATE TABLE Employees_Table (
-    Emp_Id INT PRIMARY KEY,
-    Name VARCHAR(100),
-    Salar_id INT UNIQUE,
-    FOREIGN KEY (Salar_id) REFERENCES Salaries_Table(Sala_Id)
-    ON DELETE SET NULL
-    ON UPDATE CASCADE
-);</code></div></div></div>
-<div class="ex"><h3 class="ex-t">2. One-to-Many Relationship (1:M)</h3>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Blood_Types_Table (
-    Blood_ID INT PRIMARY KEY,
-    Blood_type VARCHAR(10) NOT NULL
-);
-
-CREATE TABLE Patients_Table (
-    Patient_ID INT PRIMARY KEY,
-    Name VARCHAR(100),
-    Blood_Id INT,
-    FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);</code></div></div></div>
-<div class="ex"><h3 class="ex-t">3. Many-to-Many Relationship (M:M)</h3>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Diseases_Table (
-    Diseases_ID VARCHAR(10) PRIMARY KEY,
-    Disease_name VARCHAR(100)
-);
-
-CREATE TABLE Patient_Diseases_Table (
-    Patient_Id INT,
-    Diseases_Id VARCHAR(10),
-    Diagnosis_Date YEAR,
-
-    PRIMARY KEY (Patient_Id, Diseases_Id),
-
-    FOREIGN KEY (Patient_Id) REFERENCES Patients_Table(Patient_ID)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-
-    FOREIGN KEY (Diseases_Id) REFERENCES Diseases_Table(Diseases_ID)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);</code></div></div></div>
+<section class="sec rv" id="lx-s4">
+<div class="sec-head"><div class="num">4</div><h2>تعديل اسم العمود أو نوعه (باستخدام CHANGE)</h2></div>
+<p class="sec-lead">تُستخدم <span class="k">CHANGE</span> لتغيير اسم العمود، أو نوع البيانات، أو كليهما معاً (تتطلب كتابة الاسم القديم ثم الجديد).</p>
+<div class="ex"><h3 class="ex-t">تغيير اسم العمود مع تحديد نوع البيانات</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees CHANGE Age Employee_Age INT;</code></div></div></div>
 </section>
 
 <!-- 5 -->
-<section class="sec rv" id="lxe-s5">
-<div class="sec-head"><div class="num">5</div><h2>Using ALTER TABLE</h2></div>
-<div class="ex"><h3 class="ex-t">1. Dropping a Foreign Key (without using the word "FOREIGN KEY")</h3>
-<p class="ex-d">You can drop the constraint directly using its name with the <span class="k">DROP CONSTRAINT</span> command.</p>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
-DROP CONSTRAINT fk_blood_patient;</code></div></div></div>
-<div class="ex"><h3 class="ex-t">2. Adding a Foreign Key WITHOUT a name</h3>
-<p class="ex-d">If you do not specify a name, MySQL will automatically generate a default constraint name.</p>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
-ADD FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
-ON DELETE SET NULL
-ON UPDATE CASCADE;</code></div></div></div>
-<div class="ex"><h3 class="ex-t">3. Adding a Foreign Key WITH a name</h3>
-<p class="ex-d">You can specify a custom name by using the <span class="k">CONSTRAINT</span> keyword followed by your chosen name before defining the foreign key.</p>
-<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
-ADD CONSTRAINT fk_blood_patient
-FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
-ON DELETE SET NULL
-ON UPDATE CASCADE;</code></div></div></div>
+<section class="sec rv" id="lx-s5">
+<div class="sec-head"><div class="num">5</div><h2>قيد UNIQUE (فريد)</h2></div>
+<p class="sec-lead">يضمن أن تكون كل قيمة في العمود (أو مجموعة أعمدة) مختلفة عن غيرها.</p>
+<div class="ex"><h3 class="ex-t">الإضافة (بدون تحديد اسم للقيد - يقوم النظام بتسميته تلقائياً)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD UNIQUE (Email);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">الإضافة (مع تحديد اسم مخصص للقيد باستخدام CONSTRAINT)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CONSTRAINT UQ_Email UNIQUE (Email);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">حذف قيد UNIQUE (في إصدارات MySQL الحديثة)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP CONSTRAINT UQ_Email;</code></div></div></div>
 </section>
 
-<button type="button" class="top" data-pdf-ignore aria-label="Back to top"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg></button>
+<!-- 6 -->
+<section class="sec rv" id="lx-s6">
+<div class="sec-head"><div class="num">6</div><h2>قيد CHECK (التحقق من شرط)</h2></div>
+<p class="sec-lead">تحديد القيم التي يقبلها العمود باستخدام شرط.</p>
+<div class="ex"><h3 class="ex-t">الإضافة (بدون تحديد اسم للقيد)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CHECK (Age &gt;= 18);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">الإضافة (مع تحديد اسم مخصص للقيد)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CONSTRAINT CHK_Age CHECK (Age &gt;= 18);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">حذف قيد CHECK</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP CONSTRAINT CHK_Age;</code></div></div></div>
+</section>
+
+<!-- 7 -->
+<section class="sec rv" id="lx-s7">
+<div class="sec-head"><div class="num">7</div><h2>قيد DEFAULT (القيمة الافتراضية)</h2></div>
+<div class="note tip"><span class="ic">💡</span><p><strong>ملاحظة:</strong> كلمة <span class="k">COLUMN</span> بعد <span class="k">ALTER</span> الثانية هي اختيارية، ويمكنك كتابتها أو حذفها.</p></div>
+<div class="ex"><h3 class="ex-t">إضافة القيد</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ALTER COLUMN City SET DEFAULT 'Amman';
+
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees ALTER City SET DEFAULT 'Amman';</code></div></div></div>
+<div class="ex"><h3 class="ex-t">حذف قيد DEFAULT</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ALTER COLUMN City DROP DEFAULT;
+
+-- أو بدون كتابة كلمة COLUMN
+ALTER TABLE Employees ALTER City DROP DEFAULT;</code></div></div></div>
+</section>
+
+<!-- 8 -->
+<section class="sec rv" id="lx-s8">
+<div class="sec-head"><div class="num">8</div><h2>الاستعلام عن القيود في الجدول (قراءة هيكل القيود)</h2></div>
+<p class="sec-lead">لمعرفة القيود التي قمت بإضافتها على جدول معين، استخدم هذا الأمر:</p>
+<div class="ex"><h3 class="ex-t">عرض قيود الجدول</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE
+FROM information_schema.TABLE_CONSTRAINTS
+WHERE TABLE_NAME = 'Employees'
+  AND TABLE_SCHEMA = 'اسم_قاعدة_البيانات_هنا';</code></div></div></div>
+<div class="ex"><h3 class="ex-t">شرح الأمر</h3>
+<div class="tw"><table>
+<thead><tr><th>الجزء</th><th>الشرح</th></tr></thead>
+<tbody>
+<tr><td>information_schema.TABLE_CONSTRAINTS</td><td>هو "دليل نظام" داخل الخادم يحتوي على بيانات لجميع القيود (Metadata).</td></tr>
+<tr><td>CONSTRAINT_NAME</td><td>يعرض اسم القيد (سواء الاسم المخصص مثل <span class="k">UQ_Email</span> أو التلقائي).</td></tr>
+<tr><td>CONSTRAINT_TYPE</td><td>يعرض نوع القيد (UNIQUE, CHECK, PRIMARY KEY, إلخ).</td></tr>
+<tr><td>WHERE TABLE_NAME = 'Employees'</td><td>يفلتر النتائج ليعرض فقط القيود الخاصة بجدول الموظفين.</td></tr>
+<tr><td>AND TABLE_SCHEMA = '...'</td><td>شرط في غاية الأهمية؛ فهو يحدد "اسم قاعدة البيانات".</td></tr>
+</tbody></table></div>
+<div class="note warn"><span class="ic">⚠️</span><p><strong>لماذا يهم الشرط <span class="k">TABLE_SCHEMA</span>؟</strong> بدون هذا الشرط، إذا كان لديك جدول باسم <span class="k">Employees</span> في قواعد بيانات أخرى على نفس الخادم (مثل قاعدة اختبار وقاعدة إنتاج)، ستظهر لك قيودها جميعاً وتختلط النتائج. تحديده يضمن الحصول على قيود الجدول في القاعدة الحالية فقط.</p></div></div>
+</section>
+
+<!-- 9 -->
+<section class="sec rv" id="lx-s9">
+<div class="sec-head"><div class="num">9</div><h2>إضافة وحذف المفتاح الأساسي (PRIMARY KEY)</h2></div>
+<p class="sec-lead">تتم إضافة وحذف المفتاح الأساسي (<span class="k">PRIMARY KEY</span>) باستخدام <span class="k">ALTER TABLE</span> في MySQL بالصيغ التالية:</p>
+<div class="ex"><h3 class="ex-t">إضافة قيد PRIMARY KEY</h3>
+<p class="ex-d">إذا كان العمود موجوداً بالفعل وتريد تعيينه كمفتاح أساسي:</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD PRIMARY KEY (ID);</code></div></div>
+<div class="note tip"><span class="ic">💡</span><p><strong>ملاحظة:</strong> إذا أردت جعل المفتاح الأساسي مركباً من أكثر من عمود (Composite Key)، تفصل بينها بفاصلة: <span class="k">ADD PRIMARY KEY (ID, Department_ID)</span></p></div></div>
+<div class="ex"><h3 class="ex-t">إضافة قيد PRIMARY KEY مع كتابة اسم للقيد (CONSTRAINT)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees ADD CONSTRAINT PK_Employee PRIMARY KEY (ID);</code></div></div>
+<div class="note tip"><span class="ic">💡</span><p><strong>معلومة خاصة بـ MySQL:</strong> حتى إذا قمت بكتابة اسم مخصص للمفتاح الأساسي مثل <span class="k">PK_Employee</span>، فإن النظام سيتجاهل هذا الاسم ويحفظه دائماً باسم <span class="k">PRIMARY</span> في الكواليس.</p></div></div>
+<div class="ex"><h3 class="ex-t">حذف قيد PRIMARY KEY</h3>
+<p class="ex-d">نظراً لأن أي جدول لا يمكنه احتواء أكثر من مفتاح أساسي واحد، فإنك لا تحتاج إلى تحديد اسمه عند الحذف، بل يكفي كتابة الأمر التالي مباشرة:</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Employees DROP PRIMARY KEY;</code></div></div>
+<div class="note warn"><span class="ic">⚠️</span><p><strong>ملاحظة هامة قبل الحذف:</strong> إذا كان عمود المفتاح الأساسي يحتوي على خاصية الترقيم التلقائي (<span class="k">AUTO_INCREMENT</span>)، يجب عليك أولاً إزالة هذه الخاصية باستخدام <span class="k">MODIFY</span> أو <span class="k">CHANGE</span>، وإلا سيرفض النظام حذف المفتاح الأساسي.</p></div></div>
+</section>
+
+<button type="button" class="top" data-pdf-ignore aria-label="العودة للأعلى"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg></button>
 </div>
 
 <script>
 (function(){
-/* ================= Settings (English / LTR) ================= */
-var CFG={
-  sel:'.lxe',            /* root selector — unique to this file */
-  idp:'lxe-',            /* section id prefix — unique to this file */
-  toastCls:'lxe-toast',  /* toast class — unique to this file */
-  dir:'ltr',lang:'en',
-  filename:'Database-Relationships-EN.pdf',
-  pdfTitle:'Database Normalization and Relationships Summary',
-  headerText:'Database Normalization & Relationships',
-  headerSub:'Lecture Summary',
-  siteName:location.hostname,contentW:760,timeoutMs:120000,
-  t:{prep:'Preparing… ',page:function(n,p){return 'Page '+n+' of '+p;},
-     ok:'PDF is ready! 📄',okS:'Your lecture summary is downloading',
-     err:'Could not create the PDF',errS:'Please try again, or use a desktop browser',
-     copy:'Copy',copied:'Copied!',cpT:'Copied! 🚀',cpS:'The code is ready to paste',
-     cpErr:'Copy failed',cpErrS:'Select the code and copy it manually'}
-};
-var RTL=CFG.dir==='rtl';
+var CFG={filename:'ALTER-TABLE-Commands-AR.pdf',pdfTitle:'ALTER TABLE Commands - MySQL Summary',headerText:'أوامر ALTER TABLE في MySQL',headerSub:'ملخص المحاضرة',siteName:location.hostname,contentW:760,timeoutMs:120000};
 var LIB_H2C='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
 var LIB_PDF='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
 var PW=210,PH=297,MX=12,TOP=16,BOT=15,CMM=PW-MX*2,MPP=CMM/CFG.contentW,PCPX=(PH-TOP-BOT)/MPP;
 var SPIN='<svg class="spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle opacity=".25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path opacity=".75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
 
 function toast(t,s,err){
-var el=document.createElement('div');el.className=CFG.toastCls+(err?' err':'');
+var el=document.createElement('div');el.className='lx-toast'+(err?' err':'');
 el.innerHTML='<div></div><small></small>';el.firstChild.textContent=t;el.lastChild.textContent=s||'';
 document.body.appendChild(el);requestAnimationFrame(function(){el.classList.add('show');});
 setTimeout(function(){el.classList.remove('show');setTimeout(function(){el.remove();},350);},2600);}
@@ -802,17 +792,17 @@ function pickScale(w,h){var ua=navigator.userAgent,ios=/iP(hone|ad|od)/i.test(ua
 var s=mob?2:3,A=ios?14e6:(mob?40e6:60e6),S=ios?16000:30000;
 while(s>1&&(w*s*h*s>A||h*s>S))s-=.25;return Math.max(s,1);}
 
-/* Page-break candidates: section tops and example/note blocks */
+/* Page-break candidates (CSS px, measured on the layout html2canvas actually renders) */
 function getCands(clone){
 var base=clone.getBoundingClientRect().top,cand=[];
-[].slice.call(clone.querySelectorAll('.sec, .sec > .ex, .sec > .note, .sec > .tw')).forEach(function(el){
+[].slice.call(clone.querySelectorAll('.sec, .sec > .ex, .sec > .note')).forEach(function(el){
 if(el.classList.contains('sec')){cand.push(el.getBoundingClientRect().top-base);return;}
 var p=el.previousElementSibling;
 if(!p||p.classList.contains('sec-head')||p.classList.contains('sec-lead'))return;
 cand.push(el.getBoundingClientRect().top-base);});
 return cand.sort(function(a,b){return a-b;});}
 
-/* Snap each break up to a fully blank pixel row so a page never cuts through text or code */
+/* Final break positions: snap UP to the nearest fully blank pixel row so a page never cuts through text or code */
 function computeBreaks(big,cands,sc){
 var ctx=big.getContext('2d'),W=big.width,Hc=big.height,P=PCPX*sc,band=Math.ceil(sc*1.5),
 c=cands.map(function(v){return Math.round(v*sc);}),br=[0],st=0;
@@ -826,17 +816,10 @@ while(y>min&&!blank(y))y--;
 if(y<=min)y=t;
 br.push(y/sc);st=y;}
 br.push(Hc/sc);return br;}
+function strip(w,h,draw){var c=document.createElement('canvas');c.width=Math.round(w*12);c.height=Math.round(h*12);var x=c.getContext('2d');x.direction='rtl';draw(x,c.width,c.height);var u=c.toDataURL('image/png');c.width=c.height=0;return u;}
 
-/* Header/footer strip: first text on the reading-start side, second on the end side */
-function strip(w,h,a,fa,ca,b,fb,cb,bDir){
-var c=document.createElement('canvas');c.width=Math.round(w*12);c.height=Math.round(h*12);
-var x=c.getContext('2d'),W=c.width,Hh=c.height;x.textBaseline='middle';
-x.font=fa;x.fillStyle=ca;x.direction=CFG.dir;x.textAlign=RTL?'right':'left';x.fillText(a,RTL?W-4:4,Hh/2);
-x.font=fb;x.fillStyle=cb;x.direction=bDir||CFG.dir;x.textAlign=RTL?'left':'right';x.fillText(b,RTL?4:W-4,Hh/2);
-var u=c.toDataURL('image/png');c.width=c.height=0;return u;}
-
-/* Light SQL syntax highlighting (display only; copy reads plain text) */
-var KW='CREATE|ALTER|TABLE|ADD|DROP|COLUMN|MODIFY|CHANGE|RENAME|TO|CONSTRAINT|UNIQUE|CHECK|DEFAULT|SET|PRIMARY|FOREIGN|KEY|REFERENCES|ON|DELETE|UPDATE|CASCADE|RESTRICT|NOT|NULL|SELECT|FROM|WHERE|AND|INT|VARCHAR|DECIMAL|YEAR';
+/* Light SQL syntax highlighting (display only; copy still reads plain text) */
+var KW='ALTER|TABLE|ADD|DROP|COLUMN|MODIFY|CHANGE|RENAME|TO|CONSTRAINT|UNIQUE|CHECK|DEFAULT|SET|PRIMARY|KEY|NOT|NULL|SELECT|FROM|WHERE|AND|INT|DECIMAL';
 var HL=new RegExp("(--[^\\n]*)|('[^'\\n]*')|\\b(\\d+)\\b|\\b("+KW+")\\b","gi");
 var AR=/[\u0600-\u06FF]/;
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -851,7 +834,6 @@ return '<span class="tk">'+kw+'</span>';});});}
 
 function init(root){
 if(root.getAttribute('data-bound'))return;root.setAttribute('data-bound','1');
-root.setAttribute('dir',CFG.dir);
 highlight(root);
 var busy=false,bar=root.querySelector('.bar i'),topBtn=root.querySelector('.top');
 var chips=[].slice.call(root.querySelectorAll('.nav a')),navS=root.querySelector('.nav-s');
@@ -860,7 +842,7 @@ var chips=[].slice.call(root.querySelectorAll('.nav a')),navS=root.querySelector
 async function pdfExport(btn){
 if(busy)return;busy=true;
 var pi=btn.querySelector('.pi'),pl=btn.querySelector('.pl'),oi=pi.innerHTML,ol=pl.textContent,holder=null,timer=null,big=null;
-function prog(p){pl.textContent=CFG.t.prep+Math.round(p)+'%';}
+function prog(p){pl.textContent='جارٍ التحضير… '+Math.round(p)+'%';}
 btn.disabled=true;pi.innerHTML=SPIN;prog(2);
 try{
 var job=(async function(){
@@ -872,11 +854,9 @@ prog(12);
 var font=getComputedStyle(root).fontFamily||'Arial, sans-serif';
 var clone=root.cloneNode(true);
 clone.removeAttribute('data-bound');clone.classList.add('pdf-mode');
-clone.setAttribute('dir',CFG.dir);clone.setAttribute('lang',CFG.lang);
-clone.style.direction=CFG.dir;clone.style.textAlign=RTL?'right':'left';
 clone.querySelectorAll('[data-pdf-ignore],button,script').forEach(function(e){e.remove();});
-holder=document.createElement('div');holder.setAttribute('data-pdf-holder',CFG.idp);holder.setAttribute('aria-hidden','true');holder.setAttribute('dir',CFG.dir);
-holder.style.cssText='direction:'+CFG.dir+';position:fixed;left:-10000px;top:0;width:'+CFG.contentW+'px;background:#fff;pointer-events:none;';
+holder=document.createElement('div');holder.setAttribute('data-pdf-holder','');holder.setAttribute('aria-hidden','true');
+holder.style.cssText='position:fixed;left:-10000px;top:0;width:'+CFG.contentW+'px;background:#fff;pointer-events:none;';
 holder.appendChild(clone);document.body.appendChild(holder);await tick();
 var H=Math.ceil(clone.getBoundingClientRect().height),scale=pickScale(CFG.contentW,Math.ceil(H*1.25)),cands=[];
 prog(20);
@@ -885,9 +865,12 @@ onclone:function(d,el){cands=getCands(el);}});
 prog(60);
 var sc=big.width/CFG.contentW,breaks=computeBreaks(big,cands,sc);
 var pdf=new jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
-pdf.setProperties({title:CFG.pdfTitle,subject:CFG.pdfTitle,creator:CFG.siteName});
+pdf.setProperties({title:CFG.pdfTitle,subject:'MySQL ALTER TABLE',creator:CFG.siteName});
 var pages=breaks.length-1;
-var hdr=strip(CMM,7,CFG.headerText,'700 38px '+font,'#0f766e',CFG.headerSub,'500 34px '+font,'#94a3b8');
+/* RTL header: title on the right, subtitle on the left */
+var hdr=strip(CMM,7,function(x,w,h){x.textBaseline='middle';
+x.font='700 38px '+font;x.fillStyle='#0f766e';x.textAlign='right';x.fillText(CFG.headerText,w-4,h/2);
+x.font='500 34px '+font;x.fillStyle='#94a3b8';x.textAlign='left';x.fillText(CFG.headerSub,4,h/2);});
 for(var i=0;i<pages;i++){
 if(i)pdf.addPage();
 var b0=breaks[i],b1=breaks[i+1],sy=Math.round(b0*sc),sh=Math.max(1,Math.min(big.height-sy,Math.round(b1*sc)-sy));
@@ -895,10 +878,11 @@ var sl=document.createElement('canvas');sl.width=big.width;sl.height=sh;
 var cx=sl.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,sl.width,sl.height);cx.drawImage(big,0,sy,big.width,sh,0,0,big.width,sh);
 var img=sl.toDataURL('image/jpeg',.93);sl.width=sl.height=0;
 pdf.addImage(img,'JPEG',MX,TOP,CMM,(sh/sc)*MPP,undefined,'FAST');
-pdf.setFillColor(13,148,136);pdf.rect(0,0,PW,2.4,'F');pdf.setFillColor(52,211,153);pdf.rect(RTL?PW-70:0,0,70,2.4,'F');
+pdf.setFillColor(13,148,136);pdf.rect(0,0,PW,2.4,'F');pdf.setFillColor(52,211,153);pdf.rect(0,0,70,2.4,'F');
 pdf.setDrawColor(226,232,240);pdf.setLineWidth(.3);
 if(i){pdf.addImage(hdr,'PNG',MX,5,CMM,7);pdf.line(MX,13,PW-MX,13);}
-var ftr=strip(CMM,7,CFG.t.page(i+1,pages),'500 34px '+font,'#64748b',CFG.siteName,'500 34px '+font,'#64748b','ltr');
+var n=i+1,ftr=strip(CMM,7,function(x,w,h){x.textBaseline='middle';x.font='500 34px '+font;x.fillStyle='#64748b';
+x.textAlign='right';x.fillText('صفحة '+n+' من '+pages,w-4,h/2);x.textAlign='left';x.fillText(CFG.siteName,4,h/2);});
 pdf.line(MX,PH-12,PW-MX,PH-12);pdf.addImage(ftr,'PNG',MX,PH-11,CMM,7);
 prog(60+((i+1)/pages)*35);await tick();}
 big.width=big.height=0;big=null;prog(98);await tick();
@@ -907,10 +891,10 @@ pdf.save(CFG.filename);
 var to=new Promise(function(_,rej){timer=setTimeout(function(){rej(new Error('PDF export timeout'));},CFG.timeoutMs);});
 job.catch(function(){});
 await Promise.race([job,to]);
-toast(CFG.t.ok,CFG.t.okS);
-}catch(e){console.error(e);toast(CFG.t.err,CFG.t.errS,true);}
+toast('الملف جاهز! 📄','جارٍ تنزيل ملخص المحاضرة');
+}catch(e){console.error(e);toast('تعذّر إنشاء الملف','حاول مرة أخرى أو استخدم متصفح الكمبيوتر',true);}
 finally{clearTimeout(timer);if(big)big.width=big.height=0;
-document.querySelectorAll('[data-pdf-holder="'+CFG.idp+'"]').forEach(function(el){el.remove();});
+document.querySelectorAll('[data-pdf-holder]').forEach(function(el){el.remove();});
 busy=false;btn.disabled=false;pi.innerHTML=oi;pl.textContent=ol;}
 }
 
@@ -923,12 +907,12 @@ try{document.execCommand('copy')?res():rej();}catch(e){rej(e);}a.remove();});}
 root.addEventListener('click',function(e){
 var cp=e.target.closest('.cp');
 if(cp){copyText(cp.closest('.code').querySelector('code').innerText.trim()).then(function(){
-cp.dataset.label=CFG.t.copied;cp.classList.add('ok');toast(CFG.t.cpT,CFG.t.cpS);
-setTimeout(function(){cp.dataset.label=CFG.t.copy;cp.classList.remove('ok');},1800);
-}).catch(function(){toast(CFG.t.cpErr,CFG.t.cpErrS,true);});return;}
+cp.dataset.label='تم النسخ!';cp.classList.add('ok');toast('تم النسخ! 🚀','الكود جاهز للصق');
+setTimeout(function(){cp.dataset.label='نسخ';cp.classList.remove('ok');},1800);
+}).catch(function(){toast('فشل النسخ','حدد الكود وانسخه يدوياً',true);});return;}
 var pb=e.target.closest('.lx-pdf');if(pb){pdfExport(pb);return;}
 var a=e.target.closest('.nav a');
-if(a){e.preventDefault();var t=root.querySelector('#'+CFG.idp+a.getAttribute('data-t'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});return;}
+if(a){e.preventDefault();var t=root.querySelector('#lx-'+a.getAttribute('data-t'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});return;}
 if(e.target.closest('.top'))root.scrollIntoView({behavior:'smooth',block:'start'});
 });
 
@@ -945,17 +929,18 @@ var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isInt
 rv.forEach(function(el){io.observe(el);});
 var heads=[].slice.call(root.querySelectorAll('.sec-head'));
 var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;
-var id=en.target.closest('.sec').id.replace(CFG.idp,'');
+var id=en.target.closest('.sec').id.replace('lx-','');
 chips.forEach(function(c){var on=c.getAttribute('data-t')===id;c.classList.toggle('on',on);
+/* RTL-safe horizontal centering of the active chip */
 if(on){var cr=c.getBoundingClientRect(),nr=navS.getBoundingClientRect();
 navS.scrollBy({left:(cr.left+cr.width/2)-(nr.left+nr.width/2),behavior:'smooth'});}});});},{rootMargin:'-90px 0px -65% 0px'});
 heads.forEach(function(h){io2.observe(h);});
 }else rv.forEach(function(el){el.classList.add('in');});
 }
-[].slice.call(document.querySelectorAll(CFG.sel)).forEach(init);
+[].slice.call(document.querySelectorAll('.lx')).forEach(init);
 })();
 </script>
-</code>
+</code></code>
 <!--en-end-->
       </div>
     </section>
