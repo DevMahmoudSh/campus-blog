@@ -1,5 +1,21 @@
 [
   {
+    "id": "lesson-5",
+    "title": "ملخص مبسط لفهم تصميم الجداول والعلاقات في قواعد البيانات (MySQL)",
+    "excerpt": "ملخص لشرح مفاهيم \"تطبيع قواعد البيانات\" (Normalization) بطريقة سهلة ومباشرة. سنشرح فيه كيف نقسم الجداول ونربطها ببعضها بفعالية، وما هو دور \"المفتاح الأجنبي\" (Foreign Key) في الحفاظ على صحة بياناتنا، بالإضافة إلى شرح حالات ON DELETE و ON UPDATE.",
+    "title_en": "A Practical Guide to Database Normalization and Relationships in MySQL",
+    "excerpt_en": "This article explores the fundamental concepts of database normalization by demonstrating how to effectively structure tables and establish relationships, including One-to-One (1:1), One-to-Many (1:M), and Many-to-Many (M:M) associations. It provides clear definitions of Foreign Keys and referential",
+    "langs": [
+      "ar",
+      "en"
+    ],
+    "url": "/posts/lesson-5.html",
+    "category": "",
+    "tags": [],
+    "date": "2026-10-24",
+    "readMinutes": 10
+  },
+  {
     "id": "lesson-4",
     "title": "الدليل الشامل لأوامر ALTER TABLE في MySQL: من الأساسيات إلى الاحتراف (مع الأمثلة)",
     "excerpt": "شرح كيفية تعديل هيكلة الجداول في قواعد بيانات MySQL خطوة بخطوة دون المساس بالبيانات المخزنة. يغطي المقال إدارة الأعمدة (إضافة، تعديل، حذف)، والفرق الدقيق بين أوامر التغيير (MODIFY, CHANGE, RENAME)، وكيفية التحكم في القيود (NOT NULL, DEFAULT)، بالإضافة إلى ربط الجداول بالمفاتيح الأجنبية (Foreign Key",

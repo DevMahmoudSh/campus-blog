@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ملخص مبسط لفهم تصميم الجداول والعلاقات في قواعد البيانات (MySQL) | دفتر الدروس</title>
+  <meta name="description" content="ملخص لشرح مفاهيم &quot;تطبيع قواعد البيانات&quot; (Normalization) بطريقة سهلة ومباشرة. سنشرح فيه كيف نقسم الجداول ونربطها ببعضها بفعالية، وما هو دور &quot;المفتاح الأجنبي&quot; (Foreign Key) في الحفاظ على صحة بياناتنا، بالإضافة إلى شرح حالات ON DELETE و ON UPDATE.">
+  <meta property="og:title" content="ملخص مبسط لفهم تصميم الجداول والعلاقات في قواعد البيانات (MySQL)">
+  <meta property="og:description" content="ملخص لشرح مفاهيم &quot;تطبيع قواعد البيانات&quot; (Normalization) بطريقة سهلة ومباشرة. سنشرح فيه كيف نقسم الجداول ونربطها ببعضها بفعالية، وما هو دور &quot;المفتاح الأجنبي&quot; (Foreign Key) في الحفاظ على صحة بياناتنا، بالإضافة إلى شرح حالات ON DELETE و ON UPDATE.">
+  <script>try{if(localStorage.getItem('lang')==='en'){var h=document.documentElement;h.lang='en';h.dir='ltr'}}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' } } } };
+  </script>
+  <style>
+    html[lang="ar"] { --body: Tajawal, system-ui, sans-serif; --head: Cairo, Tajawal, system-ui, sans-serif; }
+    html[lang="en"] { --body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; --head: var(--body); }
+    body { font-family: var(--body); }
+    .heading, .article h2, .article h3 { font-family: var(--head); }
+    [hidden] { display: none !important; }
+    html[lang="ar"] #lang-en, html[lang="en"] #lang-ar { display: none; }
+    .article { font-size: 1.0625rem; line-height: 1.95; }
+    .article > * + * { margin-top: 1rem; }
+    .article h2 { font-weight: 800; font-size: 1.5rem; line-height: 1.5; margin-top: 2.25rem; }
+    .article h3 { font-weight: 800; font-size: 1.2rem; line-height: 1.5; margin-top: 1.75rem; }
+    .article ul { list-style: disc; padding-inline-start: 1.5rem; }
+    .article ol { list-style: decimal; padding-inline-start: 1.5rem; }
+    .article a { color: #0F766E; text-decoration: underline; }
+    .article img { max-width: 100%; height: auto; border-radius: .5rem; }
+    .article :not(pre) > code { direction: ltr; unicode-bidi: isolate; background: #E3EAEE; padding: .1rem .4rem; border-radius: .25rem; font-size: .9em; }
+    .codebox { direction: ltr; border-radius: .6rem; overflow: hidden; background: #0d1117; }
+    .codebar { display: flex; justify-content: space-between; align-items: center; padding: .35rem .75rem; background: #161b22; color: #9aa7b4; font: 500 .8rem/1 ui-monospace, monospace; }
+    .codebar button { font: 700 .8rem/1 system-ui, sans-serif; color: #fff; background: #0F766E; border: 0; border-radius: .4rem; padding: .45rem .8rem; cursor: pointer; }
+    .codebar button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .codebox pre { margin: 0; text-align: left; overflow-x: auto; }
+    .codebox pre code.hljs { padding: 1rem; font-size: .9rem; line-height: 1.7; }
+  </style>
+</head>
+<body class="bg-paper text-ink antialiased">
+  <header class="bg-ink text-white">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <a href="/" class="heading font-extrabold text-xl" data-ar="دفتر الدروس" data-en="Lessons Notebook">دفتر الدروس</a>
+      <button id="lang-toggle" type="button" class="h-10 px-4 rounded-full border border-white/40 text-sm font-bold hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white" aria-label="Switch to English" lang="en">English</button>
+    </div>
+  </header>
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <article>
+    <section id="lang-ar" lang="ar" dir="rtl">
+      <h1 class="heading font-extrabold text-3xl leading-snug">ملخص مبسط لفهم تصميم الجداول والعلاقات في قواعد البيانات (MySQL)</h1>
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
+        
+        <time datetime="2026-10-24">24 أكتوبر 2026</time>
+        <span>قراءة 10 د</span>
+        <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
+      </p>
+      <div class="article mt-6">
+<!--ar-start-->
+<code><!-- استدعاء مكتبة SweetAlert لتعمل داخل صفحة الدرس -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- تنسيقات الإشعار ودعم RTL + وضع التصدير إلى PDF -->
+<style>
+    .copy-toast-container {
+        direction: ltr !important;
+        padding: 1.25rem !important;
+    }
+    .copy-toast-popup {
+        direction: rtl;
+        font-family: inherit !important;
+        border-radius: 1rem !important;
+        padding: 0.9rem 1.1rem !important;
+        border-right: 6px solid #5eead4 !important;
+        box-shadow: 0 20px 25px -5px rgba(15, 118, 110, 0.35),
+                    0 8px 10px -6px rgba(15, 118, 110, 0.35) !important;
+        backdrop-filter: blur(6px);
+    }
+    .copy-toast-title {
+        font-size: 1rem !important;
+        font-weight: 800 !important;
+        margin: 0 0 2px 0 !important;
+        text-align: right !important;
+    }
+    .copy-toast-text {
+        font-size: 0.85rem !important;
+        opacity: 0.9;
+        margin: 0 !important;
+        text-align: right !important;
+    }
+    .copy-toast-popup .swal2-timer-progress-bar {
+        background: rgba(255, 255, 255, 0.7) !important;
+        height: 3px !important;
+    }
+    .lesson-rtl pre {
+        direction: ltr;
+        text-align: left;
+        unicode-bidi: isolate;
+        overflow-x: auto;
+    }
+    .lesson-rtl pre code {
+        direction: ltr;
+        text-align: left;
+    }
+
+    /* ===== يُطبَّق فقط على النسخة المؤقتة أثناء التصدير إلى PDF ===== */
+    .pdf-mode,
+    .pdf-mode * {
+        box-sizing: border-box !important;
+    }
+    .pdf-mode {
+        width: 760px;
+        padding: 2px;
+        background: #fff;
+        direction: rtl;
+        text-align: right;
+    }
+    .pdf-mode * {
+        /* مهم: أي تباعد أحرف أو كسر للكلمات يفكك الحروف العربية عند الرسم */
+        letter-spacing: normal !important;
+        word-spacing: normal !important;
+        overflow-wrap: normal !important;
+        word-wrap: normal !important;
+        word-break: normal !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        filter: none !important;
+        transition: none !important;
+        animation: none !important;
+    }
+    .pdf-mode .overflow-x-auto { overflow: visible !important; }
+    .pdf-mode table { width: 100%; min-width: 0 !important; }
+    .pdf-mode pre,
+    .pdf-mode pre code {
+        white-space: pre-wrap !important;
+        overflow: visible !important;
+    }
+</style>
+
+<div dir="rtl" class="lesson-rtl text-right" id="lesson-content">
+
+<!-- صندوق مقدمة الدرس بتصميم عصري (Gradient) -->
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-l from-teal-500 to-emerald-400 p-6 shadow-lg mb-8 text-white">
+    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+    <div class="flex items-start gap-4 relative z-10">
+        <span class="text-4xl">🔗</span>
+        <div>
+            <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">العلاقات بين الجداول والمفاتيح الأجنبية في <bdi dir="ltr">MySQL</bdi></h3>
+            <p class="text-teal-50 leading-relaxed m-0 text-lg">
+                ملخص تطبيقي يشرح تقسيم الجداول (<bdi dir="ltr">Normalization</bdi>)، وأنواع العلاقات، والمفتاح الأجنبي، وسلوك الحذف والتعديل، مع الأكواد العملية.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- بطاقة تحميل الملخص PDF (لا تظهر داخل ملف PDF) -->
+<div data-pdf-ignore class="mb-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+    <div class="flex items-center gap-4 flex-1">
+        <div class="w-14 h-14 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
+        </div>
+        <div>
+            <h4 class="text-lg font-extrabold text-slate-800 m-0">حمّل ملخص المحاضرة</h4>
+            <p class="text-slate-500 text-sm m-0 mt-1 leading-relaxed">ملف <bdi dir="ltr">PDF</bdi> منسّق وجاهز للمراجعة والطباعة دون اتصال بالإنترنت</p>
+        </div>
+    </div>
+    <button type="button"
+        class="js-pdf-btn inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-l from-teal-500 to-emerald-400 text-white font-bold text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 border-0 cursor-pointer">
+        <span class="js-pdf-icon inline-flex">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+        </span>
+        <span class="js-pdf-label">تحميل الملخص (<bdi dir="ltr">PDF</bdi>)</span>
+    </button>
+</div>
+
+<!-- أولاً -->
+<div class="flex items-center gap-3 mt-10 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+        <span class="text-2xl font-bold">1</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">أولاً: ملخص العلاقات وتقسيم الجداول (<bdi dir="ltr">Normalization</bdi>)</h2>
+</div>
+<p class="text-slate-600 mb-6 text-lg leading-relaxed">
+    الهدف الأساسي من تصميم قواعد البيانات هو ترتيب البيانات وتقليل التكرار المزعج. إليكم كيف نطبق أنواع العلاقات:
+</p>
+
+<div class="space-y-4 mb-8">
+    <div class="bg-indigo-50 border border-indigo-200 p-5 rounded-xl">
+        <h4 class="font-bold text-indigo-800 text-xl mt-0 mb-2">علاقة واحد لواحد (<bdi dir="ltr">One-to-One</bdi>)</h4>
+        <p class="text-indigo-700 m-0 leading-relaxed text-lg">
+            لتجنب تكرار البيانات، نقوم بتقسيم الجدول الكبير إلى جدولين. على سبيل المثال، تم تقسيم جدول الموظفين إلى جدول للبيانات الشخصية (<bdi dir="ltr" class="font-mono font-bold">Employees_Table</bdi>) وجدول للرواتب (<bdi dir="ltr" class="font-mono font-bold">Salaries_Table</bdi>). وكذلك بالنسبة للطلاب، تم فصل البيانات الشخصية (<bdi dir="ltr" class="font-mono font-bold">Students_Table</bdi>) عن التفاصيل الأكاديمية (<bdi dir="ltr" class="font-mono font-bold">Acad_students</bdi>).
+        </p>
+    </div>
+    <div class="bg-teal-50 border border-teal-200 p-5 rounded-xl">
+        <h4 class="font-bold text-teal-800 text-xl mt-0 mb-2">علاقة واحد لمتعدد (<bdi dir="ltr">One-to-Many</bdi>)</h4>
+        <p class="text-teal-700 m-0 leading-relaxed text-lg">
+            تظهر هذه العلاقة بوضوح بين فصائل الدم (<bdi dir="ltr" class="font-mono font-bold">Blood_Types_Table</bdi>) والمرضى (<bdi dir="ltr" class="font-mono font-bold">Patients_Table</bdi>). الفكرة هنا أن فصيلة الدم الواحدة (مثل <bdi dir="ltr" class="font-mono font-bold">O+</bdi>) يمكن أن يحملها أكثر من مريض، لكن المريض الواحد لا يمتلك سوى فصيلة دم واحدة.
+        </p>
+    </div>
+    <div class="bg-amber-50 border border-amber-200 p-5 rounded-xl">
+        <h4 class="font-bold text-amber-800 text-xl mt-0 mb-2">علاقة متعدد لمتعدد (<bdi dir="ltr">Many-to-Many</bdi>)</h4>
+        <p class="text-amber-700 m-0 leading-relaxed text-lg">
+            مثل العلاقة بين المرضى (<bdi dir="ltr" class="font-mono font-bold">Patients_Table</bdi>) والأمراض (<bdi dir="ltr" class="font-mono font-bold">Diseases_Table</bdi>). المريض قد يُصاب بعدة أمراض، والمرض الواحد قد يُصيب عدة مرضى. لأن قاعدة البيانات لا تستوعب هذه العلاقة مباشرة، نقوم بحلها برمجياً بإنشاء "جدول وسيط" (<bdi dir="ltr" class="font-mono font-bold">Patient_Diseases_Table</bdi>) يكسر هذه العلاقة الكبيرة ويحولها إلى علاقتي "واحد لمتعدد".
+        </p>
+    </div>
+</div>
+
+<!-- ثانياً -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
+        <span class="text-2xl font-bold">2</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">ثانياً: ما هو المفتاح الأجنبي (<bdi dir="ltr">Foreign Key</bdi>)؟</h2>
+</div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">
+    ببساطة، هو حقل نضعه في جدول (نسميه <strong class="text-slate-800">الجدول الابن</strong>) ليكون بمثابة "جسر" يربطنا بالمفتاح الأساسي (<bdi dir="ltr">Primary Key</bdi>) في جدول آخر (نسميه <strong class="text-slate-800">الجدول الأب</strong>).
+</p>
+
+<div class="mb-6 bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex items-start gap-3">
+    <span class="text-2xl">🎯</span>
+    <p class="text-emerald-800 m-0 leading-relaxed">
+        <strong>وظيفته الأساسية:</strong> الحفاظ على ما يُسمى بـ "التكامل المرجعي"، أي أنه يمنع إدخال بيانات عشوائية ويضمن ألا يحتوي الجدول الابن على سجلات "يتيمة" ليس لها أصل في الجدول الأب.
+    </p>
+</div>
+
+<!-- ثالثاً -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
+        <span class="text-2xl font-bold">3</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">ثالثاً: ماذا يحدث عند الحذف أو التعديل؟ (<bdi dir="ltr">ON DELETE &amp; ON UPDATE</bdi>)</h2>
+</div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">
+    هذه الخصائص تخبر قاعدة البيانات بما يجب فعله في الجدول الابن إذا تم حذف أو تعديل بيانات الجدول الأب:
+</p>
+
+<div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
+    <table class="w-full min-w-[560px] text-right border-collapse bg-white">
+        <thead class="bg-slate-100 text-slate-700">
+            <tr>
+                <th class="p-4 border-b border-slate-200 font-bold w-1/3">الخيار</th>
+                <th class="p-4 border-b border-slate-200 font-bold">السلوك</th>
+            </tr>
+        </thead>
+        <tbody class="text-slate-600 text-base">
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 align-top">
+                    <span dir="ltr" class="block font-mono font-bold text-teal-600 text-left">CASCADE</span>
+                    <span class="block text-sm text-slate-500 mt-1">المتتبع المتسلسل</span>
+                </td>
+                <td class="p-4">إذا قمت بحذف أو تعديل السجل الأب، سيتم تلقائياً حذف أو تعديل السجلات المرتبطة به في الجدول الابن.</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 align-top">
+                    <span dir="ltr" class="block font-mono font-bold text-teal-600 text-left">RESTRICT</span>
+                    <span class="block text-sm text-slate-500 mt-1">المانع الصارم</span>
+                </td>
+                <td class="p-4">يمنعك تماماً من حذف أو تعديل السجل الأب طالما توجد سجلات مرتبطة به في الجدول الابن (لحماية البيانات من الضياع).</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-4 align-top">
+                    <span dir="ltr" class="block font-mono font-bold text-teal-600 text-left">SET NULL</span>
+                    <span class="block text-sm text-slate-500 mt-1">التفريغ</span>
+                </td>
+                <td class="p-4">إذا قمت بحذف أو تعديل السجل الأب، ستبقى بيانات الابن موجودة، ولكن قيمة حقل المفتاح الأجنبي ستصبح فارغة (<bdi dir="ltr" class="font-mono font-bold">NULL</bdi>).</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- رابعاً -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm">
+        <span class="text-2xl font-bold">4</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">رابعاً: أكواد <bdi dir="ltr">MySQL</bdi> (التطبيق العملي)</h2>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">1. علاقة واحد لواحد (<bdi dir="ltr">1:1</bdi>)</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        لضمان أن الموظف له راتب واحد فقط، نضيف قيد <bdi dir="ltr" class="font-mono font-bold">UNIQUE</bdi> بجانب المفتاح الأجنبي:
+    </p>
+    <pre dir="ltr"><code class="language-sql">
+CREATE TABLE Salaries_Table (
+    Sala_Id INT PRIMARY KEY,
+    hours_no INT,
+    hours_rate INT
+);
+
+CREATE TABLE Employees_Table (
+    Emp_Id INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Salar_id INT UNIQUE, -- هذا القيد يضمن أن العلاقة 1:1
+    FOREIGN KEY (Salar_id) REFERENCES Salaries_Table(Sala_Id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+);
+</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">2. علاقة واحد لمتعدد (<bdi dir="ltr">1:M</bdi>)</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        المريض له فصيلة دم واحدة، وفصيلة الدم لها عدة مرضى:
+    </p>
+    <pre dir="ltr"><code class="language-sql">
+CREATE TABLE Blood_Types_Table (
+    Blood_ID INT PRIMARY KEY,
+    Blood_type VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE Patients_Table (
+    Patient_ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Blood_Id INT,
+    FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">3. علاقة متعدد لمتعدد (<bdi dir="ltr">M:M</bdi>)</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        هنا نقوم بإنشاء الجدول الوسيط الذي يحتوي على مفتاحين أجنبيين:
+    </p>
+    <pre dir="ltr"><code class="language-sql">
+CREATE TABLE Diseases_Table (
+    Diseases_ID VARCHAR(10) PRIMARY KEY,
+    Disease_name VARCHAR(100)
+);
+
+CREATE TABLE Patient_Diseases_Table (
+    Patient_Id INT,
+    Diseases_Id VARCHAR(10),
+    Diagnosis_Date YEAR,
+
+    -- دمج المفتاحين كـ مفتاح أساسي مركب للجدول الوسيط
+    PRIMARY KEY (Patient_Id, Diseases_Id),
+
+    -- الربط مع جدول المرضى
+    FOREIGN KEY (Patient_Id) REFERENCES Patients_Table(Patient_ID)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+    -- الربط مع جدول الأمراض
+    FOREIGN KEY (Diseases_Id) REFERENCES Diseases_Table(Diseases_ID)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+</code></pre>
+</div>
+
+<!-- خامساً -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+        <span class="text-2xl font-bold">5</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">خامساً: استخدام <bdi dir="ltr">ALTER TABLE</bdi> للتعديل على الجداول</h2>
+</div>
+<p class="text-slate-600 mb-6 text-lg leading-relaxed">
+    إذا نسيت إضافة المفتاح الأجنبي عند إنشاء الجدول، لا تقلق! يمكنك إضافته لاحقاً، أو حتى حذفه باستخدام هذه الأوامر:
+</p>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">1. حذف المفتاح الأجنبي (باستخدام اسم القيد مباشرة)</h4>
+    <pre dir="ltr"><code class="language-sql">
+ALTER TABLE Patients_Table
+DROP CONSTRAINT fk_blood_patient;
+</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">2. إضافة مفتاح أجنبي (بدون إعطائه اسماً يدوياً)</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        سيقوم النظام بتوليد اسم تلقائي له.
+    </p>
+    <pre dir="ltr"><code class="language-sql">
+ALTER TABLE Patients_Table
+ADD FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">3. إضافة مفتاح أجنبي (مع تحديد اسم واضح له)</h4>
+    <pre dir="ltr"><code class="language-sql">
+ALTER TABLE Patients_Table
+ADD CONSTRAINT fk_blood_patient
+FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+</code></pre>
+    <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
+        <span class="text-2xl">💡</span>
+        <p class="text-amber-800 m-0 leading-relaxed">
+            <strong>نصيحة:</strong> من الأفضل دائماً تسمية القيود ليسهل إدارتها لاحقاً.
+        </p>
+    </div>
+</div>
+
+</div>
+
+<!-- سكربت تفاعلي: إشعار النسخ + تصدير PDF احترافي -->
+<script>
+(function () {
+    // منع تكرار ربط الأحداث إذا أُعيد تنفيذ السكربت
+    if (window.__lessonHandlersBound) return;
+    window.__lessonHandlersBound = true;
+
+    /* ================= الإعدادات (عدّلها بحرية) ================= */
+    var CFG = {
+        filename:   'Database-Relationships-Foreign-Keys.pdf',
+        pdfTitle:   'Database Relationships and Foreign Keys - MySQL Summary',
+        headerText: 'العلاقات والمفاتيح الأجنبية في MySQL',   // يظهر أعلى الصفحات من الثانية
+        headerSub:  'ملخص المحاضرة',
+        siteName:   location.hostname,                        // يظهر في تذييل كل صفحة
+        contentW:   760,                                      // عرض الرسم بالبكسل (يطابق .pdf-mode في CSS)
+        timeoutMs:  120000                                    // مهلة قصوى للتصدير
+    };
+    var LIB_H2C = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    var LIB_PDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+
+    // أبعاد الصفحة بالمليمتر
+    var PAGE_W = 210, PAGE_H = 297, MX = 12, TOP = 16, BOTTOM = 15;
+    var CONTENT_MM = PAGE_W - MX * 2;
+    var MM_PER_PX = CONTENT_MM / CFG.contentW;
+    var PAGE_CONTENT_PX = (PAGE_H - TOP - BOTTOM) / MM_PER_PX;
+
+    var busy = false;
+    var SPINNER = '<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+
+    /* ================= أدوات مساعدة ================= */
+    function showToast(title, text, icon) {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: icon || 'success',
+            toast: true,
+            position: 'top-end',
+            timer: 2500,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: icon === 'error' ? '#B91C1C' : '#0F766E',
+            color: '#ffffff',
+            iconColor: '#ffffff',
+            customClass: {
+                container: 'copy-toast-container',
+                popup: 'copy-toast-popup',
+                title: 'copy-toast-title',
+                htmlContainer: 'copy-toast-text'
+            },
+            didOpen: function (toast) {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+    }
+
+    function loadScript(src, isReady) {
+        return new Promise(function (resolve, reject) {
+            if (isReady()) return resolve();
+            var s = document.createElement('script');
+            var t = setTimeout(function () { reject(new Error('Library timeout: ' + src)); }, 20000);
+            s.src = src;
+            s.onload = function () { clearTimeout(t); resolve(); };
+            s.onerror = function () { clearTimeout(t); reject(new Error('Failed to load: ' + src)); };
+            document.head.appendChild(s);
+        });
+    }
+
+    // إفساح المجال للمتصفح لرسم الواجهة (يمنع تجمّد الصفحة)
+    function tick() {
+        return new Promise(function (resolve) {
+            requestAnimationFrame(function () { setTimeout(resolve, 0); });
+        });
+    }
+
+    // اختيار دقة آمنة حسب الجهاز وحجم الصفحة
+    function pickScale(w, h) {
+        var ua = navigator.userAgent;
+        var isIOS = /iP(hone|ad|od)/i.test(ua);
+        var isMobile = isIOS || /Android/i.test(ua) || window.innerWidth < 768;
+        var s = isMobile ? 2 : 3;
+        var MAX_AREA = isIOS ? 14e6 : (isMobile ? 40e6 : 60e6);
+        var MAX_SIDE = isIOS ? 16000 : 30000;
+        while (s > 1 && (w * s * h * s > MAX_AREA || h * s > MAX_SIDE)) s -= 0.25;
+        return Math.max(s, 1);
+    }
+
+    // تحديد أماكن قطع الصفحات عند حدود العناصر (لا يُقطع كود أو جدول في المنتصف)
+    function computeBreaks(clone, pageH) {
+        var base = clone.getBoundingClientRect().top;
+        var total = clone.getBoundingClientRect().height;
+        var kids = Array.prototype.slice.call(clone.children);
+        var candidates = [];
+
+        kids.forEach(function (k, i) {
+            if (i === 0) return;
+            var prev = kids[i - 1];
+            // العنوان والفقرة التمهيدية يجب ألا يُتركا وحدهما في آخر الصفحة
+            var keepWithNext = prev.querySelector('h2') || prev.tagName === 'P';
+            if (keepWithNext) return;
+            candidates.push(k.getBoundingClientRect().top - base);
+        });
+
+        var breaks = [0], start = 0;
+        while (total - start > pageH + 1) {
+            var limit = start + pageH, best = -1;
+            for (var i = 0; i < candidates.length; i++) {
+                if (candidates[i] > start + 40 && candidates[i] <= limit) best = candidates[i];
+            }
+            if (best < 0) best = limit;      // عنصر أطول من صفحة كاملة: قطع اضطراري
+            breaks.push(best);
+            start = best;
+        }
+        breaks.push(total);
+        return breaks;
+    }
+
+    // رسم شريط نصي (رأس/تذييل) بخط الصفحة نفسه لضمان صحة العربية
+    function makeStrip(wMm, hMm, draw) {
+        var K = 12; // بكسل لكل مم
+        var c = document.createElement('canvas');
+        c.width = Math.round(wMm * K);
+        c.height = Math.round(hMm * K);
+        var ctx = c.getContext('2d');
+        draw(ctx, c.width, c.height);
+        var url = c.toDataURL('image/png');
+        c.width = c.height = 0;
+        return url;
+    }
+
+    /* ================= التصدير ================= */
+    async function downloadPdf(btn) {
+        if (busy) return;
+        busy = true;
+
+        var iconEl = btn.querySelector('.js-pdf-icon');
+        var labelEl = btn.querySelector('.js-pdf-label');
+        var originalIcon = iconEl.innerHTML;
+        var originalLabel = labelEl.innerHTML;
+        var holder = null, timer = null, bigCanvas = null;
+
+        function progress(p) { labelEl.textContent = 'جارٍ التجهيز… ' + Math.round(p) + '%'; }
+
+        btn.disabled = true;
+        iconEl.innerHTML = SPINNER;
+        progress(2);
+
+        try {
+            var job = (async function () {
+                await tick();
+                await loadScript(LIB_H2C, function () { return !!window.html2canvas; });
+                await loadScript(LIB_PDF, function () { return !!(window.jspdf && window.jspdf.jsPDF); });
+                if (document.fonts && document.fonts.ready) await document.fonts.ready;
+                progress(12);
+
+                var source = document.getElementById('lesson-content');
+                var fontFamily = getComputedStyle(source).fontFamily || 'Tahoma, Arial, sans-serif';
+
+                // نسخة مؤقتة خارج الشاشة بعرض ثابت
+                var clone = source.cloneNode(true);
+                clone.removeAttribute('id');
+                clone.classList.add('pdf-mode');
+                clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function (el) { el.remove(); });
+
+                holder = document.createElement('div');
+                holder.setAttribute('data-pdf-holder', '');
+                holder.setAttribute('aria-hidden', 'true');
+                holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:' + CFG.contentW + 'px;background:#fff;pointer-events:none;';
+                holder.appendChild(clone);
+                document.body.appendChild(holder);
+                await tick();
+
+                var cloneH = Math.ceil(clone.getBoundingClientRect().height);
+                var breaks = computeBreaks(clone, PAGE_CONTENT_PX);
+                var scale = pickScale(CFG.contentW, cloneH);
+                progress(20);
+
+                // رسم المحتوى كاملاً مرة واحدة
+                bigCanvas = await window.html2canvas(clone, {
+                    scale: scale,
+                    width: CFG.contentW,
+                    height: cloneH,
+                    windowWidth: CFG.contentW,
+                    windowHeight: cloneH,
+                    scrollX: 0,
+                    scrollY: 0,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false
+                });
+                progress(60);
+
+                // تجهيز المستند
+                var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+                pdf.setProperties({ title: CFG.pdfTitle, subject: 'MySQL Relationships', creator: CFG.siteName });
+
+                var pages = breaks.length - 1;
+                var sc = bigCanvas.width / CFG.contentW;
+
+                // رأس الصفحة (من الصفحة الثانية)
+                var headerImg = makeStrip(CONTENT_MM, 7, function (ctx, w, h) {
+                    ctx.textBaseline = 'middle';
+                    ctx.direction = 'rtl';
+                    ctx.font = '700 38px ' + fontFamily;
+                    ctx.fillStyle = '#0f766e';
+                    ctx.textAlign = 'right';
+                    ctx.fillText(CFG.headerText, w - 4, h / 2);
+                    ctx.font = '500 34px ' + fontFamily;
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(CFG.headerSub, 4, h / 2);
+                });
+
+                for (var i = 0; i < pages; i++) {
+                    if (i > 0) pdf.addPage();
+
+                    var b0 = breaks[i], b1 = breaks[i + 1];
+                    var sy = Math.round(b0 * sc);
+                    var sh = Math.max(1, Math.min(bigCanvas.height - sy, Math.round((b1 - b0) * sc)));
+
+                    var slice = document.createElement('canvas');
+                    slice.width = bigCanvas.width;
+                    slice.height = sh;
+                    var sctx = slice.getContext('2d');
+                    sctx.fillStyle = '#ffffff';
+                    sctx.fillRect(0, 0, slice.width, slice.height);
+                    sctx.drawImage(bigCanvas, 0, sy, bigCanvas.width, sh, 0, 0, bigCanvas.width, sh);
+
+                    var imgData = slice.toDataURL('image/jpeg', 0.93);
+                    slice.width = slice.height = 0;
+
+                    var hMm = (sh / sc) * MM_PER_PX;
+                    pdf.addImage(imgData, 'JPEG', MX, TOP, CONTENT_MM, hMm, undefined, 'FAST');
+
+                    // شريط علوي ملوّن
+                    pdf.setFillColor(13, 148, 136);
+                    pdf.rect(0, 0, PAGE_W, 2.4, 'F');
+                    pdf.setFillColor(52, 211, 153);
+                    pdf.rect(PAGE_W - 70, 0, 70, 2.4, 'F');
+
+                    // رأس الصفحة (من الصفحة الثانية)
+                    pdf.setDrawColor(226, 232, 240);
+                    pdf.setLineWidth(0.3);
+                    if (i > 0) {
+                        pdf.addImage(headerImg, 'PNG', MX, 5, CONTENT_MM, 7);
+                        pdf.line(MX, 13, PAGE_W - MX, 13);
+                    }
+
+                    // تذييل الصفحة
+                    var pageNo = i + 1;
+                    var footerImg = makeStrip(CONTENT_MM, 7, function (ctx, w, h) {
+                        ctx.textBaseline = 'middle';
+                        ctx.font = '500 34px ' + fontFamily;
+                        ctx.fillStyle = '#64748b';
+                        ctx.direction = 'rtl';
+                        ctx.textAlign = 'right';
+                        ctx.fillText('صفحة ' + pageNo + ' من ' + pages, w - 4, h / 2);
+                        ctx.direction = 'ltr';
+                        ctx.textAlign = 'left';
+                        ctx.fillText(CFG.siteName, 4, h / 2);
+                    });
+                    pdf.line(MX, PAGE_H - 12, PAGE_W - MX, PAGE_H - 12);
+                    pdf.addImage(footerImg, 'PNG', MX, PAGE_H - 11, CONTENT_MM, 7);
+
+                    progress(60 + ((i + 1) / pages) * 35);
+                    await tick();   // يعيد التحكم للمتصفح بين الصفحات
+                }
+
+                bigCanvas.width = bigCanvas.height = 0;
+                bigCanvas = null;
+                progress(98);
+                await tick();
+                pdf.save(CFG.filename);
+            })();
+
+            // مهلة قصوى حتى لا تبقى الصفحة معلّقة
+            var timeout = new Promise(function (_, reject) {
+                timer = setTimeout(function () { reject(new Error('PDF export timeout')); }, CFG.timeoutMs);
+            });
+            job.catch(function () {});
+            await Promise.race([job, timeout]);
+
+            showToast('تم تجهيز الملف! 📄', 'بدأ تحميل ملخص المحاضرة', 'success');
+        } catch (err) {
+            console.error(err);
+            showToast('تعذّر إنشاء الملف', 'حاول مجدداً، وإن تكرر الأمر جرّب من متصفح الكمبيوتر', 'error');
+        } finally {
+            clearTimeout(timer);
+            if (bigCanvas) { bigCanvas.width = bigCanvas.height = 0; }
+            document.querySelectorAll('[data-pdf-holder], .html2pdf__overlay, .html2pdf__container').forEach(function (el) {
+                if (el.parentNode) el.parentNode.removeChild(el);
+            });
+            busy = false;
+            btn.disabled = false;
+            iconEl.innerHTML = originalIcon;
+            labelEl.innerHTML = originalLabel;
+        }
+    }
+
+    /* ================= الأحداث ================= */
+    document.addEventListener('click', function (e) {
+        // زر تحميل PDF
+        var pdfBtn = e.target.closest('.js-pdf-btn');
+        if (pdfBtn) {
+            if (!pdfBtn.disabled) downloadPdf(pdfBtn);
+            return;
+        }
+
+        // أزرار نسخ الكود
+        var btn = e.target.closest('button');
+        if (btn && (btn.innerText.includes('نسخ') || /copy/i.test(btn.innerText))) {
+            showToast('تم النسخ بنجاح! 🚀', 'أصبح الكود جاهزاً للصق', 'success');
+        }
+    });
+})();
+</script></code>
+<!--ar-end-->
+      </div>
+    </section>
+    <section id="lang-en" lang="en" dir="ltr">
+      <h1 class="heading font-extrabold text-3xl leading-snug">A Practical Guide to Database Normalization and Relationships in MySQL</h1>
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
+        
+        <time datetime="2026-10-24">October 24, 2026</time>
+        <span>10 min read</span>
+        <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>views</span></span>
+      </p>
+      <div class="article mt-6">
+<!--en-start-->
+<code><!-- استدعاء مكتبة SweetAlert لتعمل داخل صفحة الدرس -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Toast styles + PDF export mode -->
+<style>
+    .copy-toast-container {
+        direction: ltr !important;
+        padding: 1.25rem !important;
+    }
+    .copy-toast-popup {
+        direction: ltr;
+        font-family: inherit !important;
+        border-radius: 1rem !important;
+        padding: 0.9rem 1.1rem !important;
+        border-left: 6px solid #5eead4 !important;
+        box-shadow: 0 20px 25px -5px rgba(15, 118, 110, 0.35),
+                    0 8px 10px -6px rgba(15, 118, 110, 0.35) !important;
+        backdrop-filter: blur(6px);
+    }
+    .copy-toast-title {
+        font-size: 1rem !important;
+        font-weight: 800 !important;
+        margin: 0 0 2px 0 !important;
+        text-align: left !important;
+    }
+    .copy-toast-text {
+        font-size: 0.85rem !important;
+        opacity: 0.9;
+        margin: 0 !important;
+        text-align: left !important;
+    }
+    .copy-toast-popup .swal2-timer-progress-bar {
+        background: rgba(255, 255, 255, 0.7) !important;
+        height: 3px !important;
+    }
+    .lesson-ltr pre {
+        direction: ltr;
+        text-align: left;
+        overflow-x: auto;
+    }
+    .lesson-ltr pre code {
+        direction: ltr;
+        text-align: left;
+    }
+
+    /* ===== Applied only to the temporary clone while exporting to PDF ===== */
+    .pdf-mode,
+    .pdf-mode * {
+        box-sizing: border-box !important;
+    }
+    .pdf-mode {
+        width: 760px;
+        padding: 2px;
+        background: #fff;
+        direction: ltr;
+        text-align: left;
+    }
+    .pdf-mode * {
+        letter-spacing: normal !important;
+        word-spacing: normal !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        filter: none !important;
+        transition: none !important;
+        animation: none !important;
+    }
+    .pdf-mode .overflow-x-auto { overflow: visible !important; }
+    .pdf-mode table { width: 100%; min-width: 0 !important; }
+    .pdf-mode pre,
+    .pdf-mode pre code {
+        white-space: pre-wrap !important;
+        overflow: visible !important;
+    }
+</style>
+
+<div dir="ltr" class="lesson-ltr text-left" id="lesson-content">
+
+<!-- Lesson intro box -->
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-teal-500 to-emerald-400 p-6 shadow-lg mb-8 text-white">
+    <div class="absolute top-0 left-0 -mt-4 -ml-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+    <div class="flex items-start gap-4 relative z-10">
+        <span class="text-4xl">🔗</span>
+        <div>
+            <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">Database Normalization and Relationships Summary</h3>
+            <p class="text-teal-50 leading-relaxed m-0 text-lg">
+                Database design concepts that reduce redundancy and define how tables relate to each other, from relationship types to foreign keys and their MySQL code.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- PDF download card (hidden inside the exported PDF) -->
+<div data-pdf-ignore class="mb-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+    <div class="flex items-center gap-4 flex-1">
+        <div class="w-14 h-14 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
+        </div>
+        <div>
+            <h4 class="text-lg font-extrabold text-slate-800 m-0">Download the Lecture Summary</h4>
+            <p class="text-slate-500 text-sm m-0 mt-1 leading-relaxed">A neatly formatted PDF, ready for review and printing</p>
+        </div>
+    </div>
+    <button type="button"
+        class="js-pdf-btn inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-400 text-white font-bold text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 border-0 cursor-pointer">
+        <span class="js-pdf-icon inline-flex">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+        </span>
+        <span class="js-pdf-label">Download Summary (PDF)</span>
+    </button>
+</div>
+
+<!-- Section 1 -->
+<div class="flex items-center gap-3 mt-10 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+        <span class="text-2xl font-bold">1</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">Types of Table Relationships</h2>
+</div>
+<p class="text-slate-600 mb-6 text-lg leading-relaxed">
+    The provided documents summarize database design concepts to reduce redundancy and define table relationships:
+</p>
+
+<div class="grid md:grid-cols-3 gap-4 mb-8">
+    <div class="bg-indigo-50 border border-indigo-200 p-5 rounded-xl">
+        <h4 class="font-bold text-indigo-800 text-xl mt-0 mb-2">One-to-One <span class="font-mono text-base">(1:1)</span></h4>
+        <p class="text-indigo-700 m-0 leading-relaxed">Illustrated by splitting the original employees table into two separate tables: <span class="font-mono font-bold">Employees_Table</span> and <span class="font-mono font-bold">Salaries_Table</span>. It also shows dividing the students table into personal data (<span class="font-mono font-bold">Students_Table</span>) and academic data (<span class="font-mono font-bold">Acad_students</span>).</p>
+    </div>
+    <div class="bg-teal-50 border border-teal-200 p-5 rounded-xl">
+        <h4 class="font-bold text-teal-800 text-xl mt-0 mb-2">One-to-Many <span class="font-mono text-base">(1:M)</span></h4>
+        <p class="text-teal-700 m-0 leading-relaxed">Shown in the relationship between blood types (<span class="font-mono font-bold">Blood_Types_Table</span>) and patients (<span class="font-mono font-bold">Patients_Table</span>), where multiple patients can share one blood type.</p>
+    </div>
+    <div class="bg-amber-50 border border-amber-200 p-5 rounded-xl">
+        <h4 class="font-bold text-amber-800 text-xl mt-0 mb-2">Many-to-Many <span class="font-mono text-base">(M:M)</span></h4>
+        <p class="text-amber-700 m-0 leading-relaxed">Displayed between patients (<span class="font-mono font-bold">Patients_Table</span>) and diseases (<span class="font-mono font-bold">Diseases_Table</span>). This is resolved programmatically by creating a junction table (<span class="font-mono font-bold">Patient_Diseases_Table</span>) that breaks the many-to-many relationship into two one-to-many relationships.</p>
+    </div>
+</div>
+
+<!-- Section 2 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
+        <span class="text-2xl font-bold">2</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">Foreign Key Definition</h2>
+</div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">
+    A <strong class="text-slate-800">Foreign Key</strong> is a field (or collection of fields) in one table that uniquely identifies a row of another table (usually pointing to a Primary Key).
+</p>
+
+<div class="mb-6 bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex items-start gap-3">
+    <span class="text-2xl">🎯</span>
+    <p class="text-emerald-800 m-0 leading-relaxed">
+        <strong>Main purpose:</strong> to maintain <strong>referential integrity</strong>, ensuring that the relationship between tables remains valid and preventing orphaned records.
+    </p>
+</div>
+
+<!-- Section 3 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
+        <span class="text-2xl font-bold">3</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">ON DELETE and ON UPDATE</h2>
+</div>
+<p class="text-slate-600 mb-4 text-lg leading-relaxed">
+    These properties define the automatic action taken on the "child" table when the referenced record in the "parent" table is deleted or updated:
+</p>
+
+<div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
+    <table class="w-full min-w-[560px] text-left border-collapse bg-white">
+        <thead class="bg-slate-100 text-slate-700">
+            <tr>
+                <th class="p-4 border-b border-slate-200 font-bold w-1/3">Action</th>
+                <th class="p-4 border-b border-slate-200 font-bold">Behavior</th>
+            </tr>
+        </thead>
+        <tbody class="text-slate-600 text-base">
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">CASCADE</td>
+                <td class="p-4">Automatically deletes or updates the matching records in the child table when the parent record is deleted or updated.</td>
+            </tr>
+            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">RESTRICT / NO ACTION</td>
+                <td class="p-4">Prevents the deletion or update of the parent record if there are matching records in the child table.</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-bold text-teal-600">SET NULL</td>
+                <td class="p-4">Sets the foreign key column values in the child table to <span class="font-mono">NULL</span> when the parent record is deleted or updated.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Section 4 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm">
+        <span class="text-2xl font-bold">4</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">MySQL Codes</h2>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">1. One-to-One Relationship (1:1)</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        To ensure a strictly 1:1 relationship, a <span class="font-mono font-bold">UNIQUE</span> constraint is added to the foreign key:
+    </p>
+    <pre dir="ltr"><code class="language-sql">
+CREATE TABLE Salaries_Table (
+    Sala_Id INT PRIMARY KEY,
+    hours_no INT,
+    hours_rate INT
+);
+
+CREATE TABLE Employees_Table (
+    Emp_Id INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Salar_id INT UNIQUE, 
+    FOREIGN KEY (Salar_id) REFERENCES Salaries_Table(Sala_Id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+);
+</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">2. One-to-Many Relationship (1:M)</h4>
+    <pre dir="ltr"><code class="language-sql">
+CREATE TABLE Blood_Types_Table (
+    Blood_ID INT PRIMARY KEY,
+    Blood_type VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE Patients_Table (
+    Patient_ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Blood_Id INT,
+    FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">3. Many-to-Many Relationship (M:M)</h4>
+    <pre dir="ltr"><code class="language-sql">
+CREATE TABLE Diseases_Table (
+    Diseases_ID VARCHAR(10) PRIMARY KEY,
+    Disease_name VARCHAR(100)
+);
+
+CREATE TABLE Patient_Diseases_Table (
+    Patient_Id INT,
+    Diseases_Id VARCHAR(10),
+    Diagnosis_Date YEAR,
+    
+    PRIMARY KEY (Patient_Id, Diseases_Id),
+    
+    FOREIGN KEY (Patient_Id) REFERENCES Patients_Table(Patient_ID)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    
+    FOREIGN KEY (Diseases_Id) REFERENCES Diseases_Table(Diseases_ID)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+</code></pre>
+</div>
+
+<!-- Section 5 -->
+<div class="flex items-center gap-3 mt-12 mb-5">
+    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+        <span class="text-2xl font-bold">5</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-800 m-0">Using ALTER TABLE</h2>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">1. Dropping a Foreign Key (without using the word "FOREIGN KEY")</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        You can drop the constraint directly using its name with the <span class="font-mono font-bold">DROP CONSTRAINT</span> command.
+    </p>
+    <pre dir="ltr"><code class="language-sql">
+ALTER TABLE Patients_Table
+DROP CONSTRAINT fk_blood_patient;
+</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">2. Adding a Foreign Key WITHOUT a name</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        If you do not specify a name, MySQL will automatically generate a default constraint name.
+    </p>
+    <pre dir="ltr"><code class="language-sql">
+ALTER TABLE Patients_Table
+ADD FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+</code></pre>
+</div>
+
+<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">3. Adding a Foreign Key WITH a name</h4>
+    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
+        You can specify a custom name by using the <span class="font-mono font-bold">CONSTRAINT</span> keyword followed by your chosen name before defining the foreign key.
+    </p>
+    <pre dir="ltr"><code class="language-sql">
+ALTER TABLE Patients_Table
+ADD CONSTRAINT fk_blood_patient 
+FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+</code></pre>
+</div>
+
+</div>
+
+<!-- Interactive script: copy toast + professional PDF export -->
+<script>
+(function () {
+    // Prevent double-binding if the script runs twice
+    if (window.__lessonHandlersBound) return;
+    window.__lessonHandlersBound = true;
+
+    /* ================= Settings (edit freely) ================= */
+    var CFG = {
+        filename:   'Database-Normalization-Relationships.pdf',
+        pdfTitle:   'Database Normalization and Relationships Summary',
+        headerText: 'Database Normalization & Relationships',   // shown at the top of pages 2+
+        headerSub:  'Lecture Summary',
+        siteName:   location.hostname,                          // shown in every page footer
+        contentW:   760,                                        // render width in px (matches .pdf-mode in CSS)
+        timeoutMs:  120000                                      // hard timeout for the export
+    };
+    var LIB_H2C = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    var LIB_PDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+
+    // Page geometry in millimetres
+    var PAGE_W = 210, PAGE_H = 297, MX = 12, TOP = 16, BOTTOM = 15;
+    var CONTENT_MM = PAGE_W - MX * 2;
+    var MM_PER_PX = CONTENT_MM / CFG.contentW;
+    var PAGE_CONTENT_PX = (PAGE_H - TOP - BOTTOM) / MM_PER_PX;
+
+    var busy = false;
+    var SPINNER = '<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+
+    /* ================= Helpers ================= */
+    function showToast(title, text, icon) {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: icon || 'success',
+            toast: true,
+            position: 'top-end',
+            timer: 2500,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: icon === 'error' ? '#B91C1C' : '#0F766E',
+            color: '#ffffff',
+            iconColor: '#ffffff',
+            customClass: {
+                container: 'copy-toast-container',
+                popup: 'copy-toast-popup',
+                title: 'copy-toast-title',
+                htmlContainer: 'copy-toast-text'
+            },
+            didOpen: function (toast) {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+    }
+
+    function loadScript(src, isReady) {
+        return new Promise(function (resolve, reject) {
+            if (isReady()) return resolve();
+            var s = document.createElement('script');
+            var t = setTimeout(function () { reject(new Error('Library timeout: ' + src)); }, 20000);
+            s.src = src;
+            s.onload = function () { clearTimeout(t); resolve(); };
+            s.onerror = function () { clearTimeout(t); reject(new Error('Failed to load: ' + src)); };
+            document.head.appendChild(s);
+        });
+    }
+
+    // Yield to the browser so the UI can repaint (prevents the page from freezing)
+    function tick() {
+        return new Promise(function (resolve) {
+            requestAnimationFrame(function () { setTimeout(resolve, 0); });
+        });
+    }
+
+    // Pick a safe resolution for the device and page size
+    function pickScale(w, h) {
+        var ua = navigator.userAgent;
+        var isIOS = /iP(hone|ad|od)/i.test(ua);
+        var isMobile = isIOS || /Android/i.test(ua) || window.innerWidth < 768;
+        var s = isMobile ? 2 : 3;
+        var MAX_AREA = isIOS ? 14e6 : (isMobile ? 40e6 : 60e6);
+        var MAX_SIDE = isIOS ? 16000 : 30000;
+        while (s > 1 && (w * s * h * s > MAX_AREA || h * s > MAX_SIDE)) s -= 0.25;
+        return Math.max(s, 1);
+    }
+
+    // Decide page-break positions at element boundaries (no code block or table is cut in half)
+    function computeBreaks(clone, pageH) {
+        var base = clone.getBoundingClientRect().top;
+        var total = clone.getBoundingClientRect().height;
+        var kids = Array.prototype.slice.call(clone.children);
+        var candidates = [];
+
+        kids.forEach(function (k, i) {
+            if (i === 0) return;
+            var prev = kids[i - 1];
+            // A heading or its intro paragraph must never be left alone at the bottom of a page
+            var keepWithNext = prev.querySelector('h2') || prev.tagName === 'P';
+            if (keepWithNext) return;
+            candidates.push(k.getBoundingClientRect().top - base);
+        });
+
+        var breaks = [0], start = 0;
+        while (total - start > pageH + 1) {
+            var limit = start + pageH, best = -1;
+            for (var i = 0; i < candidates.length; i++) {
+                if (candidates[i] > start + 40 && candidates[i] <= limit) best = candidates[i];
+            }
+            if (best < 0) best = limit;      // element taller than a page: forced break
+            breaks.push(best);
+            start = best;
+        }
+        breaks.push(total);
+        return breaks;
+    }
+
+    // Draw a text strip (header/footer) with the page font
+    function makeStrip(wMm, hMm, draw) {
+        var K = 12; // pixels per mm
+        var c = document.createElement('canvas');
+        c.width = Math.round(wMm * K);
+        c.height = Math.round(hMm * K);
+        var ctx = c.getContext('2d');
+        draw(ctx, c.width, c.height);
+        var url = c.toDataURL('image/png');
+        c.width = c.height = 0;
+        return url;
+    }
+
+    /* ================= PDF export ================= */
+    async function downloadPdf(btn) {
+        if (busy) return;
+        busy = true;
+
+        var iconEl = btn.querySelector('.js-pdf-icon');
+        var labelEl = btn.querySelector('.js-pdf-label');
+        var originalIcon = iconEl.innerHTML;
+        var originalLabel = labelEl.innerHTML;
+        var holder = null, timer = null, bigCanvas = null;
+
+        function progress(p) { labelEl.textContent = 'Preparing… ' + Math.round(p) + '%'; }
+
+        btn.disabled = true;
+        iconEl.innerHTML = SPINNER;
+        progress(2);
+
+        try {
+            var job = (async function () {
+                await tick();
+                await loadScript(LIB_H2C, function () { return !!window.html2canvas; });
+                await loadScript(LIB_PDF, function () { return !!(window.jspdf && window.jspdf.jsPDF); });
+                if (document.fonts && document.fonts.ready) await document.fonts.ready;
+                progress(12);
+
+                var source = document.getElementById('lesson-content');
+                var fontFamily = getComputedStyle(source).fontFamily || 'Arial, sans-serif';
+
+                // Off-screen clone with a fixed width
+                var clone = source.cloneNode(true);
+                clone.removeAttribute('id');
+                clone.classList.add('pdf-mode');
+                clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function (el) { el.remove(); });
+
+                holder = document.createElement('div');
+                holder.setAttribute('data-pdf-holder', '');
+                holder.setAttribute('aria-hidden', 'true');
+                holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:' + CFG.contentW + 'px;background:#fff;pointer-events:none;';
+                holder.appendChild(clone);
+                document.body.appendChild(holder);
+                await tick();
+
+                var cloneH = Math.ceil(clone.getBoundingClientRect().height);
+                var breaks = computeBreaks(clone, PAGE_CONTENT_PX);
+                var scale = pickScale(CFG.contentW, cloneH);
+                progress(20);
+
+                // Render the full content once
+                bigCanvas = await window.html2canvas(clone, {
+                    scale: scale,
+                    width: CFG.contentW,
+                    height: cloneH,
+                    windowWidth: CFG.contentW,
+                    windowHeight: cloneH,
+                    scrollX: 0,
+                    scrollY: 0,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false
+                });
+                progress(60);
+
+                var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+                pdf.setProperties({ title: CFG.pdfTitle, subject: 'MySQL Relationships', creator: CFG.siteName });
+
+                var pages = breaks.length - 1;
+                var sc = bigCanvas.width / CFG.contentW;
+
+                // Running header (pages 2+)
+                var headerImg = makeStrip(CONTENT_MM, 7, function (ctx, w, h) {
+                    ctx.textBaseline = 'middle';
+                    ctx.direction = 'ltr';
+                    ctx.font = '700 38px ' + fontFamily;
+                    ctx.fillStyle = '#0f766e';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(CFG.headerText, 4, h / 2);
+                    ctx.font = '500 34px ' + fontFamily;
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.textAlign = 'right';
+                    ctx.fillText(CFG.headerSub, w - 4, h / 2);
+                });
+
+                for (var i = 0; i < pages; i++) {
+                    if (i > 0) pdf.addPage();
+
+                    var b0 = breaks[i], b1 = breaks[i + 1];
+                    var sy = Math.round(b0 * sc);
+                    var sh = Math.max(1, Math.min(bigCanvas.height - sy, Math.round((b1 - b0) * sc)));
+
+                    var slice = document.createElement('canvas');
+                    slice.width = bigCanvas.width;
+                    slice.height = sh;
+                    var sctx = slice.getContext('2d');
+                    sctx.fillStyle = '#ffffff';
+                    sctx.fillRect(0, 0, slice.width, slice.height);
+                    sctx.drawImage(bigCanvas, 0, sy, bigCanvas.width, sh, 0, 0, bigCanvas.width, sh);
+
+                    var imgData = slice.toDataURL('image/jpeg', 0.93);
+                    slice.width = slice.height = 0;
+
+                    var hMm = (sh / sc) * MM_PER_PX;
+                    pdf.addImage(imgData, 'JPEG', MX, TOP, CONTENT_MM, hMm, undefined, 'FAST');
+
+                    // Coloured top bar
+                    pdf.setFillColor(13, 148, 136);
+                    pdf.rect(0, 0, PAGE_W, 2.4, 'F');
+                    pdf.setFillColor(52, 211, 153);
+                    pdf.rect(0, 0, 70, 2.4, 'F');
+
+                    // Running header (from page 2)
+                    pdf.setDrawColor(226, 232, 240);
+                    pdf.setLineWidth(0.3);
+                    if (i > 0) {
+                        pdf.addImage(headerImg, 'PNG', MX, 5, CONTENT_MM, 7);
+                        pdf.line(MX, 13, PAGE_W - MX, 13);
+                    }
+
+                    // Footer
+                    var pageNo = i + 1;
+                    var footerImg = makeStrip(CONTENT_MM, 7, function (ctx, w, h) {
+                        ctx.textBaseline = 'middle';
+                        ctx.direction = 'ltr';
+                        ctx.font = '500 34px ' + fontFamily;
+                        ctx.fillStyle = '#64748b';
+                        ctx.textAlign = 'left';
+                        ctx.fillText(CFG.siteName, 4, h / 2);
+                        ctx.textAlign = 'right';
+                        ctx.fillText('Page ' + pageNo + ' of ' + pages, w - 4, h / 2);
+                    });
+                    pdf.line(MX, PAGE_H - 12, PAGE_W - MX, PAGE_H - 12);
+                    pdf.addImage(footerImg, 'PNG', MX, PAGE_H - 11, CONTENT_MM, 7);
+
+                    progress(60 + ((i + 1) / pages) * 35);
+                    await tick();   // hand control back to the browser between pages
+                }
+
+                bigCanvas.width = bigCanvas.height = 0;
+                bigCanvas = null;
+                progress(98);
+                await tick();
+                pdf.save(CFG.filename);
+            })();
+
+            // Hard timeout so the page never hangs forever
+            var timeout = new Promise(function (_, reject) {
+                timer = setTimeout(function () { reject(new Error('PDF export timeout')); }, CFG.timeoutMs);
+            });
+            job.catch(function () {});
+            await Promise.race([job, timeout]);
+
+            showToast('PDF is ready! 📄', 'Your lecture summary is downloading', 'success');
+        } catch (err) {
+            console.error(err);
+            showToast('Could not create the PDF', 'Please try again, or use a desktop browser', 'error');
+        } finally {
+            clearTimeout(timer);
+            if (bigCanvas) { bigCanvas.width = bigCanvas.height = 0; }
+            document.querySelectorAll('[data-pdf-holder], .html2pdf__overlay, .html2pdf__container').forEach(function (el) {
+                if (el.parentNode) el.parentNode.removeChild(el);
+            });
+            busy = false;
+            btn.disabled = false;
+            iconEl.innerHTML = originalIcon;
+            labelEl.innerHTML = originalLabel;
+        }
+    }
+
+    /* ================= Events ================= */
+    document.addEventListener('click', function (e) {
+        // PDF download button
+        var pdfBtn = e.target.closest('.js-pdf-btn');
+        if (pdfBtn) {
+            if (!pdfBtn.disabled) downloadPdf(pdfBtn);
+            return;
+        }
+
+        // Code copy buttons
+        var btn = e.target.closest('button');
+        if (btn && (btn.innerText.includes('نسخ') || /copy/i.test(btn.innerText))) {
+            showToast('Copied successfully! 🚀', 'The code is ready to paste', 'success');
+        }
+    });
+})();
+</script></code>
+<!--en-end-->
+      </div>
+    </section>
+    </article>
+    <a href="/" class="inline-block mt-10 text-brand font-bold underline" data-ar="العودة إلى كل الدروس" data-en="Back to all lessons">العودة إلى كل الدروس</a>
+  </main>
+  <script type="application/json" id="post-meta">{"slug":"lesson-5","hasEn":true,"default":"ar","site":{"ar":"دفتر الدروس","en":"Lessons Notebook"},"ar":{"title":"ملخص مبسط لفهم تصميم الجداول والعلاقات في قواعد البيانات (MySQL)","description":"ملخص لشرح مفاهيم \"تطبيع قواعد البيانات\" (Normalization) بطريقة سهلة ومباشرة. سنشرح فيه كيف نقسم الجداول ونربطها ببعضها بفعالية، وما هو دور \"المفتاح الأجنبي\" (Foreign Key) في الحفاظ على صحة بياناتنا، بالإضافة إلى شرح حالات ON DELETE و ON UPDATE."},"en":{"title":"A Practical Guide to Database Normalization and Relationships in MySQL","description":"This article explores the fundamental concepts of database normalization by demonstrating how to effectively structure tables and establish relationships, including One-to-One (1:1), One-to-Many (1:M), and Many-to-Many (M:M) associations. It provides clear definitions of Foreign Keys and referential"}}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="/assets/post.js"></script>
+</body>
+</html>
