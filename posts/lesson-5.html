@@ -54,251 +54,184 @@
       <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
         
         <time datetime="2026-10-24">24 أكتوبر 2026</time>
-        <span>قراءة 10 د</span>
+        <span>قراءة 8 د</span>
         <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
       </p>
       <div class="article mt-6">
 <!--ar-start-->
-<code><!-- ============================================================
-     الدرس العربي (RTL) — العلاقات بين الجداول والمفاتيح الأجنبية
-     كل الأسماء هنا خاصة بهذا الملف (lesson-ar / lsn-ar / ar-toast)
-     حتى لا يتعارض مع الملف الإنجليزي إذا ظهرا في نفس الصفحة.
-     ============================================================ -->
+<code><style>
+/* ============ Arabic lesson (RTL) — every selector is scoped to .lxa so it never clashes with the English file ============ */
+.lxa{--ink:#0f172a;--mut:#475569;--line:#e2e8f0;--soft:#f8fafc;--brand:#0d9488;--brand2:#14b8a6;max-width:860px;margin:0 auto;color:var(--ink);line-height:1.8;font-size:16.5px;direction:rtl;text-align:right}
+.lxa *{box-sizing:border-box}
+.lxa h1,.lxa h2,.lxa h3,.lxa h4,.lxa p{font-family:inherit}
 
-<!-- مكتبة SweetAlert -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+/* ---------- Hero ---------- */
+.lxa .hero{position:relative;overflow:hidden;border-radius:22px;padding:30px 28px;margin-bottom:18px;color:#fff;background:linear-gradient(225deg,#0f766e 0%,#14b8a6 55%,#34d399 100%);box-shadow:0 14px 30px -14px rgba(13,148,136,.65)}
+.lxa .hero::before{content:"";position:absolute;right:-40px;bottom:-70px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
+.lxa .hero::after{content:"";position:absolute;left:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.14)}
+.lxa .hero-in{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start}
+.lxa .hero-ic{font-size:2.4rem;line-height:1;flex:none}
+.lxa .hero h1{margin:0 0 8px;font-size:1.8rem;font-weight:800;color:#fff;line-height:1.4}
+.lxa .hero p{margin:0 0 14px;color:#ecfdf5;font-size:1.02rem;line-height:1.7}
+.lxa .chips{display:flex;flex-wrap:wrap;gap:8px}
+.lxa .chips span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:700}
 
-<style>
-    /* ===== إشعار النسخ (عربي) ===== */
-    .ar-toast-container {
-        direction: ltr !important;   /* يضمن ظهوره أعلى اليمين فعلياً */
-        padding: 1.25rem !important;
-    }
-    .ar-toast-popup {
-        direction: rtl;
-        font-family: inherit !important;
-        border-radius: 1rem !important;
-        padding: 0.9rem 1.1rem !important;
-        border-right: 6px solid #5eead4 !important;
-        box-shadow: 0 20px 25px -5px rgba(15, 118, 110, 0.35),
-                    0 8px 10px -6px rgba(15, 118, 110, 0.35) !important;
-    }
-    .ar-toast-title {
-        font-size: 1rem !important;
-        font-weight: 800 !important;
-        margin: 0 0 2px 0 !important;
-        text-align: right !important;
-    }
-    .ar-toast-text {
-        font-size: 0.85rem !important;
-        opacity: 0.9;
-        margin: 0 !important;
-        text-align: right !important;
-    }
-    .ar-toast-popup .swal2-timer-progress-bar {
-        background: rgba(255, 255, 255, 0.7) !important;
-        height: 3px !important;
-    }
+/* ---------- Nav ---------- */
+.lxa .nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);margin:0 0 22px;padding-top:10px;border-bottom:1px solid var(--line)}
+.lxa .nav-s{display:flex;gap:8px;overflow-x:auto;padding:0 2px 10px;scrollbar-width:none}
+.lxa .nav-s::-webkit-scrollbar{display:none}
+.lxa .nav a{flex:none;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--mut);background:#f1f5f9;text-decoration:none;border:1px solid var(--line);transition:background .2s,color .2s,border-color .2s}
+.lxa .nav a:hover{background:#ccfbf1;color:#0f766e}
+.lxa .nav a.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.lxa .bar{height:3px;background:var(--line)}.lxa .bar i{display:block;height:100%;width:0;background:linear-gradient(270deg,var(--brand2),#34d399)}
 
-    /* ===== كتل الكود: دائماً LTR ===== */
-    #lesson-ar pre,
-    .lsn-ar-pdf pre {
-        direction: ltr;
-        text-align: left;
-        unicode-bidi: isolate;
-        overflow-x: auto;
-    }
-    #lesson-ar pre code,
-    .lsn-ar-pdf pre code {
-        direction: ltr;
-        text-align: left;
-    }
+/* ---------- Download strip ---------- */
+.lxa .dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:28px}
+.lxa .dl-i{width:48px;height:48px;border-radius:12px;background:#fef2f2;border:1px solid #fee2e2;display:flex;align-items:center;justify-content:center;flex:none;color:#ef4444}
+.lxa .dl-t{flex:1;min-width:200px}.lxa .dl-t h4{margin:0;font-size:1rem;font-weight:800}.lxa .dl-t p{margin:2px 0 0;font-size:.86rem;color:#64748b;line-height:1.6}
+.lxa .lx-pdf{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:12px;cursor:pointer;color:#fff;font-weight:700;font-size:.95rem;font-family:inherit;background:linear-gradient(270deg,var(--brand),var(--brand2));box-shadow:0 8px 16px -8px rgba(13,148,136,.7);transition:transform .2s}
+.lxa .lx-pdf:hover{transform:translateY(-1px)}.lxa .lx-pdf:disabled{opacity:.7;cursor:wait;transform:none}
+.lxa .lx-pdf svg{width:18px;height:18px}
+.lxa .spin{animation:lxas 1s linear infinite}@keyframes lxas{to{transform:rotate(360deg)}}
 
-    /* ===== وضع التصدير إلى PDF (النسخة المؤقتة فقط) ===== */
-    .lsn-ar-pdf,
-    .lsn-ar-pdf * {
-        box-sizing: border-box !important;
-    }
-    .lsn-ar-pdf {
-        width: 760px;
-        padding: 2px;
-        background: #fff;
-        direction: rtl !important;
-        text-align: right !important;
-    }
-    .lsn-ar-pdf * {
-        /* أي تباعد أحرف أو كسر للكلمات يفكك الحروف العربية عند الرسم */
-        letter-spacing: normal !important;
-        word-spacing: normal !important;
-        overflow-wrap: normal !important;
-        word-wrap: normal !important;
-        word-break: normal !important;
-        text-shadow: none !important;
-        box-shadow: none !important;
-        backdrop-filter: none !important;
-        filter: none !important;
-        transition: none !important;
-        animation: none !important;
-    }
-    .lsn-ar-pdf .overflow-x-auto { overflow: visible !important; }
-    .lsn-ar-pdf table { width: 100%; min-width: 0 !important; }
-    .lsn-ar-pdf pre,
-    .lsn-ar-pdf pre code {
-        white-space: pre-wrap !important;
-        overflow: visible !important;
-    }
+/* ---------- Section card ---------- */
+.lxa .sec{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin:0 0 24px;box-shadow:0 1px 3px rgba(15,23,42,.05),0 12px 24px -18px rgba(15,23,42,.18);scroll-margin-top:84px}
+.lxa .sec-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.lxa .num{flex:none;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;background:linear-gradient(225deg,var(--brand),var(--brand2));box-shadow:0 6px 12px -6px rgba(13,148,136,.7)}
+.lxa .sec-head h2{margin:0;font-size:1.35rem;font-weight:800;line-height:1.5;color:var(--ink)}
+.lxa .sec-lead{margin:10px 0 0;color:var(--mut);font-size:.98rem}
+.lxa .sec-lead:empty{display:none}
+.lxa .k{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.86em;background:#f1f5f9;border:1px solid #e5e9f0;padding:1px 6px;border-radius:6px;color:#0f766e;white-space:nowrap;direction:ltr;unicode-bidi:isolate;display:inline-block;line-height:1.5}
+
+/* ---------- Example blocks ---------- */
+.lxa .ex{margin-top:22px;padding-top:20px;border-top:1px dashed var(--line)}
+.lxa .sec-head+.ex,.lxa .sec-lead+.ex{margin-top:18px;padding-top:0;border-top:0}
+.lxa .ex-t{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:.98rem;font-weight:700;color:var(--ink);line-height:1.6}
+.lxa .ex-t::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--brand2)}
+.lxa .ex-d{margin:0 0 10px;color:var(--mut);font-size:.94rem}
+.lxa .ex-t+.code{margin-top:10px}
+
+/* ---------- Code (always LTR) ---------- */
+.lxa .code{border-radius:12px;overflow:hidden;background:#0f172a;border:1px solid #1e293b;direction:ltr;text-align:left}
+.lxa .code-bar{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 6px 14px;background:#1e293b;color:#94a3b8;font:700 .7rem ui-monospace,monospace;letter-spacing:.12em}
+.lxa .cp{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;cursor:pointer;font:600 .76rem system-ui,sans-serif;transition:background .2s,color .2s,border-color .2s}
+.lxa .cp svg{width:14px;height:14px}.lxa .cp::after{content:attr(data-label)}
+.lxa .cp:hover{background:#334155}.lxa .cp.ok{color:#34d399;border-color:#34d399}
+.lxa .code .pre{display:block;margin:0;padding:14px 16px;overflow-x:auto;white-space:pre;color:#e2e8f0;background:none;border:0;border-radius:0;font:.88rem/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:left}
+.lxa .code .pre code{background:none;color:inherit;padding:0;font:inherit}
+.lxa .code .pre button,.lxa .code>button:not(.cp),.lxa .code [class*="copy"]:not(.cp){display:none!important}
+.lxa .tk{color:#7dd3fc;font-weight:600}.lxa .ts{color:#fcd34d}.lxa .tn{color:#f0abfc}.lxa .tc{color:#64748b;font-style:italic}
+
+/* ---------- Notes ---------- */
+.lxa .note{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;margin:14px 0 0;border-radius:12px;border:1px solid;border-right-width:4px;font-size:.93rem;line-height:1.7}
+.lxa .note .ic{font-size:1.15rem;line-height:1.5;flex:none}.lxa .note p{margin:0!important;color:inherit!important}
+.lxa .note .k{background:rgba(255,255,255,.7);color:inherit;border-color:rgba(0,0,0,.08)}
+.lxa .tip{background:#fffbeb;border-color:#fde68a;border-right-color:#f59e0b;color:#92400e}
+.lxa .warn{background:#fef2f2;border-color:#fecaca;border-right-color:#ef4444;color:#991b1b}
+.lxa .good{background:#ecfdf5;border-color:#a7f3d0;border-right-color:#10b981;color:#065f46}
+
+/* ---------- Table ---------- */
+.lxa .tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0;background:#fff}
+.lxa table{width:100%;min-width:560px;border-collapse:collapse;text-align:right}
+.lxa th{padding:11px 14px;background:#f1f5f9;color:#334155;font-weight:700;font-size:.88rem;border-bottom:1px solid var(--line);text-align:right}
+.lxa td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:var(--mut);font-size:.92rem;vertical-align:top;text-align:right}
+.lxa td:first-child{width:30%;font:700 .82rem ui-monospace,monospace;color:#0f766e;word-break:break-word;direction:ltr;text-align:right}
+.lxa td:first-child small{display:block;margin-top:2px;font:600 .8rem system-ui,sans-serif;color:#64748b;direction:rtl}
+.lxa tr:last-child td{border-bottom:0}.lxa tr:hover td{background:var(--soft)}
+
+/* ---------- Misc ---------- */
+.lxa .rv{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}.lxa .rv.in{opacity:1;transform:none}
+.lxa .top{position:fixed;left:18px;right:auto;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:var(--brand);box-shadow:0 8px 16px -4px rgba(13,148,136,.55);display:flex;align-items:center;justify-content:center;padding:0;opacity:0;pointer-events:none;transition:opacity .25s,transform .2s}
+.lxa .top:hover{transform:translateY(-2px)}
+.lxa .top.show{opacity:1;pointer-events:auto}
+.lxa-toast{position:fixed;top:16px;right:16px;z-index:99999;max-width:320px;padding:12px 16px;border-radius:14px;border-right:6px solid #5eead4;background:#0f766e;color:#fff;font:600 .9rem/1.5 system-ui,sans-serif;direction:rtl;text-align:right;box-shadow:0 20px 25px -5px rgba(15,118,110,.35);opacity:0;transform:translateY(-16px);transition:all .3s}
+.lxa-toast.show{opacity:1;transform:none}.lxa-toast.err{background:#b91c1c}.lxa-toast small{display:block;font-weight:400;opacity:.9}
+.lxa a:focus-visible,.lxa button:focus-visible{outline:3px solid #5eead4;outline-offset:2px}
+
+@media(max-width:560px){
+.lxa{font-size:16px}
+.lxa .hero{padding:24px 20px}.lxa .hero h1{font-size:1.45rem}
+.lxa .sec{padding:20px 16px;border-radius:16px}
+.lxa .sec-head h2{font-size:1.15rem}.lxa .num{width:38px;height:38px;font-size:1.05rem}
+.lxa .lx-pdf{width:100%}
+.lxa .code .pre{font-size:.82rem;padding:12px 14px}
+}
+@media(prefers-reduced-motion:reduce){.lxa *{transition:none!important;animation:none!important}.lxa .rv{opacity:1;transform:none}}
+
+/* ---------- PDF mode ---------- */
+.lxa.pdf-mode{width:760px;max-width:none;margin:0;padding:2px 2px 28px;background:#fff}
+.lxa.pdf-mode *{letter-spacing:normal!important;word-spacing:normal!important;word-break:normal!important;overflow-wrap:normal!important;box-shadow:none!important;backdrop-filter:none!important;transition:none!important;animation:none!important;transform:none!important}
+.lxa.pdf-mode .rv{opacity:1!important}
+.lxa.pdf-mode .sec{border:0;border-top:2px solid var(--line);border-radius:0;padding:22px 0 4px;margin:0}
+.lxa.pdf-mode .tw{overflow:visible}.lxa.pdf-mode table{min-width:0}
+.lxa.pdf-mode .code .pre{white-space:pre-wrap;overflow:visible}
+
+/* ---------- Force RTL (beats any theme CSS) ---------- */
+.lxa,.lxa *{direction:rtl}
+.lxa{text-align:right}
+.lxa .code,.lxa .code *{direction:ltr;text-align:left}
+.lxa .code bdi{direction:rtl}
+.lxa .k,.lxa td:first-child{direction:ltr}
+.lxa td:first-child small{direction:rtl}
+.lxa .hero-in,.lxa .sec-head,.lxa .dl,.lxa .note,.lxa .chips,.lxa .nav-s{flex-direction:row}
 </style>
 
-<div dir="rtl" lang="ar" id="lesson-ar" class="text-right">
+<div class="lxa" dir="rtl" lang="ar">
 
-<!-- صندوق مقدمة الدرس -->
-<div class="relative overflow-hidden rounded-2xl bg-gradient-to-l from-teal-500 to-emerald-400 p-6 shadow-lg mb-8 text-white">
-    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
-    <div class="flex items-start gap-4 relative z-10">
-        <span class="text-4xl">🔗</span>
-        <div>
-            <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">العلاقات بين الجداول والمفاتيح الأجنبية في <bdi dir="ltr">MySQL</bdi></h3>
-            <p class="text-teal-50 leading-relaxed m-0 text-lg">
-                ملخص تطبيقي يشرح تقسيم الجداول (<bdi dir="ltr">Normalization</bdi>)، وأنواع العلاقات، والمفتاح الأجنبي، وسلوك الحذف والتعديل، مع الأكواد العملية.
-            </p>
-        </div>
-    </div>
+<div class="hero"><div class="hero-in"><span class="hero-ic">🔗</span><div>
+<h1>العلاقات بين الجداول والمفاتيح الأجنبية في MySQL</h1>
+<p>ملخص تطبيقي يشرح تقسيم الجداول (Normalization)، وأنواع العلاقات، والمفتاح الأجنبي، وسلوك الحذف والتعديل، مع الأكواد العملية.</p>
+<div class="chips"><span>MySQL</span><span>5 مواضيع</span><span>أكواد SQL جاهزة للنسخ</span></div>
+</div></div></div>
+
+<div class="nav" data-pdf-ignore><div class="nav-s">
+<a href="#" data-t="s1">1 · العلاقات</a><a href="#" data-t="s2">2 · المفتاح الأجنبي</a><a href="#" data-t="s3">3 · الحذف والتعديل</a><a href="#" data-t="s4">4 · أكواد MySQL</a><a href="#" data-t="s5">5 · ALTER TABLE</a>
+</div><div class="bar"><i></i></div></div>
+
+<div class="dl" data-pdf-ignore>
+<div class="dl-i"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg></div>
+<div class="dl-t"><h4>تحميل ملخص المحاضرة</h4><p>ملف PDF منسّق وجاهز للمراجعة والطباعة دون اتصال</p></div>
+<button type="button" class="lx-pdf"><span class="pi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></span><span class="pl">تحميل الملخص (PDF)</span></button>
 </div>
 
-<!-- بطاقة تحميل الملخص PDF (لا تظهر داخل ملف PDF) -->
-<div data-pdf-ignore class="mb-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
-    <div class="flex items-center gap-4 flex-1">
-        <div class="w-14 h-14 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-            </svg>
-        </div>
-        <div>
-            <h4 class="text-lg font-extrabold text-slate-800 m-0">حمّل ملخص المحاضرة</h4>
-            <p class="text-slate-500 text-sm m-0 mt-1 leading-relaxed">ملف <bdi dir="ltr">PDF</bdi> منسّق وجاهز للمراجعة والطباعة دون اتصال بالإنترنت</p>
-        </div>
-    </div>
-    <button type="button"
-        class="js-pdf-btn inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-l from-teal-500 to-emerald-400 text-white font-bold text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 border-0 cursor-pointer">
-        <span class="js-pdf-icon inline-flex">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-            </svg>
-        </span>
-        <span class="js-pdf-label">تحميل الملخص (<bdi dir="ltr">PDF</bdi>)</span>
-    </button>
-</div>
+<!-- 1 -->
+<section class="sec rv" id="lxa-s1">
+<div class="sec-head"><div class="num">1</div><h2>أولاً: ملخص العلاقات وتقسيم الجداول (Normalization)</h2></div>
+<p class="sec-lead">الهدف الأساسي من تصميم قواعد البيانات هو ترتيب البيانات وتقليل التكرار المزعج. إليكم كيف نطبق أنواع العلاقات:</p>
+<div class="ex"><h3 class="ex-t">علاقة واحد لواحد (One-to-One)</h3>
+<p class="ex-d">لتجنب تكرار البيانات، نقوم بتقسيم الجدول الكبير إلى جدولين. على سبيل المثال، تم تقسيم جدول الموظفين إلى جدول للبيانات الشخصية (<span class="k">Employees_Table</span>) وجدول للرواتب (<span class="k">Salaries_Table</span>). وكذلك بالنسبة للطلاب، تم فصل البيانات الشخصية (<span class="k">Students_Table</span>) عن التفاصيل الأكاديمية (<span class="k">Acad_students</span>).</p></div>
+<div class="ex"><h3 class="ex-t">علاقة واحد لمتعدد (One-to-Many)</h3>
+<p class="ex-d">تظهر هذه العلاقة بوضوح بين فصائل الدم (<span class="k">Blood_Types_Table</span>) والمرضى (<span class="k">Patients_Table</span>). الفكرة هنا أن فصيلة الدم الواحدة (مثل <span class="k">O+</span>) يمكن أن يحملها أكثر من مريض، لكن المريض الواحد لا يمتلك سوى فصيلة دم واحدة.</p></div>
+<div class="ex"><h3 class="ex-t">علاقة متعدد لمتعدد (Many-to-Many)</h3>
+<p class="ex-d">مثل العلاقة بين المرضى (<span class="k">Patients_Table</span>) والأمراض (<span class="k">Diseases_Table</span>). المريض قد يُصاب بعدة أمراض، والمرض الواحد قد يُصيب عدة مرضى. لأن قاعدة البيانات لا تستوعب هذه العلاقة مباشرة، نقوم بحلها برمجياً بإنشاء "جدول وسيط" (<span class="k">Patient_Diseases_Table</span>) يكسر هذه العلاقة الكبيرة ويحولها إلى علاقتي "واحد لمتعدد".</p></div>
+</section>
 
-<!-- أولاً -->
-<div class="flex items-center gap-3 mt-10 mb-5">
-    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
-        <span class="text-2xl font-bold">1</span>
-    </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">أولاً: ملخص العلاقات وتقسيم الجداول (<bdi dir="ltr">Normalization</bdi>)</h2>
-</div>
-<p class="text-slate-600 mb-6 text-lg leading-relaxed">
-    الهدف الأساسي من تصميم قواعد البيانات هو ترتيب البيانات وتقليل التكرار المزعج. إليكم كيف نطبق أنواع العلاقات:
-</p>
+<!-- 2 -->
+<section class="sec rv" id="lxa-s2">
+<div class="sec-head"><div class="num">2</div><h2>ثانياً: ما هو المفتاح الأجنبي (Foreign Key)؟</h2></div>
+<p class="sec-lead">ببساطة، هو حقل نضعه في جدول (نسميه <strong>الجدول الابن</strong>) ليكون بمثابة "جسر" يربطنا بالمفتاح الأساسي (<span class="k">Primary Key</span>) في جدول آخر (نسميه <strong>الجدول الأب</strong>).</p>
+<div class="note good"><span class="ic">🎯</span><p><strong>وظيفته الأساسية:</strong> الحفاظ على ما يُسمى بـ "التكامل المرجعي"، أي أنه يمنع إدخال بيانات عشوائية ويضمن ألا يحتوي الجدول الابن على سجلات "يتيمة" ليس لها أصل في الجدول الأب.</p></div>
+</section>
 
-<div class="space-y-4 mb-8">
-    <div class="bg-indigo-50 border border-indigo-200 p-5 rounded-xl">
-        <h4 class="font-bold text-indigo-800 text-xl mt-0 mb-2">علاقة واحد لواحد (<bdi dir="ltr">One-to-One</bdi>)</h4>
-        <p class="text-indigo-700 m-0 leading-relaxed text-lg">
-            لتجنب تكرار البيانات، نقوم بتقسيم الجدول الكبير إلى جدولين. على سبيل المثال، تم تقسيم جدول الموظفين إلى جدول للبيانات الشخصية (<bdi dir="ltr" class="font-mono font-bold">Employees_Table</bdi>) وجدول للرواتب (<bdi dir="ltr" class="font-mono font-bold">Salaries_Table</bdi>). وكذلك بالنسبة للطلاب، تم فصل البيانات الشخصية (<bdi dir="ltr" class="font-mono font-bold">Students_Table</bdi>) عن التفاصيل الأكاديمية (<bdi dir="ltr" class="font-mono font-bold">Acad_students</bdi>).
-        </p>
-    </div>
-    <div class="bg-teal-50 border border-teal-200 p-5 rounded-xl">
-        <h4 class="font-bold text-teal-800 text-xl mt-0 mb-2">علاقة واحد لمتعدد (<bdi dir="ltr">One-to-Many</bdi>)</h4>
-        <p class="text-teal-700 m-0 leading-relaxed text-lg">
-            تظهر هذه العلاقة بوضوح بين فصائل الدم (<bdi dir="ltr" class="font-mono font-bold">Blood_Types_Table</bdi>) والمرضى (<bdi dir="ltr" class="font-mono font-bold">Patients_Table</bdi>). الفكرة هنا أن فصيلة الدم الواحدة (مثل <bdi dir="ltr" class="font-mono font-bold">O+</bdi>) يمكن أن يحملها أكثر من مريض، لكن المريض الواحد لا يمتلك سوى فصيلة دم واحدة.
-        </p>
-    </div>
-    <div class="bg-amber-50 border border-amber-200 p-5 rounded-xl">
-        <h4 class="font-bold text-amber-800 text-xl mt-0 mb-2">علاقة متعدد لمتعدد (<bdi dir="ltr">Many-to-Many</bdi>)</h4>
-        <p class="text-amber-700 m-0 leading-relaxed text-lg">
-            مثل العلاقة بين المرضى (<bdi dir="ltr" class="font-mono font-bold">Patients_Table</bdi>) والأمراض (<bdi dir="ltr" class="font-mono font-bold">Diseases_Table</bdi>). المريض قد يُصاب بعدة أمراض، والمرض الواحد قد يُصيب عدة مرضى. لأن قاعدة البيانات لا تستوعب هذه العلاقة مباشرة، نقوم بحلها برمجياً بإنشاء "جدول وسيط" (<bdi dir="ltr" class="font-mono font-bold">Patient_Diseases_Table</bdi>) يكسر هذه العلاقة الكبيرة ويحولها إلى علاقتي "واحد لمتعدد".
-        </p>
-    </div>
-</div>
+<!-- 3 -->
+<section class="sec rv" id="lxa-s3">
+<div class="sec-head"><div class="num">3</div><h2>ثالثاً: ماذا يحدث عند الحذف أو التعديل؟ (ON DELETE &amp; ON UPDATE)</h2></div>
+<p class="sec-lead">هذه الخصائص تخبر قاعدة البيانات بما يجب فعله في الجدول الابن إذا تم حذف أو تعديل بيانات الجدول الأب:</p>
+<div class="tw"><table>
+<thead><tr><th>الخيار</th><th>السلوك</th></tr></thead>
+<tbody>
+<tr><td>CASCADE<small>المتتبع المتسلسل</small></td><td>إذا قمت بحذف أو تعديل السجل الأب، سيتم تلقائياً حذف أو تعديل السجلات المرتبطة به في الجدول الابن.</td></tr>
+<tr><td>RESTRICT<small>المانع الصارم</small></td><td>يمنعك تماماً من حذف أو تعديل السجل الأب طالما توجد سجلات مرتبطة به في الجدول الابن (لحماية البيانات من الضياع).</td></tr>
+<tr><td>SET NULL<small>التفريغ</small></td><td>إذا قمت بحذف أو تعديل السجل الأب، ستبقى بيانات الابن موجودة، ولكن قيمة حقل المفتاح الأجنبي ستصبح فارغة (<span class="k">NULL</span>).</td></tr>
+</tbody></table></div>
+</section>
 
-<!-- ثانياً -->
-<div class="flex items-center gap-3 mt-12 mb-5">
-    <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
-        <span class="text-2xl font-bold">2</span>
-    </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">ثانياً: ما هو المفتاح الأجنبي (<bdi dir="ltr">Foreign Key</bdi>)؟</h2>
-</div>
-<p class="text-slate-600 mb-4 text-lg leading-relaxed">
-    ببساطة، هو حقل نضعه في جدول (نسميه <strong class="text-slate-800">الجدول الابن</strong>) ليكون بمثابة "جسر" يربطنا بالمفتاح الأساسي (<bdi dir="ltr">Primary Key</bdi>) في جدول آخر (نسميه <strong class="text-slate-800">الجدول الأب</strong>).
-</p>
-
-<div class="mb-6 bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex items-start gap-3">
-    <span class="text-2xl">🎯</span>
-    <p class="text-emerald-800 m-0 leading-relaxed">
-        <strong>وظيفته الأساسية:</strong> الحفاظ على ما يُسمى بـ "التكامل المرجعي"، أي أنه يمنع إدخال بيانات عشوائية ويضمن ألا يحتوي الجدول الابن على سجلات "يتيمة" ليس لها أصل في الجدول الأب.
-    </p>
-</div>
-
-<!-- ثالثاً -->
-<div class="flex items-center gap-3 mt-12 mb-5">
-    <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
-        <span class="text-2xl font-bold">3</span>
-    </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">ثالثاً: ماذا يحدث عند الحذف أو التعديل؟ (<bdi dir="ltr">ON DELETE &amp; ON UPDATE</bdi>)</h2>
-</div>
-<p class="text-slate-600 mb-4 text-lg leading-relaxed">
-    هذه الخصائص تخبر قاعدة البيانات بما يجب فعله في الجدول الابن إذا تم حذف أو تعديل بيانات الجدول الأب:
-</p>
-
-<div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
-    <table class="w-full min-w-[560px] text-right border-collapse bg-white">
-        <thead class="bg-slate-100 text-slate-700">
-            <tr>
-                <th class="p-4 border-b border-slate-200 font-bold w-1/3">الخيار</th>
-                <th class="p-4 border-b border-slate-200 font-bold">السلوك</th>
-            </tr>
-        </thead>
-        <tbody class="text-slate-600 text-base">
-            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 align-top">
-                    <span dir="ltr" class="block font-mono font-bold text-teal-600 text-left">CASCADE</span>
-                    <span class="block text-sm text-slate-500 mt-1">المتتبع المتسلسل</span>
-                </td>
-                <td class="p-4">إذا قمت بحذف أو تعديل السجل الأب، سيتم تلقائياً حذف أو تعديل السجلات المرتبطة به في الجدول الابن.</td>
-            </tr>
-            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 align-top">
-                    <span dir="ltr" class="block font-mono font-bold text-teal-600 text-left">RESTRICT</span>
-                    <span class="block text-sm text-slate-500 mt-1">المانع الصارم</span>
-                </td>
-                <td class="p-4">يمنعك تماماً من حذف أو تعديل السجل الأب طالما توجد سجلات مرتبطة به في الجدول الابن (لحماية البيانات من الضياع).</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-                <td class="p-4 align-top">
-                    <span dir="ltr" class="block font-mono font-bold text-teal-600 text-left">SET NULL</span>
-                    <span class="block text-sm text-slate-500 mt-1">التفريغ</span>
-                </td>
-                <td class="p-4">إذا قمت بحذف أو تعديل السجل الأب، ستبقى بيانات الابن موجودة، ولكن قيمة حقل المفتاح الأجنبي ستصبح فارغة (<bdi dir="ltr" class="font-mono font-bold">NULL</bdi>).</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- رابعاً -->
-<div class="flex items-center gap-3 mt-12 mb-5">
-    <div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm">
-        <span class="text-2xl font-bold">4</span>
-    </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">رابعاً: أكواد <bdi dir="ltr">MySQL</bdi> (التطبيق العملي)</h2>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">1. علاقة واحد لواحد (<bdi dir="ltr">1:1</bdi>)</h4>
-    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
-        لضمان أن الموظف له راتب واحد فقط، نضيف قيد <bdi dir="ltr" class="font-mono font-bold">UNIQUE</bdi> بجانب المفتاح الأجنبي:
-    </p>
-    <pre dir="ltr"><code class="language-sql">
-CREATE TABLE Salaries_Table (
+<!-- 4 -->
+<section class="sec rv" id="lxa-s4">
+<div class="sec-head"><div class="num">4</div><h2>رابعاً: أكواد MySQL (التطبيق العملي)</h2></div>
+<div class="ex"><h3 class="ex-t">1. علاقة واحد لواحد (1:1)</h3>
+<p class="ex-d">لضمان أن الموظف له راتب واحد فقط، نضيف قيد <span class="k">UNIQUE</span> بجانب المفتاح الأجنبي:</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Salaries_Table (
     Sala_Id INT PRIMARY KEY,
     hours_no INT,
     hours_rate INT
@@ -311,17 +244,10 @@ CREATE TABLE Employees_Table (
     FOREIGN KEY (Salar_id) REFERENCES Salaries_Table(Sala_Id)
     ON DELETE SET NULL
     ON UPDATE CASCADE
-);
-</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">2. علاقة واحد لمتعدد (<bdi dir="ltr">1:M</bdi>)</h4>
-    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
-        المريض له فصيلة دم واحدة، وفصيلة الدم لها عدة مرضى:
-    </p>
-    <pre dir="ltr"><code class="language-sql">
-CREATE TABLE Blood_Types_Table (
+);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">2. علاقة واحد لمتعدد (1:M)</h3>
+<p class="ex-d">المريض له فصيلة دم واحدة، وفصيلة الدم لها عدة مرضى:</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Blood_Types_Table (
     Blood_ID INT PRIMARY KEY,
     Blood_type VARCHAR(10) NOT NULL
 );
@@ -333,17 +259,10 @@ CREATE TABLE Patients_Table (
     FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-);
-</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">3. علاقة متعدد لمتعدد (<bdi dir="ltr">M:M</bdi>)</h4>
-    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
-        هنا نقوم بإنشاء الجدول الوسيط الذي يحتوي على مفتاحين أجنبيين:
-    </p>
-    <pre dir="ltr"><code class="language-sql">
-CREATE TABLE Diseases_Table (
+);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">3. علاقة متعدد لمتعدد (M:M)</h3>
+<p class="ex-d">هنا نقوم بإنشاء الجدول الوسيط الذي يحتوي على مفتاحين أجنبيين:</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Diseases_Table (
     Diseases_ID VARCHAR(10) PRIMARY KEY,
     Disease_name VARCHAR(100)
 );
@@ -365,393 +284,225 @@ CREATE TABLE Patient_Diseases_Table (
     FOREIGN KEY (Diseases_Id) REFERENCES Diseases_Table(Diseases_ID)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-);
-</code></pre>
-</div>
+);</code></div></div></div>
+</section>
 
-<!-- خامساً -->
-<div class="flex items-center gap-3 mt-12 mb-5">
-    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
-        <span class="text-2xl font-bold">5</span>
-    </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">خامساً: استخدام <bdi dir="ltr">ALTER TABLE</bdi> للتعديل على الجداول</h2>
-</div>
-<p class="text-slate-600 mb-6 text-lg leading-relaxed">
-    إذا نسيت إضافة المفتاح الأجنبي عند إنشاء الجدول، لا تقلق! يمكنك إضافته لاحقاً، أو حتى حذفه باستخدام هذه الأوامر:
-</p>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">1. حذف المفتاح الأجنبي (باستخدام اسم القيد مباشرة)</h4>
-    <pre dir="ltr"><code class="language-sql">
-ALTER TABLE Patients_Table
-DROP CONSTRAINT fk_blood_patient;
-</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">2. إضافة مفتاح أجنبي (بدون إعطائه اسماً يدوياً)</h4>
-    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
-        سيقوم النظام بتوليد اسم تلقائي له.
-    </p>
-    <pre dir="ltr"><code class="language-sql">
-ALTER TABLE Patients_Table
+<!-- 5 -->
+<section class="sec rv" id="lxa-s5">
+<div class="sec-head"><div class="num">5</div><h2>خامساً: استخدام ALTER TABLE للتعديل على الجداول</h2></div>
+<p class="sec-lead">إذا نسيت إضافة المفتاح الأجنبي عند إنشاء الجدول، لا تقلق! يمكنك إضافته لاحقاً، أو حتى حذفه باستخدام هذه الأوامر:</p>
+<div class="ex"><h3 class="ex-t">1. حذف المفتاح الأجنبي (باستخدام اسم القيد مباشرة)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
+DROP CONSTRAINT fk_blood_patient;</code></div></div></div>
+<div class="ex"><h3 class="ex-t">2. إضافة مفتاح أجنبي (بدون إعطائه اسماً يدوياً)</h3>
+<p class="ex-d">سيقوم النظام بتوليد اسم تلقائي له.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
 ADD FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
 ON DELETE SET NULL
-ON UPDATE CASCADE;
-</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">3. إضافة مفتاح أجنبي (مع تحديد اسم واضح له)</h4>
-    <pre dir="ltr"><code class="language-sql">
-ALTER TABLE Patients_Table
+ON UPDATE CASCADE;</code></div></div></div>
+<div class="ex"><h3 class="ex-t">3. إضافة مفتاح أجنبي (مع تحديد اسم واضح له)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
 ADD CONSTRAINT fk_blood_patient
 FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
 ON DELETE SET NULL
-ON UPDATE CASCADE;
-</code></pre>
-    <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3">
-        <span class="text-2xl">💡</span>
-        <p class="text-amber-800 m-0 leading-relaxed">
-            <strong>نصيحة:</strong> من الأفضل دائماً تسمية القيود ليسهل إدارتها لاحقاً.
-        </p>
-    </div>
+ON UPDATE CASCADE;</code></div></div>
+<div class="note tip"><span class="ic">💡</span><p><strong>نصيحة:</strong> من الأفضل دائماً تسمية القيود ليسهل إدارتها لاحقاً.</p></div></div>
+</section>
+
+<button type="button" class="top" data-pdf-ignore aria-label="العودة للأعلى"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg></button>
 </div>
 
-</div>
-
-<!-- ============================================================
-     السكربت: إشعار النسخ + تصدير PDF (خاص بهذا الدرس فقط)
-     ============================================================ -->
 <script>
-(function () {
-    /* ================= الإعدادات ================= */
-    var CFG = {
-        rootId:      'lesson-ar',          // معرّف حاوية الدرس (فريد لهذا الملف)
-        pdfClass:    'lsn-ar-pdf',         // كلاس وضع التصدير (فريد لهذا الملف)
-        toastPrefix: 'ar-toast',           // بادئة كلاسات الإشعار (فريدة لهذا الملف)
-        dir:         'rtl',
-        lang:        'ar',
-        filename:    'Database-Relationships-AR.pdf',
-        pdfTitle:    'العلاقات بين الجداول والمفاتيح الأجنبية في MySQL',
-        headerText:  'العلاقات والمفاتيح الأجنبية في MySQL',
-        headerSub:   'ملخص المحاضرة',
-        siteName:    location.hostname,
-        contentW:    760,
-        timeoutMs:   120000,
-        t: {
-            preparing: 'جارٍ التجهيز… ',
-            pageOf:    function (n, total) { return 'صفحة ' + n + ' من ' + total; },
-            okTitle:   'تم تجهيز الملف! 📄',
-            okText:    'بدأ تحميل ملخص المحاضرة',
-            errTitle:  'تعذّر إنشاء الملف',
-            errText:   'حاول مجدداً، وإن تكرر الأمر جرّب من متصفح الكمبيوتر',
-            copyTitle: 'تم النسخ بنجاح! 🚀',
-            copyText:  'أصبح الكود جاهزاً للصق'
-        }
-    };
+(function(){
+/* ================= Settings (Arabic / RTL) ================= */
+var CFG={
+  sel:'.lxa',            /* root selector — unique to this file */
+  idp:'lxa-',            /* section id prefix — unique to this file */
+  toastCls:'lxa-toast',  /* toast class — unique to this file */
+  dir:'rtl',lang:'ar',
+  filename:'Database-Relationships-AR.pdf',
+  pdfTitle:'العلاقات بين الجداول والمفاتيح الأجنبية في MySQL',
+  headerText:'العلاقات والمفاتيح الأجنبية في MySQL',
+  headerSub:'ملخص المحاضرة',
+  siteName:location.hostname,contentW:760,timeoutMs:120000,
+  t:{prep:'جارٍ التحضير… ',page:function(n,p){return 'صفحة '+n+' من '+p;},
+     ok:'الملف جاهز! 📄',okS:'جارٍ تنزيل ملخص المحاضرة',
+     err:'تعذّر إنشاء الملف',errS:'حاول مرة أخرى أو استخدم متصفح الكمبيوتر',
+     copy:'نسخ',copied:'تم النسخ!',cpT:'تم النسخ! 🚀',cpS:'الكود جاهز للصق',
+     cpErr:'فشل النسخ',cpErrS:'حدد الكود وانسخه يدوياً'}
+};
+var RTL=CFG.dir==='rtl';
+var LIB_H2C='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+var LIB_PDF='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+var PW=210,PH=297,MX=12,TOP=16,BOT=15,CMM=PW-MX*2,MPP=CMM/CFG.contentW,PCPX=(PH-TOP-BOT)/MPP;
+var SPIN='<svg class="spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle opacity=".25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path opacity=".75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
 
-    var root = document.getElementById(CFG.rootId);
-    if (!root || root.getAttribute('data-js-ready') === '1') return;
-    root.setAttribute('data-js-ready', '1');
+function toast(t,s,err){
+var el=document.createElement('div');el.className=CFG.toastCls+(err?' err':'');
+el.innerHTML='<div></div><small></small>';el.firstChild.textContent=t;el.lastChild.textContent=s||'';
+document.body.appendChild(el);requestAnimationFrame(function(){el.classList.add('show');});
+setTimeout(function(){el.classList.remove('show');setTimeout(function(){el.remove();},350);},2600);}
+function loadScript(src,ready){return new Promise(function(res,rej){
+if(ready())return res();
+var s=document.createElement('script'),t=setTimeout(function(){rej(new Error('timeout '+src));},20000);
+s.src=src;s.onload=function(){clearTimeout(t);res();};s.onerror=function(){clearTimeout(t);rej(new Error('load '+src));};
+document.head.appendChild(s);});}
+function tick(){return new Promise(function(r){requestAnimationFrame(function(){setTimeout(r,0);});});}
+function pickScale(w,h){var ua=navigator.userAgent,ios=/iP(hone|ad|od)/i.test(ua),mob=ios||/Android/i.test(ua)||innerWidth<768;
+var s=mob?2:3,A=ios?14e6:(mob?40e6:60e6),S=ios?16000:30000;
+while(s>1&&(w*s*h*s>A||h*s>S))s-=.25;return Math.max(s,1);}
 
-    var RTL = CFG.dir === 'rtl';
-    var LIB_H2C = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-    var LIB_PDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+/* Page-break candidates: section tops and example/note blocks */
+function getCands(clone){
+var base=clone.getBoundingClientRect().top,cand=[];
+[].slice.call(clone.querySelectorAll('.sec, .sec > .ex, .sec > .note, .sec > .tw')).forEach(function(el){
+if(el.classList.contains('sec')){cand.push(el.getBoundingClientRect().top-base);return;}
+var p=el.previousElementSibling;
+if(!p||p.classList.contains('sec-head')||p.classList.contains('sec-lead'))return;
+cand.push(el.getBoundingClientRect().top-base);});
+return cand.sort(function(a,b){return a-b;});}
 
-    var PAGE_W = 210, PAGE_H = 297, MX = 12, TOP = 16, BOTTOM = 15;
-    var CONTENT_MM = PAGE_W - MX * 2;
-    var MM_PER_PX = CONTENT_MM / CFG.contentW;
-    var PAGE_CONTENT_PX = (PAGE_H - TOP - BOTTOM) / MM_PER_PX;
+/* Snap each break up to a fully blank pixel row so a page never cuts through text or code */
+function computeBreaks(big,cands,sc){
+var ctx=big.getContext('2d'),W=big.width,Hc=big.height,P=PCPX*sc,band=Math.ceil(sc*1.5),
+c=cands.map(function(v){return Math.round(v*sc);}),br=[0],st=0;
+function blank(y){var d=ctx.getImageData(0,y,W,band).data;
+for(var i=0;i<d.length;i+=4)if(d[i]<235||d[i+1]<235||d[i+2]<235)return false;return true;}
+while(Hc-st>P+1){
+var lim=Math.floor(st+P-band),best=-1;
+for(var i=0;i<c.length;i++)if(c[i]>st+40*sc&&c[i]<=lim)best=c[i];
+var t=best<0?lim:best,y=t,min=st+P*.4;
+while(y>min&&!blank(y))y--;
+if(y<=min)y=t;
+br.push(y/sc);st=y;}
+br.push(Hc/sc);return br;}
 
-    var busy = false;
-    var SPINNER = '<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+/* Header/footer strip: first text on the reading-start side, second on the end side */
+function strip(w,h,a,fa,ca,b,fb,cb,bDir){
+var c=document.createElement('canvas');c.width=Math.round(w*12);c.height=Math.round(h*12);
+var x=c.getContext('2d'),W=c.width,Hh=c.height;x.textBaseline='middle';
+x.font=fa;x.fillStyle=ca;x.direction=CFG.dir;x.textAlign=RTL?'right':'left';x.fillText(a,RTL?W-4:4,Hh/2);
+x.font=fb;x.fillStyle=cb;x.direction=bDir||CFG.dir;x.textAlign=RTL?'left':'right';x.fillText(b,RTL?4:W-4,Hh/2);
+var u=c.toDataURL('image/png');c.width=c.height=0;return u;}
 
-    /* ================= أدوات مساعدة ================= */
-    function showToast(title, text, icon) {
-        if (!window.Swal) return;
-        var p = CFG.toastPrefix;
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: icon || 'success',
-            toast: true,
-            position: 'top-end',
-            timer: 2500,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            background: icon === 'error' ? '#B91C1C' : '#0F766E',
-            color: '#ffffff',
-            iconColor: '#ffffff',
-            customClass: {
-                container: p + '-container',
-                popup: p + '-popup',
-                title: p + '-title',
-                htmlContainer: p + '-text'
-            },
-            didOpen: function (toast) {
-                toast.addEventListener('mouseenter', Swal.stopTimer);
-                toast.addEventListener('mouseleave', Swal.resumeTimer);
-            }
-        });
-    }
+/* Light SQL syntax highlighting (display only; copy reads plain text) */
+var KW='CREATE|ALTER|TABLE|ADD|DROP|COLUMN|MODIFY|CHANGE|RENAME|TO|CONSTRAINT|UNIQUE|CHECK|DEFAULT|SET|PRIMARY|FOREIGN|KEY|REFERENCES|ON|DELETE|UPDATE|CASCADE|RESTRICT|NOT|NULL|SELECT|FROM|WHERE|AND|INT|VARCHAR|DECIMAL|YEAR';
+var HL=new RegExp("(--[^\\n]*)|('[^'\\n]*')|\\b(\\d+)\\b|\\b("+KW+")\\b","gi");
+var AR=/[\u0600-\u06FF]/;
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function highlight(root){
+[].slice.call(root.querySelectorAll('.code .pre code')).forEach(function(c){
+if(c.getAttribute('data-hl'))return;c.setAttribute('data-hl','1');
+c.innerHTML=esc(c.textContent).replace(HL,function(m,cm,st,nu,kw){
+if(cm){var r=cm.slice(2);return '<span class="tc">--'+(AR.test(r)?'<bdi dir="rtl">'+r+'</bdi>':r)+'</span>';}
+if(st)return '<span class="ts">'+st+'</span>';
+if(nu)return '<span class="tn">'+nu+'</span>';
+return '<span class="tk">'+kw+'</span>';});});}
 
-    function loadScript(src, isReady) {
-        return new Promise(function (resolve, reject) {
-            if (isReady()) return resolve();
-            var s = document.createElement('script');
-            var t = setTimeout(function () { reject(new Error('Library timeout: ' + src)); }, 20000);
-            s.src = src;
-            s.onload = function () { clearTimeout(t); resolve(); };
-            s.onerror = function () { clearTimeout(t); reject(new Error('Failed to load: ' + src)); };
-            document.head.appendChild(s);
-        });
-    }
+function init(root){
+if(root.getAttribute('data-bound'))return;root.setAttribute('data-bound','1');
+root.setAttribute('dir',CFG.dir);
+highlight(root);
+var busy=false,bar=root.querySelector('.bar i'),topBtn=root.querySelector('.top');
+var chips=[].slice.call(root.querySelectorAll('.nav a')),navS=root.querySelector('.nav-s');
 
-    function tick() {
-        return new Promise(function (resolve) {
-            requestAnimationFrame(function () { setTimeout(resolve, 0); });
-        });
-    }
+/* ---- PDF ---- */
+async function pdfExport(btn){
+if(busy)return;busy=true;
+var pi=btn.querySelector('.pi'),pl=btn.querySelector('.pl'),oi=pi.innerHTML,ol=pl.textContent,holder=null,timer=null,big=null;
+function prog(p){pl.textContent=CFG.t.prep+Math.round(p)+'%';}
+btn.disabled=true;pi.innerHTML=SPIN;prog(2);
+try{
+var job=(async function(){
+await tick();
+await loadScript(LIB_H2C,function(){return !!window.html2canvas;});
+await loadScript(LIB_PDF,function(){return !!(window.jspdf&&window.jspdf.jsPDF);});
+if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+prog(12);
+var font=getComputedStyle(root).fontFamily||'Arial, sans-serif';
+var clone=root.cloneNode(true);
+clone.removeAttribute('data-bound');clone.classList.add('pdf-mode');
+clone.setAttribute('dir',CFG.dir);clone.setAttribute('lang',CFG.lang);
+clone.style.direction=CFG.dir;clone.style.textAlign=RTL?'right':'left';
+clone.querySelectorAll('[data-pdf-ignore],button,script').forEach(function(e){e.remove();});
+holder=document.createElement('div');holder.setAttribute('data-pdf-holder',CFG.idp);holder.setAttribute('aria-hidden','true');holder.setAttribute('dir',CFG.dir);
+holder.style.cssText='direction:'+CFG.dir+';position:fixed;left:-10000px;top:0;width:'+CFG.contentW+'px;background:#fff;pointer-events:none;';
+holder.appendChild(clone);document.body.appendChild(holder);await tick();
+var H=Math.ceil(clone.getBoundingClientRect().height),scale=pickScale(CFG.contentW,Math.ceil(H*1.25)),cands=[];
+prog(20);
+big=await html2canvas(clone,{scale:scale,width:CFG.contentW,windowWidth:CFG.contentW,windowHeight:Math.ceil(H*1.5)+400,scrollX:0,scrollY:0,useCORS:true,backgroundColor:'#fff',logging:false,
+onclone:function(d,el){cands=getCands(el);}});
+prog(60);
+var sc=big.width/CFG.contentW,breaks=computeBreaks(big,cands,sc);
+var pdf=new jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
+pdf.setProperties({title:CFG.pdfTitle,subject:CFG.pdfTitle,creator:CFG.siteName});
+var pages=breaks.length-1;
+var hdr=strip(CMM,7,CFG.headerText,'700 38px '+font,'#0f766e',CFG.headerSub,'500 34px '+font,'#94a3b8');
+for(var i=0;i<pages;i++){
+if(i)pdf.addPage();
+var b0=breaks[i],b1=breaks[i+1],sy=Math.round(b0*sc),sh=Math.max(1,Math.min(big.height-sy,Math.round(b1*sc)-sy));
+var sl=document.createElement('canvas');sl.width=big.width;sl.height=sh;
+var cx=sl.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,sl.width,sl.height);cx.drawImage(big,0,sy,big.width,sh,0,0,big.width,sh);
+var img=sl.toDataURL('image/jpeg',.93);sl.width=sl.height=0;
+pdf.addImage(img,'JPEG',MX,TOP,CMM,(sh/sc)*MPP,undefined,'FAST');
+pdf.setFillColor(13,148,136);pdf.rect(0,0,PW,2.4,'F');pdf.setFillColor(52,211,153);pdf.rect(RTL?PW-70:0,0,70,2.4,'F');
+pdf.setDrawColor(226,232,240);pdf.setLineWidth(.3);
+if(i){pdf.addImage(hdr,'PNG',MX,5,CMM,7);pdf.line(MX,13,PW-MX,13);}
+var ftr=strip(CMM,7,CFG.t.page(i+1,pages),'500 34px '+font,'#64748b',CFG.siteName,'500 34px '+font,'#64748b','ltr');
+pdf.line(MX,PH-12,PW-MX,PH-12);pdf.addImage(ftr,'PNG',MX,PH-11,CMM,7);
+prog(60+((i+1)/pages)*35);await tick();}
+big.width=big.height=0;big=null;prog(98);await tick();
+pdf.save(CFG.filename);
+})();
+var to=new Promise(function(_,rej){timer=setTimeout(function(){rej(new Error('PDF export timeout'));},CFG.timeoutMs);});
+job.catch(function(){});
+await Promise.race([job,to]);
+toast(CFG.t.ok,CFG.t.okS);
+}catch(e){console.error(e);toast(CFG.t.err,CFG.t.errS,true);}
+finally{clearTimeout(timer);if(big)big.width=big.height=0;
+document.querySelectorAll('[data-pdf-holder="'+CFG.idp+'"]').forEach(function(el){el.remove();});
+busy=false;btn.disabled=false;pi.innerHTML=oi;pl.textContent=ol;}
+}
 
-    function pickScale(w, h) {
-        var ua = navigator.userAgent;
-        var isIOS = /iP(hone|ad|od)/i.test(ua);
-        var isMobile = isIOS || /Android/i.test(ua) || window.innerWidth < 768;
-        var s = isMobile ? 2 : 3;
-        var MAX_AREA = isIOS ? 14e6 : (isMobile ? 40e6 : 60e6);
-        var MAX_SIDE = isIOS ? 16000 : 30000;
-        while (s > 1 && (w * s * h * s > MAX_AREA || h * s > MAX_SIDE)) s -= 0.25;
-        return Math.max(s, 1);
-    }
+/* ---- copy ---- */
+function copyText(t){
+if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);
+return new Promise(function(res,rej){var a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();
+try{document.execCommand('copy')?res():rej();}catch(e){rej(e);}a.remove();});}
 
-    // قطع الصفحات عند حدود العناصر فقط (لا يُقطع كود أو جدول في المنتصف)
-    function computeBreaks(clone, pageH) {
-        var base = clone.getBoundingClientRect().top;
-        var total = clone.getBoundingClientRect().height;
-        var kids = Array.prototype.slice.call(clone.children);
-        var candidates = [];
+root.addEventListener('click',function(e){
+var cp=e.target.closest('.cp');
+if(cp){copyText(cp.closest('.code').querySelector('code').innerText.trim()).then(function(){
+cp.dataset.label=CFG.t.copied;cp.classList.add('ok');toast(CFG.t.cpT,CFG.t.cpS);
+setTimeout(function(){cp.dataset.label=CFG.t.copy;cp.classList.remove('ok');},1800);
+}).catch(function(){toast(CFG.t.cpErr,CFG.t.cpErrS,true);});return;}
+var pb=e.target.closest('.lx-pdf');if(pb){pdfExport(pb);return;}
+var a=e.target.closest('.nav a');
+if(a){e.preventDefault();var t=root.querySelector('#'+CFG.idp+a.getAttribute('data-t'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});return;}
+if(e.target.closest('.top'))root.scrollIntoView({behavior:'smooth',block:'start'});
+});
 
-        kids.forEach(function (k, i) {
-            if (i === 0) return;
-            var prev = kids[i - 1];
-            var keepWithNext = prev.querySelector('h2') || prev.tagName === 'P';
-            if (keepWithNext) return;
-            candidates.push(k.getBoundingClientRect().top - base);
-        });
+/* ---- progress bar + back-to-top ---- */
+function onScroll(){var r=root.getBoundingClientRect(),tot=r.height-innerHeight;
+bar.style.width=Math.max(0,Math.min(1,tot>0?-r.top/tot:0))*100+'%';
+topBtn.classList.toggle('show',-r.top>700&&r.bottom>200);}
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
 
-        var breaks = [0], start = 0;
-        while (total - start > pageH + 1) {
-            var limit = start + pageH, best = -1;
-            for (var i = 0; i < candidates.length; i++) {
-                if (candidates[i] > start + 40 && candidates[i] <= limit) best = candidates[i];
-            }
-            if (best < 0) best = limit;
-            breaks.push(best);
-            start = best;
-        }
-        breaks.push(total);
-        return breaks;
-    }
-
-    function makeStrip(wMm, hMm, draw) {
-        var K = 12;
-        var c = document.createElement('canvas');
-        c.width = Math.round(wMm * K);
-        c.height = Math.round(hMm * K);
-        var ctx = c.getContext('2d');
-        draw(ctx, c.width, c.height);
-        var url = c.toDataURL('image/png');
-        c.width = c.height = 0;
-        return url;
-    }
-
-    // كتابة نصين في طرفي الشريط حسب اتجاه اللغة (start = بداية السطر، end = نهايته)
-    function drawEnds(ctx, w, h, startText, startFont, startColor, startDir, endText, endFont, endColor, endDir) {
-        ctx.textBaseline = 'middle';
-        var startX = RTL ? w - 4 : 4, endX = RTL ? 4 : w - 4;
-
-        ctx.font = startFont; ctx.fillStyle = startColor; ctx.direction = startDir;
-        ctx.textAlign = RTL ? 'right' : 'left';
-        ctx.fillText(startText, startX, h / 2);
-
-        ctx.font = endFont; ctx.fillStyle = endColor; ctx.direction = endDir;
-        ctx.textAlign = RTL ? 'left' : 'right';
-        ctx.fillText(endText, endX, h / 2);
-    }
-
-    /* ================= التصدير ================= */
-    async function downloadPdf(btn) {
-        if (busy) return;
-        busy = true;
-
-        var iconEl = btn.querySelector('.js-pdf-icon');
-        var labelEl = btn.querySelector('.js-pdf-label');
-        var originalIcon = iconEl.innerHTML;
-        var originalLabel = labelEl.innerHTML;
-        var holder = null, timer = null, bigCanvas = null;
-
-        function progress(p) { labelEl.textContent = CFG.t.preparing + Math.round(p) + '%'; }
-
-        btn.disabled = true;
-        iconEl.innerHTML = SPINNER;
-        progress(2);
-
-        try {
-            var job = (async function () {
-                await tick();
-                await loadScript(LIB_H2C, function () { return !!window.html2canvas; });
-                await loadScript(LIB_PDF, function () { return !!(window.jspdf && window.jspdf.jsPDF); });
-                if (document.fonts && document.fonts.ready) await document.fonts.ready;
-                progress(12);
-
-                var fontFamily = getComputedStyle(root).fontFamily || 'Tahoma, Arial, sans-serif';
-
-                // نسخة مؤقتة من هذا الدرس فقط، مع فرض الاتجاه الصحيح
-                var clone = root.cloneNode(true);
-                clone.removeAttribute('id');
-                clone.removeAttribute('data-js-ready');
-                clone.setAttribute('dir', CFG.dir);
-                clone.setAttribute('lang', CFG.lang);
-                clone.classList.add(CFG.pdfClass);
-                clone.style.direction = CFG.dir;
-                clone.style.textAlign = RTL ? 'right' : 'left';
-                clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function (el) { el.remove(); });
-
-                holder = document.createElement('div');
-                holder.setAttribute('data-pdf-holder', CFG.rootId);
-                holder.setAttribute('aria-hidden', 'true');
-                holder.setAttribute('dir', CFG.dir);
-                holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:' + CFG.contentW + 'px;background:#fff;pointer-events:none;direction:' + CFG.dir + ';';
-                holder.appendChild(clone);
-                document.body.appendChild(holder);
-                await tick();
-
-                var cloneH = Math.ceil(clone.getBoundingClientRect().height);
-                var breaks = computeBreaks(clone, PAGE_CONTENT_PX);
-                var scale = pickScale(CFG.contentW, cloneH);
-                progress(20);
-
-                bigCanvas = await window.html2canvas(clone, {
-                    scale: scale,
-                    width: CFG.contentW,
-                    height: cloneH,
-                    windowWidth: CFG.contentW,
-                    windowHeight: cloneH,
-                    scrollX: 0,
-                    scrollY: 0,
-                    useCORS: true,
-                    backgroundColor: '#ffffff',
-                    logging: false
-                });
-                progress(60);
-
-                var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
-                pdf.setProperties({ title: CFG.pdfTitle, subject: CFG.pdfTitle, creator: CFG.siteName });
-
-                var pages = breaks.length - 1;
-                var sc = bigCanvas.width / CFG.contentW;
-
-                var headerImg = makeStrip(CONTENT_MM, 7, function (ctx, w, h) {
-                    drawEnds(ctx, w, h,
-                        CFG.headerText, '700 38px ' + fontFamily, '#0f766e', CFG.dir,
-                        CFG.headerSub,  '500 34px ' + fontFamily, '#94a3b8', CFG.dir);
-                });
-
-                for (var i = 0; i < pages; i++) {
-                    if (i > 0) pdf.addPage();
-
-                    var b0 = breaks[i], b1 = breaks[i + 1];
-                    var sy = Math.round(b0 * sc);
-                    var sh = Math.max(1, Math.min(bigCanvas.height - sy, Math.round((b1 - b0) * sc)));
-
-                    var slice = document.createElement('canvas');
-                    slice.width = bigCanvas.width;
-                    slice.height = sh;
-                    var sctx = slice.getContext('2d');
-                    sctx.fillStyle = '#ffffff';
-                    sctx.fillRect(0, 0, slice.width, slice.height);
-                    sctx.drawImage(bigCanvas, 0, sy, bigCanvas.width, sh, 0, 0, bigCanvas.width, sh);
-
-                    var imgData = slice.toDataURL('image/jpeg', 0.93);
-                    slice.width = slice.height = 0;
-
-                    var hMm = (sh / sc) * MM_PER_PX;
-                    pdf.addImage(imgData, 'JPEG', MX, TOP, CONTENT_MM, hMm, undefined, 'FAST');
-
-                    // شريط علوي ملوّن (اللون المميز في جهة بداية السطر)
-                    pdf.setFillColor(13, 148, 136);
-                    pdf.rect(0, 0, PAGE_W, 2.4, 'F');
-                    pdf.setFillColor(52, 211, 153);
-                    pdf.rect(RTL ? PAGE_W - 70 : 0, 0, 70, 2.4, 'F');
-
-                    pdf.setDrawColor(226, 232, 240);
-                    pdf.setLineWidth(0.3);
-                    if (i > 0) {
-                        pdf.addImage(headerImg, 'PNG', MX, 5, CONTENT_MM, 7);
-                        pdf.line(MX, 13, PAGE_W - MX, 13);
-                    }
-
-                    var pageLabel = CFG.t.pageOf(i + 1, pages);
-                    var footerImg = makeStrip(CONTENT_MM, 7, function (ctx, w, h) {
-                        drawEnds(ctx, w, h,
-                            pageLabel,    '500 34px ' + fontFamily, '#64748b', CFG.dir,
-                            CFG.siteName, '500 34px ' + fontFamily, '#64748b', 'ltr');
-                    });
-                    pdf.line(MX, PAGE_H - 12, PAGE_W - MX, PAGE_H - 12);
-                    pdf.addImage(footerImg, 'PNG', MX, PAGE_H - 11, CONTENT_MM, 7);
-
-                    progress(60 + ((i + 1) / pages) * 35);
-                    await tick();
-                }
-
-                bigCanvas.width = bigCanvas.height = 0;
-                bigCanvas = null;
-                progress(98);
-                await tick();
-                pdf.save(CFG.filename);
-            })();
-
-            var timeout = new Promise(function (_, reject) {
-                timer = setTimeout(function () { reject(new Error('PDF export timeout')); }, CFG.timeoutMs);
-            });
-            job.catch(function () {});
-            await Promise.race([job, timeout]);
-
-            showToast(CFG.t.okTitle, CFG.t.okText, 'success');
-        } catch (err) {
-            console.error(err);
-            showToast(CFG.t.errTitle, CFG.t.errText, 'error');
-        } finally {
-            clearTimeout(timer);
-            if (bigCanvas) { bigCanvas.width = bigCanvas.height = 0; }
-            document.querySelectorAll('[data-pdf-holder="' + CFG.rootId + '"]').forEach(function (el) {
-                if (el.parentNode) el.parentNode.removeChild(el);
-            });
-            busy = false;
-            btn.disabled = false;
-            iconEl.innerHTML = originalIcon;
-            labelEl.innerHTML = originalLabel;
-        }
-    }
-
-    /* ================= الأحداث (داخل هذا الدرس فقط) ================= */
-    root.querySelectorAll('.js-pdf-btn').forEach(function (b) {
-        b.addEventListener('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!b.disabled) downloadPdf(b);
-        });
-    });
-
-    root.addEventListener('click', function (e) {
-        var btn = e.target.closest('button');
-        if (!btn || btn.classList.contains('js-pdf-btn')) return;
-        var label = btn.innerText || btn.textContent || '';
-        if (label.indexOf('نسخ') > -1 || /copy/i.test(label)) {
-            showToast(CFG.t.copyTitle, CFG.t.copyText, 'success');
-        }
-    });
+/* ---- reveal + active section ---- */
+var rv=[].slice.call(root.querySelectorAll('.rv'));
+if('IntersectionObserver' in window){
+var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.02});
+rv.forEach(function(el){io.observe(el);});
+var heads=[].slice.call(root.querySelectorAll('.sec-head'));
+var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;
+var id=en.target.closest('.sec').id.replace(CFG.idp,'');
+chips.forEach(function(c){var on=c.getAttribute('data-t')===id;c.classList.toggle('on',on);
+if(on){var cr=c.getBoundingClientRect(),nr=navS.getBoundingClientRect();
+navS.scrollBy({left:(cr.left+cr.width/2)-(nr.left+nr.width/2),behavior:'smooth'});}});});},{rootMargin:'-90px 0px -65% 0px'});
+heads.forEach(function(h){io2.observe(h);});
+}else rv.forEach(function(el){el.classList.add('in');});
+}
+[].slice.call(document.querySelectorAll(CFG.sel)).forEach(init);
 })();
 </script>
 </code>
@@ -763,231 +514,179 @@ ON UPDATE CASCADE;
       <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
         
         <time datetime="2026-10-24">October 24, 2026</time>
-        <span>10 min read</span>
+        <span>8 min read</span>
         <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>views</span></span>
       </p>
       <div class="article mt-6">
 <!--en-start-->
-<code><!-- ============================================================
-     English lesson (LTR) — Database Normalization & Relationships
-     Every name here is unique to this file (lesson-en / lsn-en / en-toast)
-     so it never collides with the Arabic file, even on the same page.
-     ============================================================ -->
+<code><style>
+/* ============ English lesson (LTR) — every selector is scoped to .lxe so it never clashes with the Arabic file ============ */
+.lxe{--ink:#0f172a;--mut:#475569;--line:#e2e8f0;--soft:#f8fafc;--brand:#0d9488;--brand2:#14b8a6;max-width:860px;margin:0 auto;color:var(--ink);line-height:1.8;font-size:16.5px;direction:ltr;text-align:left}
+.lxe *{box-sizing:border-box}
+.lxe h1,.lxe h2,.lxe h3,.lxe h4,.lxe p{font-family:inherit}
 
-<!-- SweetAlert library -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+/* ---------- Hero ---------- */
+.lxe .hero{position:relative;overflow:hidden;border-radius:22px;padding:30px 28px;margin-bottom:18px;color:#fff;background:linear-gradient(135deg,#0f766e 0%,#14b8a6 55%,#34d399 100%);box-shadow:0 14px 30px -14px rgba(13,148,136,.65)}
+.lxe .hero::before{content:"";position:absolute;left:-40px;bottom:-70px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
+.lxe .hero::after{content:"";position:absolute;right:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.14)}
+.lxe .hero-in{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start}
+.lxe .hero-ic{font-size:2.4rem;line-height:1;flex:none}
+.lxe .hero h1{margin:0 0 8px;font-size:1.8rem;font-weight:800;color:#fff;line-height:1.35}
+.lxe .hero p{margin:0 0 14px;color:#ecfdf5;font-size:1.02rem;line-height:1.7}
+.lxe .chips{display:flex;flex-wrap:wrap;gap:8px}
+.lxe .chips span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:700}
 
-<style>
-    /* ===== Copy toast (English) ===== */
-    .en-toast-container {
-        direction: ltr !important;
-        padding: 1.25rem !important;
-    }
-    .en-toast-popup {
-        direction: ltr;
-        font-family: inherit !important;
-        border-radius: 1rem !important;
-        padding: 0.9rem 1.1rem !important;
-        border-left: 6px solid #5eead4 !important;
-        box-shadow: 0 20px 25px -5px rgba(15, 118, 110, 0.35),
-                    0 8px 10px -6px rgba(15, 118, 110, 0.35) !important;
-    }
-    .en-toast-title {
-        font-size: 1rem !important;
-        font-weight: 800 !important;
-        margin: 0 0 2px 0 !important;
-        text-align: left !important;
-    }
-    .en-toast-text {
-        font-size: 0.85rem !important;
-        opacity: 0.9;
-        margin: 0 !important;
-        text-align: left !important;
-    }
-    .en-toast-popup .swal2-timer-progress-bar {
-        background: rgba(255, 255, 255, 0.7) !important;
-        height: 3px !important;
-    }
+/* ---------- Nav ---------- */
+.lxe .nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);margin:0 0 22px;padding-top:10px;border-bottom:1px solid var(--line)}
+.lxe .nav-s{display:flex;gap:8px;overflow-x:auto;padding:0 2px 10px;scrollbar-width:none}
+.lxe .nav-s::-webkit-scrollbar{display:none}
+.lxe .nav a{flex:none;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--mut);background:#f1f5f9;text-decoration:none;border:1px solid var(--line);transition:background .2s,color .2s,border-color .2s}
+.lxe .nav a:hover{background:#ccfbf1;color:#0f766e}
+.lxe .nav a.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.lxe .bar{height:3px;background:var(--line)}.lxe .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand2),#34d399)}
 
-    /* ===== Code blocks: always LTR ===== */
-    #lesson-en pre,
-    .lsn-en-pdf pre {
-        direction: ltr;
-        text-align: left;
-        overflow-x: auto;
-    }
-    #lesson-en pre code,
-    .lsn-en-pdf pre code {
-        direction: ltr;
-        text-align: left;
-    }
+/* ---------- Download strip ---------- */
+.lxe .dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:28px}
+.lxe .dl-i{width:48px;height:48px;border-radius:12px;background:#fef2f2;border:1px solid #fee2e2;display:flex;align-items:center;justify-content:center;flex:none;color:#ef4444}
+.lxe .dl-t{flex:1;min-width:200px}.lxe .dl-t h4{margin:0;font-size:1rem;font-weight:800}.lxe .dl-t p{margin:2px 0 0;font-size:.86rem;color:#64748b;line-height:1.6}
+.lxe .lx-pdf{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:12px;cursor:pointer;color:#fff;font-weight:700;font-size:.95rem;font-family:inherit;background:linear-gradient(90deg,var(--brand),var(--brand2));box-shadow:0 8px 16px -8px rgba(13,148,136,.7);transition:transform .2s}
+.lxe .lx-pdf:hover{transform:translateY(-1px)}.lxe .lx-pdf:disabled{opacity:.7;cursor:wait;transform:none}
+.lxe .lx-pdf svg{width:18px;height:18px}
+.lxe .spin{animation:lxes 1s linear infinite}@keyframes lxes{to{transform:rotate(360deg)}}
 
-    /* ===== PDF export mode (temporary clone only) ===== */
-    .lsn-en-pdf,
-    .lsn-en-pdf * {
-        box-sizing: border-box !important;
-    }
-    .lsn-en-pdf {
-        width: 760px;
-        padding: 2px;
-        background: #fff;
-        direction: ltr !important;
-        text-align: left !important;
-    }
-    .lsn-en-pdf * {
-        letter-spacing: normal !important;
-        word-spacing: normal !important;
-        text-shadow: none !important;
-        box-shadow: none !important;
-        backdrop-filter: none !important;
-        filter: none !important;
-        transition: none !important;
-        animation: none !important;
-    }
-    .lsn-en-pdf .overflow-x-auto { overflow: visible !important; }
-    .lsn-en-pdf table { width: 100%; min-width: 0 !important; }
-    .lsn-en-pdf pre,
-    .lsn-en-pdf pre code {
-        white-space: pre-wrap !important;
-        overflow: visible !important;
-    }
+/* ---------- Section card ---------- */
+.lxe .sec{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin:0 0 24px;box-shadow:0 1px 3px rgba(15,23,42,.05),0 12px 24px -18px rgba(15,23,42,.18);scroll-margin-top:84px}
+.lxe .sec-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.lxe .num{flex:none;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 6px 12px -6px rgba(13,148,136,.7)}
+.lxe .sec-head h2{margin:0;font-size:1.35rem;font-weight:800;line-height:1.45;color:var(--ink)}
+.lxe .sec-lead{margin:10px 0 0;color:var(--mut);font-size:.98rem}
+.lxe .sec-lead:empty{display:none}
+.lxe .k{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.86em;background:#f1f5f9;border:1px solid #e5e9f0;padding:1px 6px;border-radius:6px;color:#0f766e;white-space:nowrap;direction:ltr;display:inline-block;line-height:1.5}
+
+/* ---------- Example blocks ---------- */
+.lxe .ex{margin-top:22px;padding-top:20px;border-top:1px dashed var(--line)}
+.lxe .sec-head+.ex,.lxe .sec-lead+.ex{margin-top:18px;padding-top:0;border-top:0}
+.lxe .ex-t{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:.98rem;font-weight:700;color:var(--ink);line-height:1.6}
+.lxe .ex-t::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--brand2)}
+.lxe .ex-d{margin:0 0 10px;color:var(--mut);font-size:.94rem}
+.lxe .ex-t+.code{margin-top:10px}
+
+/* ---------- Code ---------- */
+.lxe .code{border-radius:12px;overflow:hidden;background:#0f172a;border:1px solid #1e293b;direction:ltr;text-align:left}
+.lxe .code-bar{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 6px 14px;background:#1e293b;color:#94a3b8;font:700 .7rem ui-monospace,monospace;letter-spacing:.12em}
+.lxe .cp{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;cursor:pointer;font:600 .76rem system-ui,sans-serif;transition:background .2s,color .2s,border-color .2s}
+.lxe .cp svg{width:14px;height:14px}.lxe .cp::after{content:attr(data-label)}
+.lxe .cp:hover{background:#334155}.lxe .cp.ok{color:#34d399;border-color:#34d399}
+.lxe .code .pre{display:block;margin:0;padding:14px 16px;overflow-x:auto;white-space:pre;color:#e2e8f0;background:none;border:0;border-radius:0;font:.88rem/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:left}
+.lxe .code .pre code{background:none;color:inherit;padding:0;font:inherit}
+.lxe .code .pre button,.lxe .code>button:not(.cp),.lxe .code [class*="copy"]:not(.cp){display:none!important}
+.lxe .tk{color:#7dd3fc;font-weight:600}.lxe .ts{color:#fcd34d}.lxe .tn{color:#f0abfc}.lxe .tc{color:#64748b;font-style:italic}
+
+/* ---------- Notes ---------- */
+.lxe .note{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;margin:14px 0 0;border-radius:12px;border:1px solid;border-left-width:4px;font-size:.93rem;line-height:1.7}
+.lxe .note .ic{font-size:1.15rem;line-height:1.5;flex:none}.lxe .note p{margin:0!important;color:inherit!important}
+.lxe .note .k{background:rgba(255,255,255,.7);color:inherit;border-color:rgba(0,0,0,.08)}
+.lxe .tip{background:#fffbeb;border-color:#fde68a;border-left-color:#f59e0b;color:#92400e}
+.lxe .warn{background:#fef2f2;border-color:#fecaca;border-left-color:#ef4444;color:#991b1b}
+.lxe .good{background:#ecfdf5;border-color:#a7f3d0;border-left-color:#10b981;color:#065f46}
+
+/* ---------- Table ---------- */
+.lxe .tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0;background:#fff}
+.lxe table{width:100%;min-width:560px;border-collapse:collapse;text-align:left}
+.lxe th{padding:11px 14px;background:#f1f5f9;color:#334155;font-weight:700;font-size:.88rem;border-bottom:1px solid var(--line);text-align:left}
+.lxe td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:var(--mut);font-size:.92rem;vertical-align:top;text-align:left}
+.lxe td:first-child{width:30%;font:700 .82rem ui-monospace,monospace;color:#0f766e;word-break:break-word}
+.lxe tr:last-child td{border-bottom:0}.lxe tr:hover td{background:var(--soft)}
+
+/* ---------- Misc ---------- */
+.lxe .rv{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}.lxe .rv.in{opacity:1;transform:none}
+.lxe .top{position:fixed;right:18px;left:auto;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:var(--brand);box-shadow:0 8px 16px -4px rgba(13,148,136,.55);display:flex;align-items:center;justify-content:center;padding:0;opacity:0;pointer-events:none;transition:opacity .25s,transform .2s}
+.lxe .top:hover{transform:translateY(-2px)}
+.lxe .top.show{opacity:1;pointer-events:auto}
+.lxe-toast{position:fixed;top:16px;right:16px;z-index:99999;max-width:320px;padding:12px 16px;border-radius:14px;border-left:6px solid #5eead4;background:#0f766e;color:#fff;font:600 .9rem/1.5 system-ui,sans-serif;direction:ltr;text-align:left;box-shadow:0 20px 25px -5px rgba(15,118,110,.35);opacity:0;transform:translateY(-16px);transition:all .3s}
+.lxe-toast.show{opacity:1;transform:none}.lxe-toast.err{background:#b91c1c}.lxe-toast small{display:block;font-weight:400;opacity:.9}
+.lxe a:focus-visible,.lxe button:focus-visible{outline:3px solid #5eead4;outline-offset:2px}
+
+@media(max-width:560px){
+.lxe{font-size:16px}
+.lxe .hero{padding:24px 20px}.lxe .hero h1{font-size:1.45rem}
+.lxe .sec{padding:20px 16px;border-radius:16px}
+.lxe .sec-head h2{font-size:1.15rem}.lxe .num{width:38px;height:38px;font-size:1.05rem}
+.lxe .lx-pdf{width:100%}
+.lxe .code .pre{font-size:.82rem;padding:12px 14px}
+}
+@media(prefers-reduced-motion:reduce){.lxe *{transition:none!important;animation:none!important}.lxe .rv{opacity:1;transform:none}}
+
+/* ---------- PDF mode ---------- */
+.lxe.pdf-mode{width:760px;max-width:none;margin:0;padding:2px 2px 28px;background:#fff}
+.lxe.pdf-mode *{letter-spacing:normal!important;word-spacing:normal!important;box-shadow:none!important;backdrop-filter:none!important;transition:none!important;animation:none!important;transform:none!important}
+.lxe.pdf-mode .rv{opacity:1!important}
+.lxe.pdf-mode .sec{border:0;border-top:2px solid var(--line);border-radius:0;padding:22px 0 4px;margin:0}
+.lxe.pdf-mode .tw{overflow:visible}.lxe.pdf-mode table{min-width:0}
+.lxe.pdf-mode .code .pre{white-space:pre-wrap;overflow:visible}
+
+/* ---------- Force LTR (beats any RTL theme CSS) ---------- */
+.lxe,.lxe *{direction:ltr}
+.lxe{text-align:left}
+.lxe .hero-in,.lxe .sec-head,.lxe .dl,.lxe .note,.lxe .chips,.lxe .nav-s{flex-direction:row}
 </style>
 
-<div dir="ltr" lang="en" id="lesson-en" class="text-left">
+<div class="lxe" dir="ltr" lang="en">
 
-<!-- Lesson intro box -->
-<div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-teal-500 to-emerald-400 p-6 shadow-lg mb-8 text-white">
-    <div class="absolute top-0 left-0 -mt-4 -ml-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
-    <div class="flex items-start gap-4 relative z-10">
-        <span class="text-4xl">🔗</span>
-        <div>
-            <h3 class="text-2xl font-extrabold mb-2 text-white mt-0">Database Normalization and Relationships Summary</h3>
-            <p class="text-teal-50 leading-relaxed m-0 text-lg">
-                Database design concepts that reduce redundancy and define how tables relate to each other, from relationship types to foreign keys and their MySQL code.
-            </p>
-        </div>
-    </div>
+<div class="hero"><div class="hero-in"><span class="hero-ic">🔗</span><div>
+<h1>Database Normalization and Relationships Summary</h1>
+<p>Database design concepts that reduce redundancy and define how tables relate to each other, from relationship types to foreign keys and their MySQL code.</p>
+<div class="chips"><span>MySQL</span><span>5 topics</span><span>Ready-to-copy SQL</span></div>
+</div></div></div>
+
+<div class="nav" data-pdf-ignore><div class="nav-s">
+<a href="#" data-t="s1">1 · Relationships</a><a href="#" data-t="s2">2 · Foreign Key</a><a href="#" data-t="s3">3 · ON DELETE / UPDATE</a><a href="#" data-t="s4">4 · MySQL Codes</a><a href="#" data-t="s5">5 · ALTER TABLE</a>
+</div><div class="bar"><i></i></div></div>
+
+<div class="dl" data-pdf-ignore>
+<div class="dl-i"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg></div>
+<div class="dl-t"><h4>Download the Lecture Summary</h4><p>A neatly formatted PDF, ready for review and printing offline</p></div>
+<button type="button" class="lx-pdf"><span class="pi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></span><span class="pl">Download Summary (PDF)</span></button>
 </div>
 
-<!-- PDF download card (hidden inside the exported PDF) -->
-<div data-pdf-ignore class="mb-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
-    <div class="flex items-center gap-4 flex-1">
-        <div class="w-14 h-14 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-            </svg>
-        </div>
-        <div>
-            <h4 class="text-lg font-extrabold text-slate-800 m-0">Download the Lecture Summary</h4>
-            <p class="text-slate-500 text-sm m-0 mt-1 leading-relaxed">A neatly formatted PDF, ready for review and printing</p>
-        </div>
-    </div>
-    <button type="button"
-        class="js-pdf-btn inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-400 text-white font-bold text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 border-0 cursor-pointer">
-        <span class="js-pdf-icon inline-flex">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-            </svg>
-        </span>
-        <span class="js-pdf-label">Download Summary (PDF)</span>
-    </button>
-</div>
+<!-- 1 -->
+<section class="sec rv" id="lxe-s1">
+<div class="sec-head"><div class="num">1</div><h2>Types of Table Relationships</h2></div>
+<p class="sec-lead">The provided documents summarize database design concepts to reduce redundancy and define table relationships:</p>
+<div class="ex"><h3 class="ex-t">One-to-One (1:1)</h3>
+<p class="ex-d">Illustrated by splitting the original employees table into two separate tables: <span class="k">Employees_Table</span> and <span class="k">Salaries_Table</span>. It also shows dividing the students table into personal data (<span class="k">Students_Table</span>) and academic data (<span class="k">Acad_students</span>).</p></div>
+<div class="ex"><h3 class="ex-t">One-to-Many (1:M)</h3>
+<p class="ex-d">Shown in the relationship between blood types (<span class="k">Blood_Types_Table</span>) and patients (<span class="k">Patients_Table</span>), where multiple patients can share one blood type.</p></div>
+<div class="ex"><h3 class="ex-t">Many-to-Many (M:M)</h3>
+<p class="ex-d">Displayed between patients (<span class="k">Patients_Table</span>) and diseases (<span class="k">Diseases_Table</span>). This is resolved programmatically by creating a junction table (<span class="k">Patient_Diseases_Table</span>) that breaks the many-to-many relationship into two one-to-many relationships.</p></div>
+</section>
 
-<!-- Section 1 -->
-<div class="flex items-center gap-3 mt-10 mb-5">
-    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
-        <span class="text-2xl font-bold">1</span>
-    </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">Types of Table Relationships</h2>
-</div>
-<p class="text-slate-600 mb-6 text-lg leading-relaxed">
-    The provided documents summarize database design concepts to reduce redundancy and define table relationships:
-</p>
+<!-- 2 -->
+<section class="sec rv" id="lxe-s2">
+<div class="sec-head"><div class="num">2</div><h2>Foreign Key Definition</h2></div>
+<p class="sec-lead">A <strong>Foreign Key</strong> is a field (or collection of fields) in one table that uniquely identifies a row of another table (usually pointing to a <span class="k">Primary Key</span>).</p>
+<div class="note good"><span class="ic">🎯</span><p><strong>Main purpose:</strong> to maintain referential integrity, ensuring that the relationship between tables remains valid and preventing orphaned records.</p></div>
+</section>
 
-<div class="space-y-4 mb-8">
-    <div class="bg-indigo-50 border border-indigo-200 p-5 rounded-xl">
-        <h4 class="font-bold text-indigo-800 text-xl mt-0 mb-2">One-to-One <span class="font-mono text-base">(1:1)</span></h4>
-        <p class="text-indigo-700 m-0 leading-relaxed text-lg">Illustrated by splitting the original employees table into two separate tables: <span class="font-mono font-bold">Employees_Table</span> and <span class="font-mono font-bold">Salaries_Table</span>. It also shows dividing the students table into personal data (<span class="font-mono font-bold">Students_Table</span>) and academic data (<span class="font-mono font-bold">Acad_students</span>).</p>
-    </div>
-    <div class="bg-teal-50 border border-teal-200 p-5 rounded-xl">
-        <h4 class="font-bold text-teal-800 text-xl mt-0 mb-2">One-to-Many <span class="font-mono text-base">(1:M)</span></h4>
-        <p class="text-teal-700 m-0 leading-relaxed text-lg">Shown in the relationship between blood types (<span class="font-mono font-bold">Blood_Types_Table</span>) and patients (<span class="font-mono font-bold">Patients_Table</span>), where multiple patients can share one blood type.</p>
-    </div>
-    <div class="bg-amber-50 border border-amber-200 p-5 rounded-xl">
-        <h4 class="font-bold text-amber-800 text-xl mt-0 mb-2">Many-to-Many <span class="font-mono text-base">(M:M)</span></h4>
-        <p class="text-amber-700 m-0 leading-relaxed text-lg">Displayed between patients (<span class="font-mono font-bold">Patients_Table</span>) and diseases (<span class="font-mono font-bold">Diseases_Table</span>). This is resolved programmatically by creating a junction table (<span class="font-mono font-bold">Patient_Diseases_Table</span>) that breaks the many-to-many relationship into two one-to-many relationships.</p>
-    </div>
-</div>
+<!-- 3 -->
+<section class="sec rv" id="lxe-s3">
+<div class="sec-head"><div class="num">3</div><h2>ON DELETE and ON UPDATE</h2></div>
+<p class="sec-lead">These properties define the automatic action taken on the "child" table when the referenced record in the "parent" table is deleted or updated:</p>
+<div class="tw"><table>
+<thead><tr><th>Action</th><th>Behavior</th></tr></thead>
+<tbody>
+<tr><td>CASCADE</td><td>Automatically deletes or updates the matching records in the child table when the parent record is deleted or updated.</td></tr>
+<tr><td>RESTRICT / NO ACTION</td><td>Prevents the deletion or update of the parent record if there are matching records in the child table.</td></tr>
+<tr><td>SET NULL</td><td>Sets the foreign key column values in the child table to <span class="k">NULL</span> when the parent record is deleted or updated.</td></tr>
+</tbody></table></div>
+</section>
 
-<!-- Section 2 -->
-<div class="flex items-center gap-3 mt-12 mb-5">
-    <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 shadow-sm">
-        <span class="text-2xl font-bold">2</span>
-    </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">Foreign Key Definition</h2>
-</div>
-<p class="text-slate-600 mb-4 text-lg leading-relaxed">
-    A <strong class="text-slate-800">Foreign Key</strong> is a field (or collection of fields) in one table that uniquely identifies a row of another table (usually pointing to a Primary Key).
-</p>
-
-<div class="mb-6 bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex items-start gap-3">
-    <span class="text-2xl">🎯</span>
-    <p class="text-emerald-800 m-0 leading-relaxed">
-        <strong>Main purpose:</strong> to maintain <strong>referential integrity</strong>, ensuring that the relationship between tables remains valid and preventing orphaned records.
-    </p>
-</div>
-
-<!-- Section 3 -->
-<div class="flex items-center gap-3 mt-12 mb-5">
-    <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
-        <span class="text-2xl font-bold">3</span>
-    </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">ON DELETE and ON UPDATE</h2>
-</div>
-<p class="text-slate-600 mb-4 text-lg leading-relaxed">
-    These properties define the automatic action taken on the "child" table when the referenced record in the "parent" table is deleted or updated:
-</p>
-
-<div class="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
-    <table class="w-full min-w-[560px] text-left border-collapse bg-white">
-        <thead class="bg-slate-100 text-slate-700">
-            <tr>
-                <th class="p-4 border-b border-slate-200 font-bold w-1/3">Action</th>
-                <th class="p-4 border-b border-slate-200 font-bold">Behavior</th>
-            </tr>
-        </thead>
-        <tbody class="text-slate-600 text-base">
-            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-mono font-bold text-teal-600">CASCADE</td>
-                <td class="p-4">Automatically deletes or updates the matching records in the child table when the parent record is deleted or updated.</td>
-            </tr>
-            <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-mono font-bold text-teal-600">RESTRICT / NO ACTION</td>
-                <td class="p-4">Prevents the deletion or update of the parent record if there are matching records in the child table.</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-                <td class="p-4 font-mono font-bold text-teal-600">SET NULL</td>
-                <td class="p-4">Sets the foreign key column values in the child table to <span class="font-mono">NULL</span> when the parent record is deleted or updated.</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- Section 4 -->
-<div class="flex items-center gap-3 mt-12 mb-5">
-    <div class="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-sm">
-        <span class="text-2xl font-bold">4</span>
-    </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">MySQL Codes</h2>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">1. One-to-One Relationship (1:1)</h4>
-    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
-        To ensure a strictly 1:1 relationship, a <span class="font-mono font-bold">UNIQUE</span> constraint is added to the foreign key:
-    </p>
-    <pre dir="ltr"><code class="language-sql">
-CREATE TABLE Salaries_Table (
+<!-- 4 -->
+<section class="sec rv" id="lxe-s4">
+<div class="sec-head"><div class="num">4</div><h2>MySQL Codes</h2></div>
+<div class="ex"><h3 class="ex-t">1. One-to-One Relationship (1:1)</h3>
+<p class="ex-d">To ensure a strictly 1:1 relationship, a <span class="k">UNIQUE</span> constraint is added to the foreign key:</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Salaries_Table (
     Sala_Id INT PRIMARY KEY,
     hours_no INT,
     hours_rate INT
@@ -996,18 +695,13 @@ CREATE TABLE Salaries_Table (
 CREATE TABLE Employees_Table (
     Emp_Id INT PRIMARY KEY,
     Name VARCHAR(100),
-    Salar_id INT UNIQUE, 
+    Salar_id INT UNIQUE,
     FOREIGN KEY (Salar_id) REFERENCES Salaries_Table(Sala_Id)
     ON DELETE SET NULL
     ON UPDATE CASCADE
-);
-</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">2. One-to-Many Relationship (1:M)</h4>
-    <pre dir="ltr"><code class="language-sql">
-CREATE TABLE Blood_Types_Table (
+);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">2. One-to-Many Relationship (1:M)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Blood_Types_Table (
     Blood_ID INT PRIMARY KEY,
     Blood_type VARCHAR(10) NOT NULL
 );
@@ -1019,14 +713,9 @@ CREATE TABLE Patients_Table (
     FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-);
-</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-red-700 text-lg mt-0 mb-2">3. Many-to-Many Relationship (M:M)</h4>
-    <pre dir="ltr"><code class="language-sql">
-CREATE TABLE Diseases_Table (
+);</code></div></div></div>
+<div class="ex"><h3 class="ex-t">3. Many-to-Many Relationship (M:M)</h3>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE Diseases_Table (
     Diseases_ID VARCHAR(10) PRIMARY KEY,
     Disease_name VARCHAR(100)
 );
@@ -1035,400 +724,235 @@ CREATE TABLE Patient_Diseases_Table (
     Patient_Id INT,
     Diseases_Id VARCHAR(10),
     Diagnosis_Date YEAR,
-    
+
     PRIMARY KEY (Patient_Id, Diseases_Id),
-    
+
     FOREIGN KEY (Patient_Id) REFERENCES Patients_Table(Patient_ID)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-    
+
     FOREIGN KEY (Diseases_Id) REFERENCES Diseases_Table(Diseases_ID)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-);
-</code></pre>
-</div>
+);</code></div></div></div>
+</section>
 
-<!-- Section 5 -->
-<div class="flex items-center gap-3 mt-12 mb-5">
-    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
-        <span class="text-2xl font-bold">5</span>
-    </div>
-    <h2 class="text-2xl font-bold text-slate-800 m-0">Using ALTER TABLE</h2>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">1. Dropping a Foreign Key (without using the word "FOREIGN KEY")</h4>
-    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
-        You can drop the constraint directly using its name with the <span class="font-mono font-bold">DROP CONSTRAINT</span> command.
-    </p>
-    <pre dir="ltr"><code class="language-sql">
-ALTER TABLE Patients_Table
-DROP CONSTRAINT fk_blood_patient;
-</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">2. Adding a Foreign Key WITHOUT a name</h4>
-    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
-        If you do not specify a name, MySQL will automatically generate a default constraint name.
-    </p>
-    <pre dir="ltr"><code class="language-sql">
-ALTER TABLE Patients_Table
+<!-- 5 -->
+<section class="sec rv" id="lxe-s5">
+<div class="sec-head"><div class="num">5</div><h2>Using ALTER TABLE</h2></div>
+<div class="ex"><h3 class="ex-t">1. Dropping a Foreign Key (without using the word "FOREIGN KEY")</h3>
+<p class="ex-d">You can drop the constraint directly using its name with the <span class="k">DROP CONSTRAINT</span> command.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
+DROP CONSTRAINT fk_blood_patient;</code></div></div></div>
+<div class="ex"><h3 class="ex-t">2. Adding a Foreign Key WITHOUT a name</h3>
+<p class="ex-d">If you do not specify a name, MySQL will automatically generate a default constraint name.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
 ADD FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
 ON DELETE SET NULL
-ON UPDATE CASCADE;
-</code></pre>
-</div>
-
-<div class="mb-6 bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-    <h4 class="font-bold text-indigo-700 text-lg mt-0 mb-2">3. Adding a Foreign Key WITH a name</h4>
-    <p class="text-slate-600 mb-3 text-lg leading-relaxed">
-        You can specify a custom name by using the <span class="font-mono font-bold">CONSTRAINT</span> keyword followed by your chosen name before defining the foreign key.
-    </p>
-    <pre dir="ltr"><code class="language-sql">
-ALTER TABLE Patients_Table
-ADD CONSTRAINT fk_blood_patient 
+ON UPDATE CASCADE;</code></div></div></div>
+<div class="ex"><h3 class="ex-t">3. Adding a Foreign Key WITH a name</h3>
+<p class="ex-d">You can specify a custom name by using the <span class="k">CONSTRAINT</span> keyword followed by your chosen name before defining the foreign key.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>ALTER TABLE Patients_Table
+ADD CONSTRAINT fk_blood_patient
 FOREIGN KEY (Blood_Id) REFERENCES Blood_Types_Table(Blood_ID)
 ON DELETE SET NULL
-ON UPDATE CASCADE;
-</code></pre>
+ON UPDATE CASCADE;</code></div></div></div>
+</section>
+
+<button type="button" class="top" data-pdf-ignore aria-label="Back to top"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg></button>
 </div>
 
-</div>
-
-<!-- ============================================================
-     Script: copy toast + PDF export (scoped to this lesson only)
-     ============================================================ -->
 <script>
-(function () {
-    /* ================= Settings ================= */
-    var CFG = {
-        rootId:      'lesson-en',          // lesson container id (unique to this file)
-        pdfClass:    'lsn-en-pdf',         // PDF export class (unique to this file)
-        toastPrefix: 'en-toast',           // toast class prefix (unique to this file)
-        dir:         'ltr',
-        lang:        'en',
-        filename:    'Database-Relationships-EN.pdf',
-        pdfTitle:    'Database Normalization and Relationships Summary',
-        headerText:  'Database Normalization & Relationships',
-        headerSub:   'Lecture Summary',
-        siteName:    location.hostname,
-        contentW:    760,
-        timeoutMs:   120000,
-        t: {
-            preparing: 'Preparing… ',
-            pageOf:    function (n, total) { return 'Page ' + n + ' of ' + total; },
-            okTitle:   'PDF is ready! 📄',
-            okText:    'Your lecture summary is downloading',
-            errTitle:  'Could not create the PDF',
-            errText:   'Please try again, or use a desktop browser',
-            copyTitle: 'Copied successfully! 🚀',
-            copyText:  'The code is ready to paste'
-        }
-    };
+(function(){
+/* ================= Settings (English / LTR) ================= */
+var CFG={
+  sel:'.lxe',            /* root selector — unique to this file */
+  idp:'lxe-',            /* section id prefix — unique to this file */
+  toastCls:'lxe-toast',  /* toast class — unique to this file */
+  dir:'ltr',lang:'en',
+  filename:'Database-Relationships-EN.pdf',
+  pdfTitle:'Database Normalization and Relationships Summary',
+  headerText:'Database Normalization & Relationships',
+  headerSub:'Lecture Summary',
+  siteName:location.hostname,contentW:760,timeoutMs:120000,
+  t:{prep:'Preparing… ',page:function(n,p){return 'Page '+n+' of '+p;},
+     ok:'PDF is ready! 📄',okS:'Your lecture summary is downloading',
+     err:'Could not create the PDF',errS:'Please try again, or use a desktop browser',
+     copy:'Copy',copied:'Copied!',cpT:'Copied! 🚀',cpS:'The code is ready to paste',
+     cpErr:'Copy failed',cpErrS:'Select the code and copy it manually'}
+};
+var RTL=CFG.dir==='rtl';
+var LIB_H2C='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+var LIB_PDF='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+var PW=210,PH=297,MX=12,TOP=16,BOT=15,CMM=PW-MX*2,MPP=CMM/CFG.contentW,PCPX=(PH-TOP-BOT)/MPP;
+var SPIN='<svg class="spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle opacity=".25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path opacity=".75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
 
-    var root = document.getElementById(CFG.rootId);
-    if (!root || root.getAttribute('data-js-ready') === '1') return;
-    root.setAttribute('data-js-ready', '1');
+function toast(t,s,err){
+var el=document.createElement('div');el.className=CFG.toastCls+(err?' err':'');
+el.innerHTML='<div></div><small></small>';el.firstChild.textContent=t;el.lastChild.textContent=s||'';
+document.body.appendChild(el);requestAnimationFrame(function(){el.classList.add('show');});
+setTimeout(function(){el.classList.remove('show');setTimeout(function(){el.remove();},350);},2600);}
+function loadScript(src,ready){return new Promise(function(res,rej){
+if(ready())return res();
+var s=document.createElement('script'),t=setTimeout(function(){rej(new Error('timeout '+src));},20000);
+s.src=src;s.onload=function(){clearTimeout(t);res();};s.onerror=function(){clearTimeout(t);rej(new Error('load '+src));};
+document.head.appendChild(s);});}
+function tick(){return new Promise(function(r){requestAnimationFrame(function(){setTimeout(r,0);});});}
+function pickScale(w,h){var ua=navigator.userAgent,ios=/iP(hone|ad|od)/i.test(ua),mob=ios||/Android/i.test(ua)||innerWidth<768;
+var s=mob?2:3,A=ios?14e6:(mob?40e6:60e6),S=ios?16000:30000;
+while(s>1&&(w*s*h*s>A||h*s>S))s-=.25;return Math.max(s,1);}
 
-    var RTL = CFG.dir === 'rtl';
-    var LIB_H2C = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-    var LIB_PDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+/* Page-break candidates: section tops and example/note blocks */
+function getCands(clone){
+var base=clone.getBoundingClientRect().top,cand=[];
+[].slice.call(clone.querySelectorAll('.sec, .sec > .ex, .sec > .note, .sec > .tw')).forEach(function(el){
+if(el.classList.contains('sec')){cand.push(el.getBoundingClientRect().top-base);return;}
+var p=el.previousElementSibling;
+if(!p||p.classList.contains('sec-head')||p.classList.contains('sec-lead'))return;
+cand.push(el.getBoundingClientRect().top-base);});
+return cand.sort(function(a,b){return a-b;});}
 
-    var PAGE_W = 210, PAGE_H = 297, MX = 12, TOP = 16, BOTTOM = 15;
-    var CONTENT_MM = PAGE_W - MX * 2;
-    var MM_PER_PX = CONTENT_MM / CFG.contentW;
-    var PAGE_CONTENT_PX = (PAGE_H - TOP - BOTTOM) / MM_PER_PX;
+/* Snap each break up to a fully blank pixel row so a page never cuts through text or code */
+function computeBreaks(big,cands,sc){
+var ctx=big.getContext('2d'),W=big.width,Hc=big.height,P=PCPX*sc,band=Math.ceil(sc*1.5),
+c=cands.map(function(v){return Math.round(v*sc);}),br=[0],st=0;
+function blank(y){var d=ctx.getImageData(0,y,W,band).data;
+for(var i=0;i<d.length;i+=4)if(d[i]<235||d[i+1]<235||d[i+2]<235)return false;return true;}
+while(Hc-st>P+1){
+var lim=Math.floor(st+P-band),best=-1;
+for(var i=0;i<c.length;i++)if(c[i]>st+40*sc&&c[i]<=lim)best=c[i];
+var t=best<0?lim:best,y=t,min=st+P*.4;
+while(y>min&&!blank(y))y--;
+if(y<=min)y=t;
+br.push(y/sc);st=y;}
+br.push(Hc/sc);return br;}
 
-    var busy = false;
-    var SPINNER = '<svg class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+/* Header/footer strip: first text on the reading-start side, second on the end side */
+function strip(w,h,a,fa,ca,b,fb,cb,bDir){
+var c=document.createElement('canvas');c.width=Math.round(w*12);c.height=Math.round(h*12);
+var x=c.getContext('2d'),W=c.width,Hh=c.height;x.textBaseline='middle';
+x.font=fa;x.fillStyle=ca;x.direction=CFG.dir;x.textAlign=RTL?'right':'left';x.fillText(a,RTL?W-4:4,Hh/2);
+x.font=fb;x.fillStyle=cb;x.direction=bDir||CFG.dir;x.textAlign=RTL?'left':'right';x.fillText(b,RTL?4:W-4,Hh/2);
+var u=c.toDataURL('image/png');c.width=c.height=0;return u;}
 
-    /* ================= Helpers ================= */
-    function showToast(title, text, icon) {
-        if (!window.Swal) return;
-        var p = CFG.toastPrefix;
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: icon || 'success',
-            toast: true,
-            position: 'top-end',
-            timer: 2500,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            background: icon === 'error' ? '#B91C1C' : '#0F766E',
-            color: '#ffffff',
-            iconColor: '#ffffff',
-            customClass: {
-                container: p + '-container',
-                popup: p + '-popup',
-                title: p + '-title',
-                htmlContainer: p + '-text'
-            },
-            didOpen: function (toast) {
-                toast.addEventListener('mouseenter', Swal.stopTimer);
-                toast.addEventListener('mouseleave', Swal.resumeTimer);
-            }
-        });
-    }
+/* Light SQL syntax highlighting (display only; copy reads plain text) */
+var KW='CREATE|ALTER|TABLE|ADD|DROP|COLUMN|MODIFY|CHANGE|RENAME|TO|CONSTRAINT|UNIQUE|CHECK|DEFAULT|SET|PRIMARY|FOREIGN|KEY|REFERENCES|ON|DELETE|UPDATE|CASCADE|RESTRICT|NOT|NULL|SELECT|FROM|WHERE|AND|INT|VARCHAR|DECIMAL|YEAR';
+var HL=new RegExp("(--[^\\n]*)|('[^'\\n]*')|\\b(\\d+)\\b|\\b("+KW+")\\b","gi");
+var AR=/[\u0600-\u06FF]/;
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function highlight(root){
+[].slice.call(root.querySelectorAll('.code .pre code')).forEach(function(c){
+if(c.getAttribute('data-hl'))return;c.setAttribute('data-hl','1');
+c.innerHTML=esc(c.textContent).replace(HL,function(m,cm,st,nu,kw){
+if(cm){var r=cm.slice(2);return '<span class="tc">--'+(AR.test(r)?'<bdi dir="rtl">'+r+'</bdi>':r)+'</span>';}
+if(st)return '<span class="ts">'+st+'</span>';
+if(nu)return '<span class="tn">'+nu+'</span>';
+return '<span class="tk">'+kw+'</span>';});});}
 
-    function loadScript(src, isReady) {
-        return new Promise(function (resolve, reject) {
-            if (isReady()) return resolve();
-            var s = document.createElement('script');
-            var t = setTimeout(function () { reject(new Error('Library timeout: ' + src)); }, 20000);
-            s.src = src;
-            s.onload = function () { clearTimeout(t); resolve(); };
-            s.onerror = function () { clearTimeout(t); reject(new Error('Failed to load: ' + src)); };
-            document.head.appendChild(s);
-        });
-    }
+function init(root){
+if(root.getAttribute('data-bound'))return;root.setAttribute('data-bound','1');
+root.setAttribute('dir',CFG.dir);
+highlight(root);
+var busy=false,bar=root.querySelector('.bar i'),topBtn=root.querySelector('.top');
+var chips=[].slice.call(root.querySelectorAll('.nav a')),navS=root.querySelector('.nav-s');
 
-    function tick() {
-        return new Promise(function (resolve) {
-            requestAnimationFrame(function () { setTimeout(resolve, 0); });
-        });
-    }
+/* ---- PDF ---- */
+async function pdfExport(btn){
+if(busy)return;busy=true;
+var pi=btn.querySelector('.pi'),pl=btn.querySelector('.pl'),oi=pi.innerHTML,ol=pl.textContent,holder=null,timer=null,big=null;
+function prog(p){pl.textContent=CFG.t.prep+Math.round(p)+'%';}
+btn.disabled=true;pi.innerHTML=SPIN;prog(2);
+try{
+var job=(async function(){
+await tick();
+await loadScript(LIB_H2C,function(){return !!window.html2canvas;});
+await loadScript(LIB_PDF,function(){return !!(window.jspdf&&window.jspdf.jsPDF);});
+if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+prog(12);
+var font=getComputedStyle(root).fontFamily||'Arial, sans-serif';
+var clone=root.cloneNode(true);
+clone.removeAttribute('data-bound');clone.classList.add('pdf-mode');
+clone.setAttribute('dir',CFG.dir);clone.setAttribute('lang',CFG.lang);
+clone.style.direction=CFG.dir;clone.style.textAlign=RTL?'right':'left';
+clone.querySelectorAll('[data-pdf-ignore],button,script').forEach(function(e){e.remove();});
+holder=document.createElement('div');holder.setAttribute('data-pdf-holder',CFG.idp);holder.setAttribute('aria-hidden','true');holder.setAttribute('dir',CFG.dir);
+holder.style.cssText='direction:'+CFG.dir+';position:fixed;left:-10000px;top:0;width:'+CFG.contentW+'px;background:#fff;pointer-events:none;';
+holder.appendChild(clone);document.body.appendChild(holder);await tick();
+var H=Math.ceil(clone.getBoundingClientRect().height),scale=pickScale(CFG.contentW,Math.ceil(H*1.25)),cands=[];
+prog(20);
+big=await html2canvas(clone,{scale:scale,width:CFG.contentW,windowWidth:CFG.contentW,windowHeight:Math.ceil(H*1.5)+400,scrollX:0,scrollY:0,useCORS:true,backgroundColor:'#fff',logging:false,
+onclone:function(d,el){cands=getCands(el);}});
+prog(60);
+var sc=big.width/CFG.contentW,breaks=computeBreaks(big,cands,sc);
+var pdf=new jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
+pdf.setProperties({title:CFG.pdfTitle,subject:CFG.pdfTitle,creator:CFG.siteName});
+var pages=breaks.length-1;
+var hdr=strip(CMM,7,CFG.headerText,'700 38px '+font,'#0f766e',CFG.headerSub,'500 34px '+font,'#94a3b8');
+for(var i=0;i<pages;i++){
+if(i)pdf.addPage();
+var b0=breaks[i],b1=breaks[i+1],sy=Math.round(b0*sc),sh=Math.max(1,Math.min(big.height-sy,Math.round(b1*sc)-sy));
+var sl=document.createElement('canvas');sl.width=big.width;sl.height=sh;
+var cx=sl.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,sl.width,sl.height);cx.drawImage(big,0,sy,big.width,sh,0,0,big.width,sh);
+var img=sl.toDataURL('image/jpeg',.93);sl.width=sl.height=0;
+pdf.addImage(img,'JPEG',MX,TOP,CMM,(sh/sc)*MPP,undefined,'FAST');
+pdf.setFillColor(13,148,136);pdf.rect(0,0,PW,2.4,'F');pdf.setFillColor(52,211,153);pdf.rect(RTL?PW-70:0,0,70,2.4,'F');
+pdf.setDrawColor(226,232,240);pdf.setLineWidth(.3);
+if(i){pdf.addImage(hdr,'PNG',MX,5,CMM,7);pdf.line(MX,13,PW-MX,13);}
+var ftr=strip(CMM,7,CFG.t.page(i+1,pages),'500 34px '+font,'#64748b',CFG.siteName,'500 34px '+font,'#64748b','ltr');
+pdf.line(MX,PH-12,PW-MX,PH-12);pdf.addImage(ftr,'PNG',MX,PH-11,CMM,7);
+prog(60+((i+1)/pages)*35);await tick();}
+big.width=big.height=0;big=null;prog(98);await tick();
+pdf.save(CFG.filename);
+})();
+var to=new Promise(function(_,rej){timer=setTimeout(function(){rej(new Error('PDF export timeout'));},CFG.timeoutMs);});
+job.catch(function(){});
+await Promise.race([job,to]);
+toast(CFG.t.ok,CFG.t.okS);
+}catch(e){console.error(e);toast(CFG.t.err,CFG.t.errS,true);}
+finally{clearTimeout(timer);if(big)big.width=big.height=0;
+document.querySelectorAll('[data-pdf-holder="'+CFG.idp+'"]').forEach(function(el){el.remove();});
+busy=false;btn.disabled=false;pi.innerHTML=oi;pl.textContent=ol;}
+}
 
-    function pickScale(w, h) {
-        var ua = navigator.userAgent;
-        var isIOS = /iP(hone|ad|od)/i.test(ua);
-        var isMobile = isIOS || /Android/i.test(ua) || window.innerWidth < 768;
-        var s = isMobile ? 2 : 3;
-        var MAX_AREA = isIOS ? 14e6 : (isMobile ? 40e6 : 60e6);
-        var MAX_SIDE = isIOS ? 16000 : 30000;
-        while (s > 1 && (w * s * h * s > MAX_AREA || h * s > MAX_SIDE)) s -= 0.25;
-        return Math.max(s, 1);
-    }
+/* ---- copy ---- */
+function copyText(t){
+if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);
+return new Promise(function(res,rej){var a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();
+try{document.execCommand('copy')?res():rej();}catch(e){rej(e);}a.remove();});}
 
-    // Break pages only at element boundaries (no code block or table cut in half)
-    function computeBreaks(clone, pageH) {
-        var base = clone.getBoundingClientRect().top;
-        var total = clone.getBoundingClientRect().height;
-        var kids = Array.prototype.slice.call(clone.children);
-        var candidates = [];
+root.addEventListener('click',function(e){
+var cp=e.target.closest('.cp');
+if(cp){copyText(cp.closest('.code').querySelector('code').innerText.trim()).then(function(){
+cp.dataset.label=CFG.t.copied;cp.classList.add('ok');toast(CFG.t.cpT,CFG.t.cpS);
+setTimeout(function(){cp.dataset.label=CFG.t.copy;cp.classList.remove('ok');},1800);
+}).catch(function(){toast(CFG.t.cpErr,CFG.t.cpErrS,true);});return;}
+var pb=e.target.closest('.lx-pdf');if(pb){pdfExport(pb);return;}
+var a=e.target.closest('.nav a');
+if(a){e.preventDefault();var t=root.querySelector('#'+CFG.idp+a.getAttribute('data-t'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});return;}
+if(e.target.closest('.top'))root.scrollIntoView({behavior:'smooth',block:'start'});
+});
 
-        kids.forEach(function (k, i) {
-            if (i === 0) return;
-            var prev = kids[i - 1];
-            var keepWithNext = prev.querySelector('h2') || prev.tagName === 'P';
-            if (keepWithNext) return;
-            candidates.push(k.getBoundingClientRect().top - base);
-        });
+/* ---- progress bar + back-to-top ---- */
+function onScroll(){var r=root.getBoundingClientRect(),tot=r.height-innerHeight;
+bar.style.width=Math.max(0,Math.min(1,tot>0?-r.top/tot:0))*100+'%';
+topBtn.classList.toggle('show',-r.top>700&&r.bottom>200);}
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
 
-        var breaks = [0], start = 0;
-        while (total - start > pageH + 1) {
-            var limit = start + pageH, best = -1;
-            for (var i = 0; i < candidates.length; i++) {
-                if (candidates[i] > start + 40 && candidates[i] <= limit) best = candidates[i];
-            }
-            if (best < 0) best = limit;
-            breaks.push(best);
-            start = best;
-        }
-        breaks.push(total);
-        return breaks;
-    }
-
-    function makeStrip(wMm, hMm, draw) {
-        var K = 12;
-        var c = document.createElement('canvas');
-        c.width = Math.round(wMm * K);
-        c.height = Math.round(hMm * K);
-        var ctx = c.getContext('2d');
-        draw(ctx, c.width, c.height);
-        var url = c.toDataURL('image/png');
-        c.width = c.height = 0;
-        return url;
-    }
-
-    // Draw two texts at the start/end of a strip, following the language direction
-    function drawEnds(ctx, w, h, startText, startFont, startColor, startDir, endText, endFont, endColor, endDir) {
-        ctx.textBaseline = 'middle';
-        var startX = RTL ? w - 4 : 4, endX = RTL ? 4 : w - 4;
-
-        ctx.font = startFont; ctx.fillStyle = startColor; ctx.direction = startDir;
-        ctx.textAlign = RTL ? 'right' : 'left';
-        ctx.fillText(startText, startX, h / 2);
-
-        ctx.font = endFont; ctx.fillStyle = endColor; ctx.direction = endDir;
-        ctx.textAlign = RTL ? 'left' : 'right';
-        ctx.fillText(endText, endX, h / 2);
-    }
-
-    /* ================= PDF export ================= */
-    async function downloadPdf(btn) {
-        if (busy) return;
-        busy = true;
-
-        var iconEl = btn.querySelector('.js-pdf-icon');
-        var labelEl = btn.querySelector('.js-pdf-label');
-        var originalIcon = iconEl.innerHTML;
-        var originalLabel = labelEl.innerHTML;
-        var holder = null, timer = null, bigCanvas = null;
-
-        function progress(p) { labelEl.textContent = CFG.t.preparing + Math.round(p) + '%'; }
-
-        btn.disabled = true;
-        iconEl.innerHTML = SPINNER;
-        progress(2);
-
-        try {
-            var job = (async function () {
-                await tick();
-                await loadScript(LIB_H2C, function () { return !!window.html2canvas; });
-                await loadScript(LIB_PDF, function () { return !!(window.jspdf && window.jspdf.jsPDF); });
-                if (document.fonts && document.fonts.ready) await document.fonts.ready;
-                progress(12);
-
-                var fontFamily = getComputedStyle(root).fontFamily || 'Arial, sans-serif';
-
-                // Temporary clone of THIS lesson only, with the correct direction forced
-                var clone = root.cloneNode(true);
-                clone.removeAttribute('id');
-                clone.removeAttribute('data-js-ready');
-                clone.setAttribute('dir', CFG.dir);
-                clone.setAttribute('lang', CFG.lang);
-                clone.classList.add(CFG.pdfClass);
-                clone.style.direction = CFG.dir;
-                clone.style.textAlign = RTL ? 'right' : 'left';
-                clone.querySelectorAll('[data-pdf-ignore], button, .blur-2xl').forEach(function (el) { el.remove(); });
-
-                holder = document.createElement('div');
-                holder.setAttribute('data-pdf-holder', CFG.rootId);
-                holder.setAttribute('aria-hidden', 'true');
-                holder.setAttribute('dir', CFG.dir);
-                holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:' + CFG.contentW + 'px;background:#fff;pointer-events:none;direction:' + CFG.dir + ';';
-                holder.appendChild(clone);
-                document.body.appendChild(holder);
-                await tick();
-
-                var cloneH = Math.ceil(clone.getBoundingClientRect().height);
-                var breaks = computeBreaks(clone, PAGE_CONTENT_PX);
-                var scale = pickScale(CFG.contentW, cloneH);
-                progress(20);
-
-                bigCanvas = await window.html2canvas(clone, {
-                    scale: scale,
-                    width: CFG.contentW,
-                    height: cloneH,
-                    windowWidth: CFG.contentW,
-                    windowHeight: cloneH,
-                    scrollX: 0,
-                    scrollY: 0,
-                    useCORS: true,
-                    backgroundColor: '#ffffff',
-                    logging: false
-                });
-                progress(60);
-
-                var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
-                pdf.setProperties({ title: CFG.pdfTitle, subject: CFG.pdfTitle, creator: CFG.siteName });
-
-                var pages = breaks.length - 1;
-                var sc = bigCanvas.width / CFG.contentW;
-
-                var headerImg = makeStrip(CONTENT_MM, 7, function (ctx, w, h) {
-                    drawEnds(ctx, w, h,
-                        CFG.headerText, '700 38px ' + fontFamily, '#0f766e', CFG.dir,
-                        CFG.headerSub,  '500 34px ' + fontFamily, '#94a3b8', CFG.dir);
-                });
-
-                for (var i = 0; i < pages; i++) {
-                    if (i > 0) pdf.addPage();
-
-                    var b0 = breaks[i], b1 = breaks[i + 1];
-                    var sy = Math.round(b0 * sc);
-                    var sh = Math.max(1, Math.min(bigCanvas.height - sy, Math.round((b1 - b0) * sc)));
-
-                    var slice = document.createElement('canvas');
-                    slice.width = bigCanvas.width;
-                    slice.height = sh;
-                    var sctx = slice.getContext('2d');
-                    sctx.fillStyle = '#ffffff';
-                    sctx.fillRect(0, 0, slice.width, slice.height);
-                    sctx.drawImage(bigCanvas, 0, sy, bigCanvas.width, sh, 0, 0, bigCanvas.width, sh);
-
-                    var imgData = slice.toDataURL('image/jpeg', 0.93);
-                    slice.width = slice.height = 0;
-
-                    var hMm = (sh / sc) * MM_PER_PX;
-                    pdf.addImage(imgData, 'JPEG', MX, TOP, CONTENT_MM, hMm, undefined, 'FAST');
-
-                    // Coloured top bar (accent on the start side)
-                    pdf.setFillColor(13, 148, 136);
-                    pdf.rect(0, 0, PAGE_W, 2.4, 'F');
-                    pdf.setFillColor(52, 211, 153);
-                    pdf.rect(RTL ? PAGE_W - 70 : 0, 0, 70, 2.4, 'F');
-
-                    pdf.setDrawColor(226, 232, 240);
-                    pdf.setLineWidth(0.3);
-                    if (i > 0) {
-                        pdf.addImage(headerImg, 'PNG', MX, 5, CONTENT_MM, 7);
-                        pdf.line(MX, 13, PAGE_W - MX, 13);
-                    }
-
-                    var pageLabel = CFG.t.pageOf(i + 1, pages);
-                    var footerImg = makeStrip(CONTENT_MM, 7, function (ctx, w, h) {
-                        drawEnds(ctx, w, h,
-                            pageLabel,    '500 34px ' + fontFamily, '#64748b', CFG.dir,
-                            CFG.siteName, '500 34px ' + fontFamily, '#64748b', 'ltr');
-                    });
-                    pdf.line(MX, PAGE_H - 12, PAGE_W - MX, PAGE_H - 12);
-                    pdf.addImage(footerImg, 'PNG', MX, PAGE_H - 11, CONTENT_MM, 7);
-
-                    progress(60 + ((i + 1) / pages) * 35);
-                    await tick();
-                }
-
-                bigCanvas.width = bigCanvas.height = 0;
-                bigCanvas = null;
-                progress(98);
-                await tick();
-                pdf.save(CFG.filename);
-            })();
-
-            var timeout = new Promise(function (_, reject) {
-                timer = setTimeout(function () { reject(new Error('PDF export timeout')); }, CFG.timeoutMs);
-            });
-            job.catch(function () {});
-            await Promise.race([job, timeout]);
-
-            showToast(CFG.t.okTitle, CFG.t.okText, 'success');
-        } catch (err) {
-            console.error(err);
-            showToast(CFG.t.errTitle, CFG.t.errText, 'error');
-        } finally {
-            clearTimeout(timer);
-            if (bigCanvas) { bigCanvas.width = bigCanvas.height = 0; }
-            document.querySelectorAll('[data-pdf-holder="' + CFG.rootId + '"]').forEach(function (el) {
-                if (el.parentNode) el.parentNode.removeChild(el);
-            });
-            busy = false;
-            btn.disabled = false;
-            iconEl.innerHTML = originalIcon;
-            labelEl.innerHTML = originalLabel;
-        }
-    }
-
-    /* ================= Events (inside this lesson only) ================= */
-    root.querySelectorAll('.js-pdf-btn').forEach(function (b) {
-        b.addEventListener('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!b.disabled) downloadPdf(b);
-        });
-    });
-
-    root.addEventListener('click', function (e) {
-        var btn = e.target.closest('button');
-        if (!btn || btn.classList.contains('js-pdf-btn')) return;
-        var label = btn.innerText || btn.textContent || '';
-        if (label.indexOf('نسخ') > -1 || /copy/i.test(label)) {
-            showToast(CFG.t.copyTitle, CFG.t.copyText, 'success');
-        }
-    });
+/* ---- reveal + active section ---- */
+var rv=[].slice.call(root.querySelectorAll('.rv'));
+if('IntersectionObserver' in window){
+var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.02});
+rv.forEach(function(el){io.observe(el);});
+var heads=[].slice.call(root.querySelectorAll('.sec-head'));
+var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;
+var id=en.target.closest('.sec').id.replace(CFG.idp,'');
+chips.forEach(function(c){var on=c.getAttribute('data-t')===id;c.classList.toggle('on',on);
+if(on){var cr=c.getBoundingClientRect(),nr=navS.getBoundingClientRect();
+navS.scrollBy({left:(cr.left+cr.width/2)-(nr.left+nr.width/2),behavior:'smooth'});}});});},{rootMargin:'-90px 0px -65% 0px'});
+heads.forEach(function(h){io2.observe(h);});
+}else rv.forEach(function(el){el.classList.add('in');});
+}
+[].slice.call(document.querySelectorAll(CFG.sel)).forEach(init);
 })();
 </script>
 </code>
