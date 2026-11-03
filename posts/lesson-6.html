@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>INSERT و UPDATE والحذف في MySQL: 8 حالات للإضافة والشروط المعقدة | دفتر الدروس</title>
+  <meta name="description" content="تعرّف على 8 طرق لإضافة البيانات في MySQL، وكيفية التحديث الآمن باستخدام AND و OR و IN و LIKE و BETWEEN، والفرق الحقيقي بين DELETE و TRUNCATE و DROP.">
+  <meta property="og:title" content="INSERT و UPDATE والحذف في MySQL: 8 حالات للإضافة والشروط المعقدة">
+  <meta property="og:description" content="تعرّف على 8 طرق لإضافة البيانات في MySQL، وكيفية التحديث الآمن باستخدام AND و OR و IN و LIKE و BETWEEN، والفرق الحقيقي بين DELETE و TRUNCATE و DROP.">
+  <script>try{if(localStorage.getItem('lang')==='en'){var h=document.documentElement;h.lang='en';h.dir='ltr'}}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { ink: '#12263A', paper: '#F2F5F7', rule: '#CBD5DC', brand: '#0F766E' } } } };
+  </script>
+  <style>
+    html[lang="ar"] { --body: Tajawal, system-ui, sans-serif; --head: Cairo, Tajawal, system-ui, sans-serif; }
+    html[lang="en"] { --body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; --head: var(--body); }
+    body { font-family: var(--body); }
+    .heading, .article h2, .article h3 { font-family: var(--head); }
+    [hidden] { display: none !important; }
+    html[lang="ar"] #lang-en, html[lang="en"] #lang-ar { display: none; }
+    .article { font-size: 1.0625rem; line-height: 1.95; }
+    .article > * + * { margin-top: 1rem; }
+    .article h2 { font-weight: 800; font-size: 1.5rem; line-height: 1.5; margin-top: 2.25rem; }
+    .article h3 { font-weight: 800; font-size: 1.2rem; line-height: 1.5; margin-top: 1.75rem; }
+    .article ul { list-style: disc; padding-inline-start: 1.5rem; }
+    .article ol { list-style: decimal; padding-inline-start: 1.5rem; }
+    .article a { color: #0F766E; text-decoration: underline; }
+    .article img { max-width: 100%; height: auto; border-radius: .5rem; }
+    .article :not(pre) > code { direction: ltr; unicode-bidi: isolate; background: #E3EAEE; padding: .1rem .4rem; border-radius: .25rem; font-size: .9em; }
+    .codebox { direction: ltr; border-radius: .6rem; overflow: hidden; background: #0d1117; }
+    .codebar { display: flex; justify-content: space-between; align-items: center; padding: .35rem .75rem; background: #161b22; color: #9aa7b4; font: 500 .8rem/1 ui-monospace, monospace; }
+    .codebar button { font: 700 .8rem/1 system-ui, sans-serif; color: #fff; background: #0F766E; border: 0; border-radius: .4rem; padding: .45rem .8rem; cursor: pointer; }
+    .codebar button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .codebox pre { margin: 0; text-align: left; overflow-x: auto; }
+    .codebox pre code.hljs { padding: 1rem; font-size: .9rem; line-height: 1.7; }
+  </style>
+</head>
+<body class="bg-paper text-ink antialiased">
+  <header class="bg-ink text-white">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <a href="/" class="heading font-extrabold text-xl" data-ar="دفتر الدروس" data-en="Lessons Notebook">دفتر الدروس</a>
+      <button id="lang-toggle" type="button" class="h-10 px-4 rounded-full border border-white/40 text-sm font-bold hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white" aria-label="Switch to English" lang="en">English</button>
+    </div>
+  </header>
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <article>
+    <section id="lang-ar" lang="ar" dir="rtl">
+      <h1 class="heading font-extrabold text-3xl leading-snug">INSERT و UPDATE والحذف في MySQL: 8 حالات للإضافة والشروط المعقدة</h1>
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
+        
+        <time datetime="2026-11-03">3 نوفمبر 2026</time>
+        <span>قراءة 10 د</span>
+        <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>مشاهدة</span></span>
+      </p>
+      <div class="article mt-6">
+<!--ar-start-->
+<code><style>
+/* ============ Arabic lesson (RTL) — INSERT cases / UPDATE conditions / DELETE vs TRUNCATE vs DROP — scoped to .lxa ============ */
+.lxa{--ink:#0f172a;--mut:#475569;--line:#e2e8f0;--soft:#f8fafc;--brand:#0d9488;--brand2:#14b8a6;max-width:860px;margin:0 auto;color:var(--ink);line-height:1.8;font-size:16.5px;direction:rtl;text-align:right}
+.lxa *{box-sizing:border-box}
+.lxa h1,.lxa h2,.lxa h3,.lxa h4,.lxa p{font-family:inherit}
+
+/* ---------- Hero ---------- */
+.lxa .hero{position:relative;overflow:hidden;border-radius:22px;padding:30px 28px;margin-bottom:18px;color:#fff;background:linear-gradient(225deg,#0f766e 0%,#14b8a6 55%,#34d399 100%);box-shadow:0 14px 30px -14px rgba(13,148,136,.65)}
+.lxa .hero::before{content:"";position:absolute;right:-40px;bottom:-70px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
+.lxa .hero::after{content:"";position:absolute;left:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.14)}
+.lxa .hero-in{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start}
+.lxa .hero-ic{font-size:2.4rem;line-height:1;flex:none}
+.lxa .hero h1{margin:0 0 8px;font-size:1.8rem;font-weight:800;color:#fff;line-height:1.4}
+.lxa .hero p{margin:0 0 14px;color:#ecfdf5;font-size:1.02rem;line-height:1.7}
+.lxa .chips{display:flex;flex-wrap:wrap;gap:8px}
+.lxa .chips span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:700}
+
+/* ---------- Nav ---------- */
+.lxa .nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);margin:0 0 22px;padding-top:10px;border-bottom:1px solid var(--line)}
+.lxa .nav-s{display:flex;gap:8px;overflow-x:auto;padding:0 2px 10px;scrollbar-width:none}
+.lxa .nav-s::-webkit-scrollbar{display:none}
+.lxa .nav a{flex:none;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--mut);background:#f1f5f9;text-decoration:none;border:1px solid var(--line);transition:background .2s,color .2s,border-color .2s}
+.lxa .nav a:hover{background:#ccfbf1;color:#0f766e}
+.lxa .nav a.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.lxa .bar{height:3px;background:var(--line)}.lxa .bar i{display:block;height:100%;width:0;background:linear-gradient(270deg,var(--brand2),#34d399)}
+
+/* ---------- Download strip ---------- */
+.lxa .dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:28px}
+.lxa .dl-i{width:48px;height:48px;border-radius:12px;background:#fef2f2;border:1px solid #fee2e2;display:flex;align-items:center;justify-content:center;flex:none;color:#ef4444}
+.lxa .dl-t{flex:1;min-width:200px}.lxa .dl-t h4{margin:0;font-size:1rem;font-weight:800}.lxa .dl-t p{margin:2px 0 0;font-size:.86rem;color:#64748b;line-height:1.6}
+.lxa .lx-pdf{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:12px;cursor:pointer;color:#fff;font-weight:700;font-size:.95rem;font-family:inherit;background:linear-gradient(270deg,var(--brand),var(--brand2));box-shadow:0 8px 16px -8px rgba(13,148,136,.7);transition:transform .2s}
+.lxa .lx-pdf:hover{transform:translateY(-1px)}.lxa .lx-pdf:disabled{opacity:.7;cursor:wait;transform:none}
+.lxa .lx-pdf svg{width:18px;height:18px}
+.lxa .spin{animation:lxas 1s linear infinite}@keyframes lxas{to{transform:rotate(360deg)}}
+
+/* ---------- Section card ---------- */
+.lxa .sec{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin:0 0 24px;box-shadow:0 1px 3px rgba(15,23,42,.05),0 12px 24px -18px rgba(15,23,42,.18);scroll-margin-top:84px}
+.lxa .sec-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.lxa .num{flex:none;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;background:linear-gradient(225deg,var(--brand),var(--brand2));box-shadow:0 6px 12px -6px rgba(13,148,136,.7)}
+.lxa .sec-head h2{margin:0;font-size:1.35rem;font-weight:800;line-height:1.5;color:var(--ink)}
+.lxa .sec-lead{margin:10px 0 0;color:var(--mut);font-size:.98rem}
+.lxa .sec-lead:empty{display:none}
+.lxa .k{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.86em;background:#f1f5f9;border:1px solid #e5e9f0;padding:1px 6px;border-radius:6px;color:#0f766e;white-space:nowrap;direction:ltr;unicode-bidi:isolate;display:inline-block;line-height:1.5}
+
+/* ---------- Example blocks ---------- */
+.lxa .ex{margin-top:22px;padding-top:20px;border-top:1px dashed var(--line)}
+.lxa .sec-head+.ex,.lxa .sec-lead+.ex{margin-top:18px;padding-top:0;border-top:0}
+.lxa .ex-t{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:.98rem;font-weight:700;color:var(--ink);line-height:1.6}
+.lxa .ex-t::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--brand2)}
+.lxa .ex-d{margin:0 0 10px;color:var(--mut);font-size:.94rem}
+.lxa .ex-t+.code{margin-top:10px}
+
+/* ---------- Code (always LTR) ---------- */
+.lxa .code{border-radius:12px;overflow:hidden;background:#0f172a;border:1px solid #1e293b;direction:ltr;text-align:left}
+.lxa .code-bar{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 6px 14px;background:#1e293b;color:#94a3b8;font:700 .7rem ui-monospace,monospace;letter-spacing:.12em}
+.lxa .cp{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;cursor:pointer;font:600 .76rem system-ui,sans-serif;transition:background .2s,color .2s,border-color .2s}
+.lxa .cp svg{width:14px;height:14px}.lxa .cp::after{content:attr(data-label)}
+.lxa .cp:hover{background:#334155}.lxa .cp.ok{color:#34d399;border-color:#34d399}
+.lxa .code .pre{display:block;margin:0;padding:14px 16px;overflow-x:auto;white-space:pre;color:#e2e8f0;background:none;border:0;border-radius:0;font:.88rem/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:left}
+.lxa .code .pre code{background:none;color:inherit;padding:0;font:inherit}
+.lxa .code .pre button,.lxa .code>button:not(.cp),.lxa .code [class*="copy"]:not(.cp){display:none!important}
+.lxa .tk{color:#7dd3fc;font-weight:600}.lxa .ts{color:#fcd34d}.lxa .tn{color:#f0abfc}.lxa .tc{color:#64748b;font-style:italic}
+
+/* ---------- Notes ---------- */
+.lxa .note{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;margin:14px 0 0;border-radius:12px;border:1px solid;border-right-width:4px;font-size:.93rem;line-height:1.7}
+.lxa .note .ic{font-size:1.15rem;line-height:1.5;flex:none}.lxa .note p{margin:0!important;color:inherit!important}
+.lxa .note .k{background:rgba(255,255,255,.7);color:inherit;border-color:rgba(0,0,0,.08)}
+.lxa .tip{background:#fffbeb;border-color:#fde68a;border-right-color:#f59e0b;color:#92400e}
+.lxa .warn{background:#fef2f2;border-color:#fecaca;border-right-color:#ef4444;color:#991b1b}
+.lxa .good{background:#ecfdf5;border-color:#a7f3d0;border-right-color:#10b981;color:#065f46}
+
+/* ---------- Table ---------- */
+.lxa .tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0;background:#fff}
+.lxa table{width:100%;min-width:560px;border-collapse:collapse;text-align:right}
+.lxa th{padding:11px 14px;background:#f1f5f9;color:#334155;font-weight:700;font-size:.88rem;border-bottom:1px solid var(--line);text-align:right}
+.lxa td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:var(--mut);font-size:.92rem;vertical-align:top;text-align:right}
+.lxa td:first-child{width:30%;font:700 .82rem ui-monospace,monospace;color:#0f766e;word-break:break-word;direction:ltr;text-align:right}
+.lxa td:first-child small{display:block;margin-top:2px;font:600 .8rem system-ui,sans-serif;color:#64748b;direction:rtl}
+.lxa tr:last-child td{border-bottom:0}.lxa tr:hover td{background:var(--soft)}
+
+/* ---------- Misc ---------- */
+.lxa .rv{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}.lxa .rv.in{opacity:1;transform:none}
+.lxa .top{position:fixed;left:18px;right:auto;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:var(--brand);box-shadow:0 8px 16px -4px rgba(13,148,136,.55);display:flex;align-items:center;justify-content:center;padding:0;opacity:0;pointer-events:none;transition:opacity .25s,transform .2s}
+.lxa .top:hover{transform:translateY(-2px)}
+.lxa .top.show{opacity:1;pointer-events:auto}
+.lxa-toast{position:fixed;top:16px;right:16px;z-index:99999;max-width:320px;padding:12px 16px;border-radius:14px;border-right:6px solid #5eead4;background:#0f766e;color:#fff;font:600 .9rem/1.5 system-ui,sans-serif;direction:rtl;text-align:right;box-shadow:0 20px 25px -5px rgba(15,118,110,.35);opacity:0;transform:translateY(-16px);transition:all .3s}
+.lxa-toast.show{opacity:1;transform:none}.lxa-toast.err{background:#b91c1c}.lxa-toast small{display:block;font-weight:400;opacity:.9}
+.lxa a:focus-visible,.lxa button:focus-visible{outline:3px solid #5eead4;outline-offset:2px}
+
+@media(max-width:560px){
+.lxa{font-size:16px}
+.lxa .hero{padding:24px 20px}.lxa .hero h1{font-size:1.45rem}
+.lxa .sec{padding:20px 16px;border-radius:16px}
+.lxa .sec-head h2{font-size:1.15rem}.lxa .num{width:38px;height:38px;font-size:1.05rem}
+.lxa .lx-pdf{width:100%}
+.lxa .code .pre{font-size:.82rem;padding:12px 14px}
+}
+@media(prefers-reduced-motion:reduce){.lxa *{transition:none!important;animation:none!important}.lxa .rv{opacity:1;transform:none}}
+
+/* ---------- PDF mode ---------- */
+.lxa.pdf-mode{width:760px;max-width:none;margin:0;padding:2px 2px 28px;background:#fff}
+.lxa.pdf-mode *{letter-spacing:normal!important;word-spacing:normal!important;word-break:normal!important;overflow-wrap:normal!important;box-shadow:none!important;backdrop-filter:none!important;transition:none!important;animation:none!important;transform:none!important}
+.lxa.pdf-mode .rv{opacity:1!important}
+.lxa.pdf-mode .sec{border:0;border-top:2px solid var(--line);border-radius:0;padding:22px 0 4px;margin:0}
+.lxa.pdf-mode .tw{overflow:visible}.lxa.pdf-mode table{min-width:0}
+.lxa.pdf-mode .code .pre{white-space:pre-wrap;overflow:visible}
+
+/* ---------- Force RTL (beats any theme CSS) ---------- */
+.lxa,.lxa *{direction:rtl}
+.lxa{text-align:right}
+.lxa .code,.lxa .code *{direction:ltr;text-align:left}
+.lxa .code bdi{direction:rtl}
+.lxa .k,.lxa td:first-child{direction:ltr}
+.lxa td:first-child small{direction:rtl}
+.lxa .hero-in,.lxa .sec-head,.lxa .dl,.lxa .note,.lxa .chips,.lxa .nav-s{flex-direction:row}
+
+/* ---------- Lists + comparison table ---------- */
+.lxa .lst{margin:0 0 12px;padding-right:22px;padding-left:0;color:var(--mut);font-size:.94rem;list-style:disc}
+.lxa .lst li{margin:4px 0}.lxa .lst li::marker{color:var(--brand2)}
+.lxa table.cmp td:first-child{width:24%;font:700 .9rem inherit;font-family:inherit;color:var(--ink);direction:rtl;text-align:right}
+.lxa table.cmp th:not(:first-child){font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#0f766e;direction:ltr;text-align:right}
+.lxa .sec-head+.note{margin-top:16px}
+.lxa .note+.sec-lead{margin-top:14px}
+</style>
+
+<div class="lxa" dir="rtl" lang="ar" data-lesson="dml2-ar">
+
+<div class="hero"><div class="hero-in"><span class="hero-ic">🧩</span><div>
+<h1>شرح شامل لعمليات INSERT و UPDATE والحذف في MySQL</h1>
+<p>شرح تفصيلي متسلسل لجميع حالات الإضافة (INSERT) في MySQL، والتحديث (UPDATE) بالشروط المعقدة، والفرق الجوهري بين DELETE و TRUNCATE و DROP، بطريقة تعليمية مبسطة واحترافية.</p>
+<div class="chips"><span>MySQL</span><span>8 حالات للإضافة</span><span>5 حالات للتحديث</span><span>أكواد SQL جاهزة للنسخ</span></div>
+</div></div></div>
+
+<div class="nav" data-pdf-ignore><div class="nav-s">
+<a href="#" data-t="s0">التمهيد</a><a href="#" data-t="s1">أولاً · INSERT</a><a href="#" data-t="s2">ثانياً · UPDATE</a><a href="#" data-t="s3">ثالثاً · DELETE و TRUNCATE و DROP</a>
+</div><div class="bar"><i></i></div></div>
+
+<div class="dl" data-pdf-ignore>
+<div class="dl-i"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg></div>
+<div class="dl-t"><h4>تحميل ملخص المحاضرة</h4><p>ملف PDF منسّق وجاهز للمراجعة والطباعة دون اتصال</p></div>
+<button type="button" class="lx-pdf"><span class="pi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></span><span class="pl">تحميل الملخص (PDF)</span></button>
+</div>
+
+<!-- 0 -->
+<section class="sec rv" id="dml2-ar-s0">
+<div class="sec-head"><div class="num">🛠️</div><h2>التمهيد: إعداد بيئة العمل</h2></div>
+<p class="sec-lead">قبل البدء في تنفيذ العمليات، سنقوم بإنشاء جدول باسم <span class="k">employees</span> (الموظفين) لنطبق عليه جميع الشروحات والأكواد القادمة:</p>
+<div class="ex"><div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    department VARCHAR(50),
+    salary DECIMAL(10, 2)
+);</code></div></div></div>
+</section>
+
+<!-- 1 -->
+<section class="sec rv" id="dml2-ar-s1">
+<div class="sec-head"><div class="num">1</div><h2>أولاً: جميع حالات الإضافة (INSERT) في MySQL</h2></div>
+<p class="sec-lead">تُستخدم تعليمة <span class="k">INSERT</span> لإدخال بيانات جديدة إلى الجدول. في الإصدارات الحديثة من MySQL، لدينا 8 طرق وحالات مختلفة للإضافة:</p>
+
+<div class="ex"><h3 class="ex-t">1. الإضافة القياسية (تحديد الأعمدة والقيم)</h3>
+<p class="ex-d">وهي الطريقة الأكثر أماناً ووضوحاً، حيث نحدد أسماء الأعمدة، ثم نمرر القيم بنفس الترتيب.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees (name, department, salary)
+VALUES ('أحمد', 'IT', 5000.00);</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">2. الإضافة المختصرة (بدون تحديد الأعمدة)</h3>
+<p class="ex-d">وهنا نكتب القيم مباشرة دون كتابة أسماء الأعمدة.</p>
+<div class="note tip"><span class="ic">⚠️</span><p><strong>شرط هام جداً:</strong> عند استخدام هذه الطريقة، يجب أن يكون عدد القيم المدخلة مساوياً لعدد الأعمدة في الجدول، وبنفس الترتيب تماماً. نستخدم <span class="k">NULL</span> لعمود <span class="k">id</span> ليقوم بزيادة الرقم تلقائياً.</p></div>
+<div style="height:12px"></div>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees
+VALUES (NULL, 'خالد', 'HR', 4000.00);</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">3. الإضافة المتعددة (Bulk Insert)</h3>
+<p class="ex-d">لتحسين أداء قاعدة البيانات وتوفير الوقت، يمكنك إضافة عدة سجلات دفعة واحدة في استعلام واحد.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees (name, department, salary)
+VALUES
+('سارة', 'HR', 4500.00),
+('عمر', 'Sales', 4800.00);</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">4. الإضافة باستخدام طريقة SET</h3>
+<p class="ex-d">هذه الطريقة خاصة بـ MySQL، وهي أنيقة جداً وتسهل قراءة الكود، حيث تشبه طريقة كتابة التحديث.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees
+SET name = 'محمود', department = 'IT', salary = 6000.00;</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">5. النسخ من جدول لآخر (INSERT INTO ... SELECT)</h3>
+<p class="ex-d">نستخدمها عندما نريد أخذ بيانات من جدول وإضافتها لجدول آخر (مثلاً لعمل أرشيف).</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees_archive (name, department, salary)
+SELECT name, department, salary FROM employees WHERE department = 'Sales';</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">6. الإضافة الآمنة مع تجاهل الأخطاء (INSERT IGNORE)</h3>
+<p class="ex-d">إذا حاولت إدخال موظف موجود مسبقاً (لديه نفس المعرف ID مثلاً)، فلن يتوقف النظام ولن يُظهر رسالة خطأ، بل سيتجاهل هذا السطر ويكمل إضافة باقي السجلات.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT IGNORE INTO employees (id, name, department)
+VALUES (1, 'أحمد', 'IT');</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">7. الإضافة أو التحديث (ON DUPLICATE KEY UPDATE)</h3>
+<p class="ex-d">إذا كان السجل غير موجود سيتم إنشاؤه، وإذا كان موجوداً بالفعل سيقوم النظام بتحديثه ببياناتك الجديدة.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees (id, name, salary)
+VALUES (1, 'أحمد', 5500.00)
+ON DUPLICATE KEY UPDATE salary = 5500.00;</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">8. إضافة القيم الافتراضية فقط</h3>
+<p class="ex-d">إذا كانت جميع أعمدة الجدول تحتوي على قيم افتراضية (<span class="k">DEFAULT</span>)، يمكنك إضافة صف يعتمد على هذه القيم فقط.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees () VALUES ();</code></div></div></div>
+</section>
+
+<!-- 2 -->
+<section class="sec rv" id="dml2-ar-s2">
+<div class="sec-head"><div class="num">2</div><h2>ثانياً: التحديث (UPDATE) والشروط المعقدة</h2></div>
+<div class="note warn"><span class="ic">🚨</span><p><strong>تحذير خطير:</strong> يجب دائماً استخدام شرط <span class="k">WHERE</span> مع تعليمة <span class="k">UPDATE</span>. إذا لم تكتبه، سيقوم النظام بتحديث بيانات الجدول بالكامل!</p></div>
+<p class="sec-lead">عند التعامل مع قواعد بيانات حقيقية، نحتاج لتحديث سجلات بناءً على شروط دقيقة ومعقدة باستخدام <span class="k">AND</span> و <span class="k">OR</span>:</p>
+
+<div class="ex"><h3 class="ex-t">1. استخدام AND (تطابق جميع الشروط)</h3>
+<p class="ex-d">نستخدمها عندما نريد أن يتحقق كل من الشرطين معاً. (مثال: تحديث الراتب فقط إذا كان الموظف في قسم IT <strong>و</strong> راتبه الحالي أقل من 5000).</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>UPDATE employees
+SET salary = 5500.00
+WHERE department = 'IT' AND salary &lt; 5000;</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">2. استخدام OR (يكفي تحقق شرط واحد)</h3>
+<p class="ex-d">نستخدمها لتطبيق التغيير إذا تحقق أي شرط. (مثال: إضافة 500 دولار لأي موظف سواء كان في قسم الموارد البشرية <strong>أو</strong> المبيعات).</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>UPDATE employees
+SET salary = salary + 500
+WHERE department = 'HR' OR department = 'Sales';</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">3. دمج AND مع OR (يجب استخدام الأقواس!)</h3>
+<p class="ex-d">الأقواس هنا تنقذك من كوارث برمجية. إذا أردنا زيادة رواتب الموظفين بنسبة 10% لمن يعملون في قسم IT أو المبيعات، ولكن بشرط أن يكون راتبهم أقل من 4000، يجب وضع <span class="k">OR</span> داخل أقواس لتُنفذ أولاً.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>UPDATE employees
+SET salary = salary * 1.10
+WHERE (department = 'IT' OR department = 'Sales')
+  AND salary &lt; 4000;</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">4. البديل الأذكى لـ OR (استخدام IN)</h3>
+<p class="ex-d">بدلاً من تكرار <span class="k">OR</span> للبحث في نفس العمود، نستخدم <span class="k">IN</span> لتحديد قائمة من القيم.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>UPDATE employees
+SET salary = salary + 200
+WHERE department IN ('HR', 'Sales', 'IT');</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">5. دمج الشروط مع أدوات البحث (LIKE و BETWEEN)</h3>
+<p class="ex-d">للوصول لبيانات محددة جداً. (مثال: ترقية الموظف لقسم VIP إذا كان اسمه يبدأ بحرف "أ" <strong>و</strong> راتبه بين 3000 و 4000).</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="نسخ" aria-label="نسخ الكود"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>UPDATE employees
+SET department = 'VIP'
+WHERE name LIKE 'أ%'
+  AND (salary BETWEEN 3000 AND 4000);</code></div></div></div>
+</section>
+
+<!-- 3 -->
+<section class="sec rv" id="dml2-ar-s3">
+<div class="sec-head"><div class="num">3</div><h2>ثالثاً: الفرق الجوهري بين الحذف (DELETE, TRUNCATE, DROP)</h2></div>
+<p class="sec-lead">جميعها تحذف، لكن طريقة العمل والنتيجة تختلف تماماً. لتبسيطها، تخيل أن جدول البيانات عبارة عن "دفتر ملاحظات":</p>
+
+<div class="ex"><h3 class="ex-t">طريقة DELETE (استخدام الممحاة) 🧽</h3>
+<p class="ex-d">أنت تمسك ممحاة وتمسح البيانات سطراً بسطر. يمكنك اختيار مسح سطر واحد أو عدة أسطر باستخدام <span class="k">WHERE</span>. لأنها بطيئة وتسجل كل حركة، يمكنك التراجع عنها (Rollback). لا تقوم هذه العملية بتصفير عداد الأرقام التلقائية (ID).</p></div>
+
+<div class="ex"><h3 class="ex-t">طريقة TRUNCATE (تمزيق الصفحة) 📄</h3>
+<p class="ex-d">أنت لا تستخدم الممحاة، بل تمزق الصفحة المكتوبة بالكامل وتضع صفحة بيضاء جديدة. هي تحذف كل شيء دفعة واحدة وبسرعة فائقة، ولا تقبل استخدام <span class="k">WHERE</span>. والأهم أنها تُصفر عداد الترقيم (ID) ليعود إلى رقم 1، ولا يمكن التراجع عنها.</p></div>
+
+<div class="ex"><h3 class="ex-t">طريقة DROP TABLE (الدمار الشامل) 🔥</h3>
+<p class="ex-d">أنت ترمي الدفتر بالكامل في النار. يتم مسح البيانات، وهيكل الجدول، والصلاحيات، وكل ما يتعلق به تماماً من قاعدة البيانات.</p></div>
+
+<div class="ex"><h3 class="ex-t">📊 جدول المقارنة</h3>
+<div class="tw"><table class="cmp">
+<thead><tr><th>الميزة</th><th>DELETE</th><th>TRUNCATE</th><th>DROP TABLE</th></tr></thead>
+<tbody>
+<tr><td>ماذا يحذف؟</td><td>صفوف محددة (WHERE) أو كل الصفوف</td><td>جميع الصفوف فقط</td><td>البيانات + هيكل الجدول نفسه</td></tr>
+<tr><td>هل يقبل WHERE؟</td><td>✅ نعم</td><td>❌ لا</td><td>❌ لا</td></tr>
+<tr><td>سرعة التنفيذ</td><td>🐢 بطيئة (سطر بسطر)</td><td>🚀 سريعة جداً</td><td>🚀 سريعة جداً</td></tr>
+<tr><td>تصفير عداد (ID)</td><td>❌ لا</td><td>✅ نعم</td><td>لا ينطبق (الجدول يُحذف)</td></tr>
+<tr><td>إمكانية التراجع</td><td>✅ نعم (إذا استخدمت Transactions)</td><td>❌ لا</td><td>❌ لا</td></tr>
+</tbody></table></div></div>
+</section>
+
+<button type="button" class="top" data-pdf-ignore aria-label="العودة للأعلى"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg></button>
+</div>
+
+<script>
+(function(){
+/* ================= Settings (Arabic / RTL) ================= */
+var CFG={
+  sel:'.lxa[data-lesson="dml2-ar"]', /* root selector — unique to this lesson */
+  idp:'dml2-ar-',          /* section id prefix — unique to this lesson */
+  toastCls:'lxa-toast',
+  dir:'rtl',lang:'ar',
+  filename:'MySQL-INSERT-UPDATE-DELETE-Cases-AR.pdf',
+  pdfTitle:'شرح شامل لعمليات INSERT و UPDATE والحذف في MySQL',
+  headerText:'حالات INSERT و UPDATE والحذف في MySQL',
+  headerSub:'ملخص المحاضرة',
+  siteName:location.hostname,contentW:760,timeoutMs:120000,
+  t:{prep:'جارٍ التحضير… ',page:function(n,p){return 'صفحة '+n+' من '+p;},
+     ok:'الملف جاهز! 📄',okS:'جارٍ تنزيل ملخص المحاضرة',
+     err:'تعذّر إنشاء الملف',errS:'حاول مرة أخرى أو استخدم متصفح الكمبيوتر',
+     copy:'نسخ',copied:'تم النسخ!',cpT:'تم النسخ! 🚀',cpS:'الكود جاهز للصق',
+     cpErr:'فشل النسخ',cpErrS:'حدد الكود وانسخه يدوياً'}
+};
+var RTL=CFG.dir==='rtl';
+var LIB_H2C='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+var LIB_PDF='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+var PW=210,PH=297,MX=12,TOP=16,BOT=15,CMM=PW-MX*2,MPP=CMM/CFG.contentW,PCPX=(PH-TOP-BOT)/MPP;
+var SPIN='<svg class="spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle opacity=".25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path opacity=".75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+
+function toast(t,s,err){
+var el=document.createElement('div');el.className=CFG.toastCls+(err?' err':'');
+el.innerHTML='<div></div><small></small>';el.firstChild.textContent=t;el.lastChild.textContent=s||'';
+document.body.appendChild(el);requestAnimationFrame(function(){el.classList.add('show');});
+setTimeout(function(){el.classList.remove('show');setTimeout(function(){el.remove();},350);},2600);}
+function loadScript(src,ready){return new Promise(function(res,rej){
+if(ready())return res();
+var s=document.createElement('script'),t=setTimeout(function(){rej(new Error('timeout '+src));},20000);
+s.src=src;s.onload=function(){clearTimeout(t);res();};s.onerror=function(){clearTimeout(t);rej(new Error('load '+src));};
+document.head.appendChild(s);});}
+function tick(){return new Promise(function(r){requestAnimationFrame(function(){setTimeout(r,0);});});}
+function pickScale(w,h){var ua=navigator.userAgent,ios=/iP(hone|ad|od)/i.test(ua),mob=ios||/Android/i.test(ua)||innerWidth<768;
+var s=mob?2:3,A=ios?14e6:(mob?40e6:60e6),S=ios?16000:30000;
+while(s>1&&(w*s*h*s>A||h*s>S))s-=.25;return Math.max(s,1);}
+
+/* Page-break candidates: section tops and example/note blocks */
+function getCands(clone){
+var base=clone.getBoundingClientRect().top,cand=[];
+[].slice.call(clone.querySelectorAll('.sec, .sec > .ex, .sec > .note, .sec > .tw')).forEach(function(el){
+if(el.classList.contains('sec')){cand.push(el.getBoundingClientRect().top-base);return;}
+var p=el.previousElementSibling;
+if(!p||p.classList.contains('sec-head')||p.classList.contains('sec-lead'))return;
+cand.push(el.getBoundingClientRect().top-base);});
+return cand.sort(function(a,b){return a-b;});}
+
+/* Snap each break up to a fully blank pixel row so a page never cuts through text or code */
+function computeBreaks(big,cands,sc){
+var ctx=big.getContext('2d'),W=big.width,Hc=big.height,P=PCPX*sc,band=Math.ceil(sc*1.5),
+c=cands.map(function(v){return Math.round(v*sc);}),br=[0],st=0;
+function blank(y){var d=ctx.getImageData(0,y,W,band).data;
+for(var i=0;i<d.length;i+=4)if(d[i]<235||d[i+1]<235||d[i+2]<235)return false;return true;}
+while(Hc-st>P+1){
+var lim=Math.floor(st+P-band),best=-1;
+for(var i=0;i<c.length;i++)if(c[i]>st+40*sc&&c[i]<=lim)best=c[i];
+var t=best<0?lim:best,y=t,min=st+P*.4;
+while(y>min&&!blank(y))y--;
+if(y<=min)y=t;
+br.push(y/sc);st=y;}
+br.push(Hc/sc);return br;}
+
+/* Header/footer strip: first text on the reading-start side, second on the end side */
+function strip(w,h,a,fa,ca,b,fb,cb,bDir){
+var c=document.createElement('canvas');c.width=Math.round(w*12);c.height=Math.round(h*12);
+var x=c.getContext('2d'),W=c.width,Hh=c.height;x.textBaseline='middle';
+x.font=fa;x.fillStyle=ca;x.direction=CFG.dir;x.textAlign=RTL?'right':'left';x.fillText(a,RTL?W-4:4,Hh/2);
+x.font=fb;x.fillStyle=cb;x.direction=bDir||CFG.dir;x.textAlign=RTL?'left':'right';x.fillText(b,RTL?4:W-4,Hh/2);
+var u=c.toDataURL('image/png');c.width=c.height=0;return u;}
+
+/* Light SQL syntax highlighting (display only; copy reads plain text) */
+var KW='OR|IN|LIKE|BETWEEN|INSERT|INTO|VALUES|IGNORE|DUPLICATE|AUTO_INCREMENT|TRUNCATE|CREATE|ALTER|TABLE|ADD|DROP|COLUMN|MODIFY|CHANGE|RENAME|TO|CONSTRAINT|UNIQUE|CHECK|DEFAULT|SET|PRIMARY|FOREIGN|KEY|REFERENCES|ON|DELETE|UPDATE|CASCADE|RESTRICT|NOT|NULL|SELECT|FROM|WHERE|AND|INT|VARCHAR|DECIMAL|YEAR';
+var HL=new RegExp("(--[^\\n]*)|('[^'\\n]*')|\\b(\\d+)\\b|\\b("+KW+")\\b","gi");
+var AR=/[\u0600-\u06FF]/;
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function highlight(root){
+[].slice.call(root.querySelectorAll('.code .pre code')).forEach(function(c){
+if(c.getAttribute('data-hl'))return;c.setAttribute('data-hl','1');
+c.innerHTML=esc(c.textContent).replace(HL,function(m,cm,st,nu,kw){
+if(cm){var r=cm.slice(2);return '<span class="tc">--'+(AR.test(r)?'<bdi dir="rtl">'+r+'</bdi>':r)+'</span>';}
+if(st)return '<span class="ts">'+(AR.test(st)?'<bdi dir="rtl">'+st+'</bdi>':st)+'</span>';
+if(nu)return '<span class="tn">'+nu+'</span>';
+return '<span class="tk">'+kw+'</span>';});});}
+
+function init(root){
+if(root.getAttribute('data-bound'))return;root.setAttribute('data-bound','1');
+root.setAttribute('dir',CFG.dir);
+highlight(root);
+var busy=false,bar=root.querySelector('.bar i'),topBtn=root.querySelector('.top');
+var chips=[].slice.call(root.querySelectorAll('.nav a')),navS=root.querySelector('.nav-s');
+
+/* ---- PDF ---- */
+async function pdfExport(btn){
+if(busy)return;busy=true;
+var pi=btn.querySelector('.pi'),pl=btn.querySelector('.pl'),oi=pi.innerHTML,ol=pl.textContent,holder=null,timer=null,big=null;
+function prog(p){pl.textContent=CFG.t.prep+Math.round(p)+'%';}
+btn.disabled=true;pi.innerHTML=SPIN;prog(2);
+try{
+var job=(async function(){
+await tick();
+await loadScript(LIB_H2C,function(){return !!window.html2canvas;});
+await loadScript(LIB_PDF,function(){return !!(window.jspdf&&window.jspdf.jsPDF);});
+if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+prog(12);
+var font=getComputedStyle(root).fontFamily||'Arial, sans-serif';
+var clone=root.cloneNode(true);
+clone.removeAttribute('data-bound');clone.classList.add('pdf-mode');
+clone.setAttribute('dir',CFG.dir);clone.setAttribute('lang',CFG.lang);
+clone.style.direction=CFG.dir;clone.style.textAlign=RTL?'right':'left';
+clone.querySelectorAll('[data-pdf-ignore],button,script').forEach(function(e){e.remove();});
+holder=document.createElement('div');holder.setAttribute('data-pdf-holder',CFG.idp);holder.setAttribute('aria-hidden','true');holder.setAttribute('dir',CFG.dir);
+holder.style.cssText='direction:'+CFG.dir+';position:fixed;left:-10000px;top:0;width:'+CFG.contentW+'px;background:#fff;pointer-events:none;';
+holder.appendChild(clone);document.body.appendChild(holder);await tick();
+var H=Math.ceil(clone.getBoundingClientRect().height),scale=pickScale(CFG.contentW,Math.ceil(H*1.25)),cands=[];
+prog(20);
+big=await html2canvas(clone,{scale:scale,width:CFG.contentW,windowWidth:CFG.contentW,windowHeight:Math.ceil(H*1.5)+400,scrollX:0,scrollY:0,useCORS:true,backgroundColor:'#fff',logging:false,
+onclone:function(d,el){cands=getCands(el);}});
+prog(60);
+var sc=big.width/CFG.contentW,breaks=computeBreaks(big,cands,sc);
+var pdf=new jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
+pdf.setProperties({title:CFG.pdfTitle,subject:CFG.pdfTitle,creator:CFG.siteName});
+var pages=breaks.length-1;
+var hdr=strip(CMM,7,CFG.headerText,'700 38px '+font,'#0f766e',CFG.headerSub,'500 34px '+font,'#94a3b8');
+for(var i=0;i<pages;i++){
+if(i)pdf.addPage();
+var b0=breaks[i],b1=breaks[i+1],sy=Math.round(b0*sc),sh=Math.max(1,Math.min(big.height-sy,Math.round(b1*sc)-sy));
+var sl=document.createElement('canvas');sl.width=big.width;sl.height=sh;
+var cx=sl.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,sl.width,sl.height);cx.drawImage(big,0,sy,big.width,sh,0,0,big.width,sh);
+var img=sl.toDataURL('image/jpeg',.93);sl.width=sl.height=0;
+pdf.addImage(img,'JPEG',MX,TOP,CMM,(sh/sc)*MPP,undefined,'FAST');
+pdf.setFillColor(13,148,136);pdf.rect(0,0,PW,2.4,'F');pdf.setFillColor(52,211,153);pdf.rect(RTL?PW-70:0,0,70,2.4,'F');
+pdf.setDrawColor(226,232,240);pdf.setLineWidth(.3);
+if(i){pdf.addImage(hdr,'PNG',MX,5,CMM,7);pdf.line(MX,13,PW-MX,13);}
+var ftr=strip(CMM,7,CFG.t.page(i+1,pages),'500 34px '+font,'#64748b',CFG.siteName,'500 34px '+font,'#64748b','ltr');
+pdf.line(MX,PH-12,PW-MX,PH-12);pdf.addImage(ftr,'PNG',MX,PH-11,CMM,7);
+prog(60+((i+1)/pages)*35);await tick();}
+big.width=big.height=0;big=null;prog(98);await tick();
+pdf.save(CFG.filename);
+})();
+var to=new Promise(function(_,rej){timer=setTimeout(function(){rej(new Error('PDF export timeout'));},CFG.timeoutMs);});
+job.catch(function(){});
+await Promise.race([job,to]);
+toast(CFG.t.ok,CFG.t.okS);
+}catch(e){console.error(e);toast(CFG.t.err,CFG.t.errS,true);}
+finally{clearTimeout(timer);if(big)big.width=big.height=0;
+document.querySelectorAll('[data-pdf-holder="'+CFG.idp+'"]').forEach(function(el){el.remove();});
+busy=false;btn.disabled=false;pi.innerHTML=oi;pl.textContent=ol;}
+}
+
+/* ---- copy ---- */
+function copyText(t){
+if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);
+return new Promise(function(res,rej){var a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();
+try{document.execCommand('copy')?res():rej();}catch(e){rej(e);}a.remove();});}
+
+root.addEventListener('click',function(e){
+var cp=e.target.closest('.cp');
+if(cp){copyText(cp.closest('.code').querySelector('code').innerText.trim()).then(function(){
+cp.dataset.label=CFG.t.copied;cp.classList.add('ok');toast(CFG.t.cpT,CFG.t.cpS);
+setTimeout(function(){cp.dataset.label=CFG.t.copy;cp.classList.remove('ok');},1800);
+}).catch(function(){toast(CFG.t.cpErr,CFG.t.cpErrS,true);});return;}
+var pb=e.target.closest('.lx-pdf');if(pb){pdfExport(pb);return;}
+var a=e.target.closest('.nav a');
+if(a){e.preventDefault();var t=root.querySelector('#'+CFG.idp+a.getAttribute('data-t'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});return;}
+if(e.target.closest('.top'))root.scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+/* ---- progress bar + back-to-top ---- */
+function onScroll(){var r=root.getBoundingClientRect(),tot=r.height-innerHeight;
+bar.style.width=Math.max(0,Math.min(1,tot>0?-r.top/tot:0))*100+'%';
+topBtn.classList.toggle('show',-r.top>700&&r.bottom>200);}
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
+
+/* ---- reveal + active section ---- */
+var rv=[].slice.call(root.querySelectorAll('.rv'));
+if('IntersectionObserver' in window){
+var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.02});
+rv.forEach(function(el){io.observe(el);});
+var heads=[].slice.call(root.querySelectorAll('.sec-head'));
+var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;
+var id=en.target.closest('.sec').id.replace(CFG.idp,'');
+chips.forEach(function(c){var on=c.getAttribute('data-t')===id;c.classList.toggle('on',on);
+if(on){var cr=c.getBoundingClientRect(),nr=navS.getBoundingClientRect();
+navS.scrollBy({left:(cr.left+cr.width/2)-(nr.left+nr.width/2),behavior:'smooth'});}});});},{rootMargin:'-90px 0px -65% 0px'});
+heads.forEach(function(h){io2.observe(h);});
+}else rv.forEach(function(el){el.classList.add('in');});
+}
+[].slice.call(document.querySelectorAll(CFG.sel)).forEach(init);
+})();
+</script>
+</code>
+<!--ar-end-->
+      </div>
+    </section>
+    <section id="lang-en" lang="en" dir="ltr">
+      <h1 class="heading font-extrabold text-3xl leading-snug">INSERT, UPDATE &amp; Delete in MySQL: 8 Insert Cases and Complex Conditions</h1>
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-ink/60">
+        
+        <time datetime="2026-11-03">November 3, 2026</time>
+        <span>10 min read</span>
+        <span class="views inline-flex items-center gap-1.5 rounded-full bg-white border border-rule px-2.5 py-0.5" hidden><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b class="views-num text-ink"></b><span>views</span></span>
+      </p>
+      <div class="article mt-6">
+<!--en-start-->
+<code><style>
+/* ============ English lesson (LTR) — INSERT cases / UPDATE conditions / DELETE vs TRUNCATE vs DROP — scoped to .lxe ============ */
+.lxe{--ink:#0f172a;--mut:#475569;--line:#e2e8f0;--soft:#f8fafc;--brand:#0d9488;--brand2:#14b8a6;max-width:860px;margin:0 auto;color:var(--ink);line-height:1.8;font-size:16.5px;direction:ltr;text-align:left}
+.lxe *{box-sizing:border-box}
+.lxe h1,.lxe h2,.lxe h3,.lxe h4,.lxe p{font-family:inherit}
+
+/* ---------- Hero ---------- */
+.lxe .hero{position:relative;overflow:hidden;border-radius:22px;padding:30px 28px;margin-bottom:18px;color:#fff;background:linear-gradient(135deg,#0f766e 0%,#14b8a6 55%,#34d399 100%);box-shadow:0 14px 30px -14px rgba(13,148,136,.65)}
+.lxe .hero::before{content:"";position:absolute;left:-40px;bottom:-70px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
+.lxe .hero::after{content:"";position:absolute;right:-30px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.14)}
+.lxe .hero-in{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start}
+.lxe .hero-ic{font-size:2.4rem;line-height:1;flex:none}
+.lxe .hero h1{margin:0 0 8px;font-size:1.8rem;font-weight:800;color:#fff;line-height:1.35}
+.lxe .hero p{margin:0 0 14px;color:#ecfdf5;font-size:1.02rem;line-height:1.7}
+.lxe .chips{display:flex;flex-wrap:wrap;gap:8px}
+.lxe .chips span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:700}
+
+/* ---------- Nav ---------- */
+.lxe .nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);margin:0 0 22px;padding-top:10px;border-bottom:1px solid var(--line)}
+.lxe .nav-s{display:flex;gap:8px;overflow-x:auto;padding:0 2px 10px;scrollbar-width:none}
+.lxe .nav-s::-webkit-scrollbar{display:none}
+.lxe .nav a{flex:none;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--mut);background:#f1f5f9;text-decoration:none;border:1px solid var(--line);transition:background .2s,color .2s,border-color .2s}
+.lxe .nav a:hover{background:#ccfbf1;color:#0f766e}
+.lxe .nav a.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.lxe .bar{height:3px;background:var(--line)}.lxe .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand2),#34d399)}
+
+/* ---------- Download strip ---------- */
+.lxe .dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;margin-bottom:28px}
+.lxe .dl-i{width:48px;height:48px;border-radius:12px;background:#fef2f2;border:1px solid #fee2e2;display:flex;align-items:center;justify-content:center;flex:none;color:#ef4444}
+.lxe .dl-t{flex:1;min-width:200px}.lxe .dl-t h4{margin:0;font-size:1rem;font-weight:800}.lxe .dl-t p{margin:2px 0 0;font-size:.86rem;color:#64748b;line-height:1.6}
+.lxe .lx-pdf{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:12px;cursor:pointer;color:#fff;font-weight:700;font-size:.95rem;font-family:inherit;background:linear-gradient(90deg,var(--brand),var(--brand2));box-shadow:0 8px 16px -8px rgba(13,148,136,.7);transition:transform .2s}
+.lxe .lx-pdf:hover{transform:translateY(-1px)}.lxe .lx-pdf:disabled{opacity:.7;cursor:wait;transform:none}
+.lxe .lx-pdf svg{width:18px;height:18px}
+.lxe .spin{animation:lxes 1s linear infinite}@keyframes lxes{to{transform:rotate(360deg)}}
+
+/* ---------- Section card ---------- */
+.lxe .sec{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin:0 0 24px;box-shadow:0 1px 3px rgba(15,23,42,.05),0 12px 24px -18px rgba(15,23,42,.18);scroll-margin-top:84px}
+.lxe .sec-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.lxe .num{flex:none;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 6px 12px -6px rgba(13,148,136,.7)}
+.lxe .sec-head h2{margin:0;font-size:1.35rem;font-weight:800;line-height:1.45;color:var(--ink)}
+.lxe .sec-lead{margin:10px 0 0;color:var(--mut);font-size:.98rem}
+.lxe .sec-lead:empty{display:none}
+.lxe .k{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.86em;background:#f1f5f9;border:1px solid #e5e9f0;padding:1px 6px;border-radius:6px;color:#0f766e;white-space:nowrap;direction:ltr;display:inline-block;line-height:1.5}
+
+/* ---------- Example blocks ---------- */
+.lxe .ex{margin-top:22px;padding-top:20px;border-top:1px dashed var(--line)}
+.lxe .sec-head+.ex,.lxe .sec-lead+.ex{margin-top:18px;padding-top:0;border-top:0}
+.lxe .ex-t{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:.98rem;font-weight:700;color:var(--ink);line-height:1.6}
+.lxe .ex-t::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--brand2)}
+.lxe .ex-d{margin:0 0 10px;color:var(--mut);font-size:.94rem}
+.lxe .ex-t+.code{margin-top:10px}
+
+/* ---------- Code ---------- */
+.lxe .code{border-radius:12px;overflow:hidden;background:#0f172a;border:1px solid #1e293b;direction:ltr;text-align:left}
+.lxe .code-bar{display:flex;justify-content:space-between;align-items:center;padding:6px 8px 6px 14px;background:#1e293b;color:#94a3b8;font:700 .7rem ui-monospace,monospace;letter-spacing:.12em}
+.lxe .cp{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;cursor:pointer;font:600 .76rem system-ui,sans-serif;transition:background .2s,color .2s,border-color .2s}
+.lxe .cp svg{width:14px;height:14px}.lxe .cp::after{content:attr(data-label)}
+.lxe .cp:hover{background:#334155}.lxe .cp.ok{color:#34d399;border-color:#34d399}
+.lxe .code .pre{display:block;margin:0;padding:14px 16px;overflow-x:auto;white-space:pre;color:#e2e8f0;background:none;border:0;border-radius:0;font:.88rem/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;direction:ltr;text-align:left}
+.lxe .code .pre code{background:none;color:inherit;padding:0;font:inherit}
+.lxe .code .pre button,.lxe .code>button:not(.cp),.lxe .code [class*="copy"]:not(.cp){display:none!important}
+.lxe .tk{color:#7dd3fc;font-weight:600}.lxe .ts{color:#fcd34d}.lxe .tn{color:#f0abfc}.lxe .tc{color:#64748b;font-style:italic}
+
+/* ---------- Notes ---------- */
+.lxe .note{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;margin:14px 0 0;border-radius:12px;border:1px solid;border-left-width:4px;font-size:.93rem;line-height:1.7}
+.lxe .note .ic{font-size:1.15rem;line-height:1.5;flex:none}.lxe .note p{margin:0!important;color:inherit!important}
+.lxe .note .k{background:rgba(255,255,255,.7);color:inherit;border-color:rgba(0,0,0,.08)}
+.lxe .tip{background:#fffbeb;border-color:#fde68a;border-left-color:#f59e0b;color:#92400e}
+.lxe .warn{background:#fef2f2;border-color:#fecaca;border-left-color:#ef4444;color:#991b1b}
+.lxe .good{background:#ecfdf5;border-color:#a7f3d0;border-left-color:#10b981;color:#065f46}
+
+/* ---------- Table ---------- */
+.lxe .tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0;background:#fff}
+.lxe table{width:100%;min-width:560px;border-collapse:collapse;text-align:left}
+.lxe th{padding:11px 14px;background:#f1f5f9;color:#334155;font-weight:700;font-size:.88rem;border-bottom:1px solid var(--line);text-align:left}
+.lxe td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:var(--mut);font-size:.92rem;vertical-align:top;text-align:left}
+.lxe td:first-child{width:30%;font:700 .82rem ui-monospace,monospace;color:#0f766e;word-break:break-word}
+.lxe tr:last-child td{border-bottom:0}.lxe tr:hover td{background:var(--soft)}
+
+/* ---------- Misc ---------- */
+.lxe .rv{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}.lxe .rv.in{opacity:1;transform:none}
+.lxe .top{position:fixed;right:18px;left:auto;bottom:18px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;color:#fff;background:var(--brand);box-shadow:0 8px 16px -4px rgba(13,148,136,.55);display:flex;align-items:center;justify-content:center;padding:0;opacity:0;pointer-events:none;transition:opacity .25s,transform .2s}
+.lxe .top:hover{transform:translateY(-2px)}
+.lxe .top.show{opacity:1;pointer-events:auto}
+.lxe-toast{position:fixed;top:16px;right:16px;z-index:99999;max-width:320px;padding:12px 16px;border-radius:14px;border-left:6px solid #5eead4;background:#0f766e;color:#fff;font:600 .9rem/1.5 system-ui,sans-serif;direction:ltr;text-align:left;box-shadow:0 20px 25px -5px rgba(15,118,110,.35);opacity:0;transform:translateY(-16px);transition:all .3s}
+.lxe-toast.show{opacity:1;transform:none}.lxe-toast.err{background:#b91c1c}.lxe-toast small{display:block;font-weight:400;opacity:.9}
+.lxe a:focus-visible,.lxe button:focus-visible{outline:3px solid #5eead4;outline-offset:2px}
+
+@media(max-width:560px){
+.lxe{font-size:16px}
+.lxe .hero{padding:24px 20px}.lxe .hero h1{font-size:1.45rem}
+.lxe .sec{padding:20px 16px;border-radius:16px}
+.lxe .sec-head h2{font-size:1.15rem}.lxe .num{width:38px;height:38px;font-size:1.05rem}
+.lxe .lx-pdf{width:100%}
+.lxe .code .pre{font-size:.82rem;padding:12px 14px}
+}
+@media(prefers-reduced-motion:reduce){.lxe *{transition:none!important;animation:none!important}.lxe .rv{opacity:1;transform:none}}
+
+/* ---------- PDF mode ---------- */
+.lxe.pdf-mode{width:760px;max-width:none;margin:0;padding:2px 2px 28px;background:#fff}
+.lxe.pdf-mode *{letter-spacing:normal!important;word-spacing:normal!important;box-shadow:none!important;backdrop-filter:none!important;transition:none!important;animation:none!important;transform:none!important}
+.lxe.pdf-mode .rv{opacity:1!important}
+.lxe.pdf-mode .sec{border:0;border-top:2px solid var(--line);border-radius:0;padding:22px 0 4px;margin:0}
+.lxe.pdf-mode .tw{overflow:visible}.lxe.pdf-mode table{min-width:0}
+.lxe.pdf-mode .code .pre{white-space:pre-wrap;overflow:visible}
+
+/* ---------- Force LTR (beats any RTL theme CSS) ---------- */
+.lxe,.lxe *{direction:ltr}
+.lxe{text-align:left}
+.lxe .hero-in,.lxe .sec-head,.lxe .dl,.lxe .note,.lxe .chips,.lxe .nav-s{flex-direction:row}
+
+/* ---------- Lists + comparison table ---------- */
+.lxe .lst{margin:0 0 12px;padding-left:22px;color:var(--mut);font-size:.94rem;list-style:disc}
+.lxe .lst li{margin:4px 0}.lxe .lst li::marker{color:var(--brand2)}
+.lxe .ex>.lst+.code{margin-top:4px}
+.lxe table.cmp td:first-child{width:28%;font:700 .86rem system-ui,sans-serif;color:var(--ink)}
+.lxe table.cmp th:not(:first-child){font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#0f766e}
+.lxe .sec-head+.note{margin-top:16px}
+.lxe .note+.sec-lead{margin-top:14px}
+</style>
+
+<div class="lxe" dir="ltr" lang="en" data-lesson="dml2-en">
+
+<div class="hero"><div class="hero-in"><span class="hero-ic">🧩</span><div>
+<h1>A Complete Guide to INSERT, UPDATE, and Deletion in MySQL</h1>
+<p>A detailed, step-by-step explanation of every INSERT case in MySQL, UPDATE with complex conditions, and the core difference between DELETE, TRUNCATE, and DROP.</p>
+<div class="chips"><span>MySQL</span><span>8 INSERT cases</span><span>5 UPDATE cases</span><span>Ready-to-copy SQL</span></div>
+</div></div></div>
+
+<div class="nav" data-pdf-ignore><div class="nav-s">
+<a href="#" data-t="s0">Setup</a><a href="#" data-t="s1">Part 1 · INSERT</a><a href="#" data-t="s2">Part 2 · UPDATE</a><a href="#" data-t="s3">Part 3 · DELETE vs TRUNCATE vs DROP</a>
+</div><div class="bar"><i></i></div></div>
+
+<div class="dl" data-pdf-ignore>
+<div class="dl-i"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg></div>
+<div class="dl-t"><h4>Download the Lecture Summary</h4><p>A neatly formatted PDF, ready for review and printing offline</p></div>
+<button type="button" class="lx-pdf"><span class="pi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></span><span class="pl">Download Summary (PDF)</span></button>
+</div>
+
+<!-- 0 -->
+<section class="sec rv" id="dml2-en-s0">
+<div class="sec-head"><div class="num">🛠️</div><h2>Introduction: Environment Setup</h2></div>
+<p class="sec-lead">Before we start executing operations, let's create a table named <span class="k">employees</span> to apply all the upcoming explanations and code examples:</p>
+<div class="ex"><div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    department VARCHAR(50),
+    salary DECIMAL(10, 2)
+);</code></div></div></div>
+</section>
+
+<!-- 1 -->
+<section class="sec rv" id="dml2-en-s1">
+<div class="sec-head"><div class="num">1</div><h2>Part One: All INSERT Cases in MySQL</h2></div>
+<p class="sec-lead">The <span class="k">INSERT</span> statement is used to add new data to a table. In modern versions of MySQL, there are 8 different methods and use cases for insertion:</p>
+
+<div class="ex"><h3 class="ex-t">1. Standard Insert (Specifying Columns and Values)</h3>
+<p class="ex-d">This is the safest and clearest method. We specify the column names first, then pass the values in the exact same order.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees (name, department, salary)
+VALUES ('Ahmed', 'IT', 5000.00);</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">2. Shorthand Insert (Without Specifying Columns)</h3>
+<p class="ex-d">Here, we write the values directly without mentioning the column names.</p>
+<div class="note tip"><span class="ic">⚠️</span><p><strong>CRITICAL CONDITION:</strong> When using this method, the number of inserted values must exactly match the number of columns in the table, and in the exact same order. We use <span class="k">NULL</span> for the <span class="k">id</span> column so it auto-increments.</p></div>
+<div style="height:12px"></div>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees
+VALUES (NULL, 'Khalid', 'HR', 4000.00);</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">3. Bulk Insert (Multiple Rows)</h3>
+<p class="ex-d">To improve database performance and save time, you can insert multiple records at once in a single query.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees (name, department, salary)
+VALUES
+('Sarah', 'HR', 4500.00),
+('Omar', 'Sales', 4800.00);</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">4. Inserting Using the SET Method</h3>
+<p class="ex-d">This method is specific to MySQL. It is very elegant and easy to read, as it looks very similar to an <span class="k">UPDATE</span> statement.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees
+SET name = 'Mahmoud', department = 'IT', salary = 6000.00;</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">5. Copying from Another Table (INSERT INTO ... SELECT)</h3>
+<p class="ex-d">We use this when we want to take data from one table and insert it into another (e.g., for archiving).</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees_archive (name, department, salary)
+SELECT name, department, salary FROM employees WHERE department = 'Sales';</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">6. Safe Insert Ignoring Errors (INSERT IGNORE)</h3>
+<p class="ex-d">If you try to insert an employee that already exists (e.g., has the same Primary Key ID), the system won't stop or throw an error. Instead, it will ignore that specific row and continue inserting the rest of the records.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT IGNORE INTO employees (id, name, department)
+VALUES (1, 'Ahmed', 'IT');</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">7. Insert or Update (ON DUPLICATE KEY UPDATE)</h3>
+<p class="ex-d">Also known as an "Upsert". If the record doesn't exist, it will be created. If it already exists, the system will update it with your new data.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees (id, name, salary)
+VALUES (1, 'Ahmed', 5500.00)
+ON DUPLICATE KEY UPDATE salary = 5500.00;</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">8. Inserting Default Values Only</h3>
+<p class="ex-d">If all columns in your table have a <span class="k">DEFAULT</span> value set, you can insert a new row relying entirely on those default values.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>INSERT INTO employees () VALUES ();</code></div></div></div>
+</section>
+
+<!-- 2 -->
+<section class="sec rv" id="dml2-en-s2">
+<div class="sec-head"><div class="num">2</div><h2>Part Two: UPDATE and Complex Conditions</h2></div>
+<div class="note warn"><span class="ic">🚨</span><p><strong>CRITICAL WARNING:</strong> Always use a <span class="k">WHERE</span> clause with the <span class="k">UPDATE</span> statement. If you don't, the system will update every single row in the entire table!</p></div>
+<p class="sec-lead">When dealing with real databases, you often need to update records based on precise and complex conditions using <span class="k">AND</span> and <span class="k">OR</span>:</p>
+
+<div class="ex"><h3 class="ex-t">1. Using AND (All conditions must be met)</h3>
+<p class="ex-d">Used when both conditions must be true simultaneously. (Example: Update the salary ONLY IF the employee is in the IT department <strong>AND</strong> their current salary is less than 5000).</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>UPDATE employees
+SET salary = 5500.00
+WHERE department = 'IT' AND salary &lt; 5000;</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">2. Using OR (At least one condition must be met)</h3>
+<p class="ex-d">Used to apply the change if any of the conditions are true. (Example: Give a $500 bonus to any employee who is in HR <strong>OR</strong> Sales).</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>UPDATE employees
+SET salary = salary + 500
+WHERE department = 'HR' OR department = 'Sales';</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">3. Combining AND with OR (Parentheses are Mandatory!)</h3>
+<p class="ex-d">Parentheses save you from logical disasters. If we want to give a 10% raise to employees in IT or Sales, BUT only on the condition that their salary is less than 4000, we MUST put the <span class="k">OR</span> condition inside parentheses so it gets evaluated first.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>UPDATE employees
+SET salary = salary * 1.10
+WHERE (department = 'IT' OR department = 'Sales')
+  AND salary &lt; 4000;</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">4. The Smarter Alternative to OR (Using IN)</h3>
+<p class="ex-d">Instead of repeating <span class="k">OR</span> multiple times to check the same column, we use <span class="k">IN</span> to specify a list of acceptable values.</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>UPDATE employees
+SET salary = salary + 200
+WHERE department IN ('HR', 'Sales', 'IT');</code></div></div></div>
+
+<div class="ex"><h3 class="ex-t">5. Combining Conditions with Search Operators (LIKE &amp; BETWEEN)</h3>
+<p class="ex-d">Used to target very specific data. (Example: Promote an employee to the VIP department if their name starts with the letter "A" <strong>AND</strong> their salary is between 3000 and 4000).</p>
+<div class="code"><div class="code-bar"><span>SQL</span><button type="button" class="cp" data-label="Copy" aria-label="Copy code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div><div class="pre"><code>UPDATE employees
+SET department = 'VIP'
+WHERE name LIKE 'A%'
+  AND (salary BETWEEN 3000 AND 4000);</code></div></div></div>
+</section>
+
+<!-- 3 -->
+<section class="sec rv" id="dml2-en-s3">
+<div class="sec-head"><div class="num">3</div><h2>Part Three: The Core Difference Between Deletions (DELETE, TRUNCATE, DROP)</h2></div>
+<p class="sec-lead">All three commands remove things, but how they work and the final results are entirely different. To simplify it, imagine your database table is a "Notebook":</p>
+
+<div class="ex"><h3 class="ex-t">The DELETE Method (The Eraser) 🧽</h3>
+<p class="ex-d">You are holding an eraser and rubbing out data row by row. You can choose to erase one line or multiple lines using <span class="k">WHERE</span>. Because it is slow and logs every single action, you can undo it (Rollback). This operation does NOT reset the auto-increment counter (ID).</p></div>
+
+<div class="ex"><h3 class="ex-t">The TRUNCATE Method (Tearing out the page) 📄</h3>
+<p class="ex-d">You don't use the eraser; instead, you rip the entire written page out and replace it with a fresh blank page. It deletes everything at once at lightning speed, and it does NOT accept a <span class="k">WHERE</span> clause. Most importantly, it resets the auto-increment counter (ID) back to 1, and it cannot be undone.</p></div>
+
+<div class="ex"><h3 class="ex-t">The DROP TABLE Method (Total Destruction) 🔥</h3>
+<p class="ex-d">You throw the notebook into the fire. The data, the table structure, the permissions, and everything related to it are wiped entirely from the database.</p></div>
+
+<div class="ex"><h3 class="ex-t">📊 Comparison Table</h3>
+<div class="tw"><table class="cmp">
+<thead><tr><th>Feature</th><th>DELETE</th><th>TRUNCATE</th><th>DROP TABLE</th></tr></thead>
+<tbody>
+<tr><td>What gets removed?</td><td>Specific rows (WHERE) or all rows</td><td>All rows only</td><td>Data + Table structure itself</td></tr>
+<tr><td>Accepts WHERE clause?</td><td>✅ Yes</td><td>❌ No</td><td>❌ No</td></tr>
+<tr><td>Execution Speed</td><td>🐢 Slow (Row by row)</td><td>🚀 Extremely Fast</td><td>🚀 Extremely Fast</td></tr>
+<tr><td>Resets ID Counter</td><td>❌ No</td><td>✅ Yes</td><td>N/A (Table is destroyed)</td></tr>
+<tr><td>Can be undone?</td><td>✅ Yes (If using Transactions)</td><td>❌ No</td><td>❌ No</td></tr>
+</tbody></table></div></div>
+</section>
+
+<button type="button" class="top" data-pdf-ignore aria-label="Back to top"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg></button>
+</div>
+
+<script>
+(function(){
+/* ================= Settings (English / LTR) ================= */
+var CFG={
+  sel:'.lxe[data-lesson="dml2-en"]', /* root selector — unique to this lesson */
+  idp:'dml2-en-',          /* section id prefix — unique to this lesson */
+  toastCls:'lxe-toast',
+  dir:'ltr',lang:'en',
+  filename:'MySQL-INSERT-UPDATE-DELETE-Cases-EN.pdf',
+  pdfTitle:'A Complete Guide to INSERT, UPDATE, and Deletion in MySQL',
+  headerText:'INSERT Cases, UPDATE & Deletion in MySQL',
+  headerSub:'Lecture Summary',
+  siteName:location.hostname,contentW:760,timeoutMs:120000,
+  t:{prep:'Preparing… ',page:function(n,p){return 'Page '+n+' of '+p;},
+     ok:'PDF is ready! 📄',okS:'Your lecture summary is downloading',
+     err:'Could not create the PDF',errS:'Please try again, or use a desktop browser',
+     copy:'Copy',copied:'Copied!',cpT:'Copied! 🚀',cpS:'The code is ready to paste',
+     cpErr:'Copy failed',cpErrS:'Select the code and copy it manually'}
+};
+var RTL=CFG.dir==='rtl';
+var LIB_H2C='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+var LIB_PDF='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+var PW=210,PH=297,MX=12,TOP=16,BOT=15,CMM=PW-MX*2,MPP=CMM/CFG.contentW,PCPX=(PH-TOP-BOT)/MPP;
+var SPIN='<svg class="spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle opacity=".25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path opacity=".75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+
+function toast(t,s,err){
+var el=document.createElement('div');el.className=CFG.toastCls+(err?' err':'');
+el.innerHTML='<div></div><small></small>';el.firstChild.textContent=t;el.lastChild.textContent=s||'';
+document.body.appendChild(el);requestAnimationFrame(function(){el.classList.add('show');});
+setTimeout(function(){el.classList.remove('show');setTimeout(function(){el.remove();},350);},2600);}
+function loadScript(src,ready){return new Promise(function(res,rej){
+if(ready())return res();
+var s=document.createElement('script'),t=setTimeout(function(){rej(new Error('timeout '+src));},20000);
+s.src=src;s.onload=function(){clearTimeout(t);res();};s.onerror=function(){clearTimeout(t);rej(new Error('load '+src));};
+document.head.appendChild(s);});}
+function tick(){return new Promise(function(r){requestAnimationFrame(function(){setTimeout(r,0);});});}
+function pickScale(w,h){var ua=navigator.userAgent,ios=/iP(hone|ad|od)/i.test(ua),mob=ios||/Android/i.test(ua)||innerWidth<768;
+var s=mob?2:3,A=ios?14e6:(mob?40e6:60e6),S=ios?16000:30000;
+while(s>1&&(w*s*h*s>A||h*s>S))s-=.25;return Math.max(s,1);}
+
+/* Page-break candidates: section tops and example/note blocks */
+function getCands(clone){
+var base=clone.getBoundingClientRect().top,cand=[];
+[].slice.call(clone.querySelectorAll('.sec, .sec > .ex, .sec > .note, .sec > .tw')).forEach(function(el){
+if(el.classList.contains('sec')){cand.push(el.getBoundingClientRect().top-base);return;}
+var p=el.previousElementSibling;
+if(!p||p.classList.contains('sec-head')||p.classList.contains('sec-lead'))return;
+cand.push(el.getBoundingClientRect().top-base);});
+return cand.sort(function(a,b){return a-b;});}
+
+/* Snap each break up to a fully blank pixel row so a page never cuts through text or code */
+function computeBreaks(big,cands,sc){
+var ctx=big.getContext('2d'),W=big.width,Hc=big.height,P=PCPX*sc,band=Math.ceil(sc*1.5),
+c=cands.map(function(v){return Math.round(v*sc);}),br=[0],st=0;
+function blank(y){var d=ctx.getImageData(0,y,W,band).data;
+for(var i=0;i<d.length;i+=4)if(d[i]<235||d[i+1]<235||d[i+2]<235)return false;return true;}
+while(Hc-st>P+1){
+var lim=Math.floor(st+P-band),best=-1;
+for(var i=0;i<c.length;i++)if(c[i]>st+40*sc&&c[i]<=lim)best=c[i];
+var t=best<0?lim:best,y=t,min=st+P*.4;
+while(y>min&&!blank(y))y--;
+if(y<=min)y=t;
+br.push(y/sc);st=y;}
+br.push(Hc/sc);return br;}
+
+/* Header/footer strip: first text on the reading-start side, second on the end side */
+function strip(w,h,a,fa,ca,b,fb,cb,bDir){
+var c=document.createElement('canvas');c.width=Math.round(w*12);c.height=Math.round(h*12);
+var x=c.getContext('2d'),W=c.width,Hh=c.height;x.textBaseline='middle';
+x.font=fa;x.fillStyle=ca;x.direction=CFG.dir;x.textAlign=RTL?'right':'left';x.fillText(a,RTL?W-4:4,Hh/2);
+x.font=fb;x.fillStyle=cb;x.direction=bDir||CFG.dir;x.textAlign=RTL?'left':'right';x.fillText(b,RTL?4:W-4,Hh/2);
+var u=c.toDataURL('image/png');c.width=c.height=0;return u;}
+
+/* Light SQL syntax highlighting (display only; copy reads plain text) */
+var KW='OR|IN|LIKE|BETWEEN|INSERT|INTO|VALUES|IGNORE|DUPLICATE|AUTO_INCREMENT|TRUNCATE|CREATE|ALTER|TABLE|ADD|DROP|COLUMN|MODIFY|CHANGE|RENAME|TO|CONSTRAINT|UNIQUE|CHECK|DEFAULT|SET|PRIMARY|FOREIGN|KEY|REFERENCES|ON|DELETE|UPDATE|CASCADE|RESTRICT|NOT|NULL|SELECT|FROM|WHERE|AND|INT|VARCHAR|DECIMAL|YEAR';
+var HL=new RegExp("(--[^\\n]*)|('[^'\\n]*')|\\b(\\d+)\\b|\\b("+KW+")\\b","gi");
+var AR=/[\u0600-\u06FF]/;
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function highlight(root){
+[].slice.call(root.querySelectorAll('.code .pre code')).forEach(function(c){
+if(c.getAttribute('data-hl'))return;c.setAttribute('data-hl','1');
+c.innerHTML=esc(c.textContent).replace(HL,function(m,cm,st,nu,kw){
+if(cm){var r=cm.slice(2);return '<span class="tc">--'+(AR.test(r)?'<bdi dir="rtl">'+r+'</bdi>':r)+'</span>';}
+if(st)return '<span class="ts">'+st+'</span>';
+if(nu)return '<span class="tn">'+nu+'</span>';
+return '<span class="tk">'+kw+'</span>';});});}
+
+function init(root){
+if(root.getAttribute('data-bound'))return;root.setAttribute('data-bound','1');
+root.setAttribute('dir',CFG.dir);
+highlight(root);
+var busy=false,bar=root.querySelector('.bar i'),topBtn=root.querySelector('.top');
+var chips=[].slice.call(root.querySelectorAll('.nav a')),navS=root.querySelector('.nav-s');
+
+/* ---- PDF ---- */
+async function pdfExport(btn){
+if(busy)return;busy=true;
+var pi=btn.querySelector('.pi'),pl=btn.querySelector('.pl'),oi=pi.innerHTML,ol=pl.textContent,holder=null,timer=null,big=null;
+function prog(p){pl.textContent=CFG.t.prep+Math.round(p)+'%';}
+btn.disabled=true;pi.innerHTML=SPIN;prog(2);
+try{
+var job=(async function(){
+await tick();
+await loadScript(LIB_H2C,function(){return !!window.html2canvas;});
+await loadScript(LIB_PDF,function(){return !!(window.jspdf&&window.jspdf.jsPDF);});
+if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+prog(12);
+var font=getComputedStyle(root).fontFamily||'Arial, sans-serif';
+var clone=root.cloneNode(true);
+clone.removeAttribute('data-bound');clone.classList.add('pdf-mode');
+clone.setAttribute('dir',CFG.dir);clone.setAttribute('lang',CFG.lang);
+clone.style.direction=CFG.dir;clone.style.textAlign=RTL?'right':'left';
+clone.querySelectorAll('[data-pdf-ignore],button,script').forEach(function(e){e.remove();});
+holder=document.createElement('div');holder.setAttribute('data-pdf-holder',CFG.idp);holder.setAttribute('aria-hidden','true');holder.setAttribute('dir',CFG.dir);
+holder.style.cssText='direction:'+CFG.dir+';position:fixed;left:-10000px;top:0;width:'+CFG.contentW+'px;background:#fff;pointer-events:none;';
+holder.appendChild(clone);document.body.appendChild(holder);await tick();
+var H=Math.ceil(clone.getBoundingClientRect().height),scale=pickScale(CFG.contentW,Math.ceil(H*1.25)),cands=[];
+prog(20);
+big=await html2canvas(clone,{scale:scale,width:CFG.contentW,windowWidth:CFG.contentW,windowHeight:Math.ceil(H*1.5)+400,scrollX:0,scrollY:0,useCORS:true,backgroundColor:'#fff',logging:false,
+onclone:function(d,el){cands=getCands(el);}});
+prog(60);
+var sc=big.width/CFG.contentW,breaks=computeBreaks(big,cands,sc);
+var pdf=new jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
+pdf.setProperties({title:CFG.pdfTitle,subject:CFG.pdfTitle,creator:CFG.siteName});
+var pages=breaks.length-1;
+var hdr=strip(CMM,7,CFG.headerText,'700 38px '+font,'#0f766e',CFG.headerSub,'500 34px '+font,'#94a3b8');
+for(var i=0;i<pages;i++){
+if(i)pdf.addPage();
+var b0=breaks[i],b1=breaks[i+1],sy=Math.round(b0*sc),sh=Math.max(1,Math.min(big.height-sy,Math.round(b1*sc)-sy));
+var sl=document.createElement('canvas');sl.width=big.width;sl.height=sh;
+var cx=sl.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,sl.width,sl.height);cx.drawImage(big,0,sy,big.width,sh,0,0,big.width,sh);
+var img=sl.toDataURL('image/jpeg',.93);sl.width=sl.height=0;
+pdf.addImage(img,'JPEG',MX,TOP,CMM,(sh/sc)*MPP,undefined,'FAST');
+pdf.setFillColor(13,148,136);pdf.rect(0,0,PW,2.4,'F');pdf.setFillColor(52,211,153);pdf.rect(RTL?PW-70:0,0,70,2.4,'F');
+pdf.setDrawColor(226,232,240);pdf.setLineWidth(.3);
+if(i){pdf.addImage(hdr,'PNG',MX,5,CMM,7);pdf.line(MX,13,PW-MX,13);}
+var ftr=strip(CMM,7,CFG.t.page(i+1,pages),'500 34px '+font,'#64748b',CFG.siteName,'500 34px '+font,'#64748b','ltr');
+pdf.line(MX,PH-12,PW-MX,PH-12);pdf.addImage(ftr,'PNG',MX,PH-11,CMM,7);
+prog(60+((i+1)/pages)*35);await tick();}
+big.width=big.height=0;big=null;prog(98);await tick();
+pdf.save(CFG.filename);
+})();
+var to=new Promise(function(_,rej){timer=setTimeout(function(){rej(new Error('PDF export timeout'));},CFG.timeoutMs);});
+job.catch(function(){});
+await Promise.race([job,to]);
+toast(CFG.t.ok,CFG.t.okS);
+}catch(e){console.error(e);toast(CFG.t.err,CFG.t.errS,true);}
+finally{clearTimeout(timer);if(big)big.width=big.height=0;
+document.querySelectorAll('[data-pdf-holder="'+CFG.idp+'"]').forEach(function(el){el.remove();});
+busy=false;btn.disabled=false;pi.innerHTML=oi;pl.textContent=ol;}
+}
+
+/* ---- copy ---- */
+function copyText(t){
+if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);
+return new Promise(function(res,rej){var a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();
+try{document.execCommand('copy')?res():rej();}catch(e){rej(e);}a.remove();});}
+
+root.addEventListener('click',function(e){
+var cp=e.target.closest('.cp');
+if(cp){copyText(cp.closest('.code').querySelector('code').innerText.trim()).then(function(){
+cp.dataset.label=CFG.t.copied;cp.classList.add('ok');toast(CFG.t.cpT,CFG.t.cpS);
+setTimeout(function(){cp.dataset.label=CFG.t.copy;cp.classList.remove('ok');},1800);
+}).catch(function(){toast(CFG.t.cpErr,CFG.t.cpErrS,true);});return;}
+var pb=e.target.closest('.lx-pdf');if(pb){pdfExport(pb);return;}
+var a=e.target.closest('.nav a');
+if(a){e.preventDefault();var t=root.querySelector('#'+CFG.idp+a.getAttribute('data-t'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});return;}
+if(e.target.closest('.top'))root.scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+/* ---- progress bar + back-to-top ---- */
+function onScroll(){var r=root.getBoundingClientRect(),tot=r.height-innerHeight;
+bar.style.width=Math.max(0,Math.min(1,tot>0?-r.top/tot:0))*100+'%';
+topBtn.classList.toggle('show',-r.top>700&&r.bottom>200);}
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
+
+/* ---- reveal + active section ---- */
+var rv=[].slice.call(root.querySelectorAll('.rv'));
+if('IntersectionObserver' in window){
+var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.02});
+rv.forEach(function(el){io.observe(el);});
+var heads=[].slice.call(root.querySelectorAll('.sec-head'));
+var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;
+var id=en.target.closest('.sec').id.replace(CFG.idp,'');
+chips.forEach(function(c){var on=c.getAttribute('data-t')===id;c.classList.toggle('on',on);
+if(on){var cr=c.getBoundingClientRect(),nr=navS.getBoundingClientRect();
+navS.scrollBy({left:(cr.left+cr.width/2)-(nr.left+nr.width/2),behavior:'smooth'});}});});},{rootMargin:'-90px 0px -65% 0px'});
+heads.forEach(function(h){io2.observe(h);});
+}else rv.forEach(function(el){el.classList.add('in');});
+}
+[].slice.call(document.querySelectorAll(CFG.sel)).forEach(init);
+})();
+</script>
+</code>
+<!--en-end-->
+      </div>
+    </section>
+    </article>
+    <a href="/" class="inline-block mt-10 text-brand font-bold underline" data-ar="العودة إلى كل الدروس" data-en="Back to all lessons">العودة إلى كل الدروس</a>
+  </main>
+  <script type="application/json" id="post-meta">{"slug":"lesson-6","hasEn":true,"default":"ar","site":{"ar":"دفتر الدروس","en":"Lessons Notebook"},"ar":{"title":"INSERT و UPDATE والحذف في MySQL: 8 حالات للإضافة والشروط المعقدة","description":"تعرّف على 8 طرق لإضافة البيانات في MySQL، وكيفية التحديث الآمن باستخدام AND و OR و IN و LIKE و BETWEEN، والفرق الحقيقي بين DELETE و TRUNCATE و DROP."},"en":{"title":"INSERT, UPDATE & Delete in MySQL: 8 Insert Cases and Complex Conditions","description":"Learn all 8 ways to insert data in MySQL, update rows safely with AND, OR, IN, LIKE and BETWEEN, and understand the real difference between DELETE, TRUNCATE and DROP."}}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="/assets/post.js"></script>
+</body>
+</html>
