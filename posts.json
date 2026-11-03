@@ -1,8 +1,8 @@
 [
   {
     "id": "lesson-6",
-    "title": "الدليل الشامل لأوامر ALTER TABLE في MySQL: من الأساسيات إلى الاحتراف (مع الأمثلة)",
-    "excerpt": "تعرّف على 8 طرق لإضافة البيانات في MySQL",
+    "title": "الإضافة والتحديث والحذف في MySQL، مع 8 حالات لـ INSERT والشروط المعقدة",
+    "excerpt": "تعرّف على 8 طرق لإضافة البيانات في MySQL، وكيفية التحديث الآمن باستخدام AND و OR و IN و LIKE و BETWEEN، والفرق الحقيقي بين DELETE و TRUNCATE و DROP.",
     "title_en": "INSERT, UPDATE & Delete in MySQL: 8 Insert Cases and Complex Conditions",
     "excerpt_en": "Learn all 8 ways to insert data in MySQL, update rows safely with AND, OR, IN, LIKE and BETWEEN, and understand the real difference between DELETE, TRUNCATE and DROP.",
     "langs": [
