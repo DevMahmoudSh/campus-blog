@@ -1,5 +1,21 @@
 [
   {
+    "id": "lesson-7",
+    "title": "أساسيات الاستعلام في MySQL، من الأسماء المستعارة إلى ORDER BY و LIMIT",
+    "excerpt": "تعلّم أهم أدوات الاستعلام في MySQL بأمثلة مباشرة، وتشمل الأسماء المستعارة ودمج النصوص بـ CONCAT وحذف التكرار بـ DISTINCT، مع LIKE و BETWEEN و IN والترتيب بـ ORDER BY وتحديد النتائج بـ LIMIT.",
+    "title_en": "MySQL Query Basics: Aliases, CONCAT, DISTINCT, LIKE, BETWEEN, IN, ORDER BY & LIMIT",
+    "excerpt_en": "Learn the essential MySQL query tools with clear syntax and examples: aliases, CONCAT and CONCAT_WS, DISTINCT, the LIKE, BETWEEN and IN operators, sorting with ORDER BY, and pagination with LIMIT.",
+    "langs": [
+      "ar",
+      "en"
+    ],
+    "url": "/posts/lesson-7.html",
+    "category": "",
+    "tags": [],
+    "date": "2026-11-14",
+    "readMinutes": 9
+  },
+  {
     "id": "lesson-6",
     "title": "الإضافة والتحديث والحذف في MySQL، مع 8 حالات لـ INSERT والشروط المعقدة",
     "excerpt": "تعرّف على 8 طرق لإضافة البيانات في MySQL، وكيفية التحديث الآمن باستخدام AND و OR و IN و LIKE و BETWEEN، والفرق الحقيقي بين DELETE و TRUNCATE و DROP.",
