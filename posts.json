@@ -1,5 +1,21 @@
 [
   {
+    "id": "lesson-8",
+    "title": "دوال التجميع والتواريخ والاستعلامات المتداخلة في MySQL",
+    "excerpt": "تعلّم تلخيص البيانات بدوال SUM و AVG و MAX و MIN و COUNT، والتعامل مع التواريخ والأوقات باستخدام NOW و DATEDIFF و DATE_ADD و DATE_FORMAT، وكتابة الاستعلامات المتداخلة مع IN و EXISTS، بأمثلة واضحة لطلبة الجامعة.",
+    "title_en": "MySQL Aggregate Functions, Dates & Times, and Subqueries",
+    "excerpt_en": "Learn how to summarize data with SUM, AVG, MAX, MIN and COUNT, work with dates using NOW, DATEDIFF, DATE_ADD and DATE_FORMAT, and write nested queries with IN and EXISTS, with clear examples for college students.",
+    "langs": [
+      "ar",
+      "en"
+    ],
+    "url": "/posts/lesson-8.html",
+    "category": "",
+    "tags": [],
+    "date": "2026-11-22",
+    "readMinutes": 10
+  },
+  {
     "id": "lesson-7",
     "title": "أساسيات الاستعلام في MySQL، من الأسماء المستعارة إلى ORDER BY و LIMIT",
     "excerpt": "تعلّم أهم أدوات الاستعلام في MySQL بأمثلة مباشرة، وتشمل الأسماء المستعارة ودمج النصوص بـ CONCAT وحذف التكرار بـ DISTINCT، مع LIKE و BETWEEN و IN والترتيب بـ ORDER BY وتحديد النتائج بـ LIMIT.",
