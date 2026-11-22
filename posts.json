@@ -1,5 +1,21 @@
 [
   {
+    "id": "lesson-9",
+    "title": "التجميع بـ GROUP BY و HAVING وترتيب تنفيذ الاستعلام في MySQL",
+    "excerpt": "تعلّم تجميع البيانات بـ GROUP BY وفلترة المجموعات بـ HAVING، وافهم الفرق بين ترتيب كتابة الاستعلام وترتيب تنفيذه داخل MySQL، مع مدخل واضح إلى الاستعلامات المتداخلة وأمثلة.",
+    "title_en": "MySQL GROUP BY and HAVING, Query Execution Order, and Intro to Subqueries",
+    "excerpt_en": "Learn how to group data with GROUP BY, filter groups with HAVING, understand the difference between how a query is written and how MySQL executes it, and start writing nested queries.",
+    "langs": [
+      "ar",
+      "en"
+    ],
+    "url": "/posts/lesson-9.html",
+    "category": "",
+    "tags": [],
+    "date": "2026-11-22",
+    "readMinutes": 8
+  },
+  {
     "id": "lesson-8",
     "title": "دوال التجميع والتواريخ والاستعلامات المتداخلة في MySQL",
     "excerpt": "تعلّم تلخيص البيانات بدوال SUM و AVG و MAX و MIN و COUNT، والتعامل مع التواريخ والأوقات باستخدام NOW و DATEDIFF و DATE_ADD و DATE_FORMAT، وكتابة الاستعلامات المتداخلة مع IN و EXISTS، بأمثلة واضحة لطلبة الجامعة.",
