@@ -1,5 +1,21 @@
 [
   {
+    "id": "lesson-10",
+    "title": "حساب العمر بدالة TIMESTAMPDIFF والتعامل مع الوقت والأعمدة المحتسبة في MySQL",
+    "excerpt": "شرح حساب العمر بدقة باستخدام TIMESTAMPDIFF بدلاً من طرح السنوات، وعرض العمر بالسنوات والشهور باستخدام MOD، وتعامل الدالة مع أنواع DATE و DATETIME و TIME، ومقارنة الأوقات بدالتي TIMEDIFF و TIME_TO_SEC، ثم الأعمدة المحتسبة (Generated Columns) والفرق بين VIRTUAL و STORED، مع أمث",
+    "title_en": "Calculating Age With TIMESTAMPDIFF, Time Functions, and Generated Columns in MySQL",
+    "excerpt_en": "A lesson calculating age accurately with TIMESTAMPDIFF instead of subtracting years, showing age in years and months with MOD, how the function handles DATE, DATETIME and TIME values, and comparing times with TIMEDIFF and TIME_TO_SEC. It then explains Generated Colum",
+    "langs": [
+      "ar",
+      "en"
+    ],
+    "url": "/posts/lesson-10.html",
+    "category": "",
+    "tags": [],
+    "date": "2026-11-23",
+    "readMinutes": 9
+  },
+  {
     "id": "lesson-9",
     "title": "التجميع بـ GROUP BY و HAVING وترتيب تنفيذ الاستعلام في MySQL",
     "excerpt": "تعلّم تجميع البيانات بـ GROUP BY وفلترة المجموعات بـ HAVING، وافهم الفرق بين ترتيب كتابة الاستعلام وترتيب تنفيذه داخل MySQL، مع مدخل واضح إلى الاستعلامات المتداخلة وأمثلة.",
